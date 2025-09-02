@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Architecture Styles Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .card {
+            transition: all 0.3s ease;
+            border-top: 4px solid;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .card-layered { border-color: #6366f1; } /* Indigo */
+        .card-pipeline { border-color: #8b5cf6; } /* Purple */
+        .card-microkernel { border-color: #f59e0b; } /* Amber */
+        .card-modular { border-color: #059669; } /* Emerald */
+        .card-service { border-color: #0284c7; } /* Sky */
+        
+        /* Diagram Styles */
+        .diagram {
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        /* Layered Architecture Diagram */
+        .layer-box {
+            width: 160px;
+            height: 24px;
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        /* Pipeline Architecture Diagram */
+        .pipe-component {
+            border: 2px solid #8b5cf6;
+            background-color: #f3f0ff;
+            color: #6d28d9;
+            padding: 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .pipe-line {
+            height: 2px;
+            width: 20px;
+            background-color: #8b5cf6;
+            position: relative;
+        }
+        .pipe-arrow {
+            position: absolute;
+            right: -4px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-left: 6px solid #8b5cf6;
+            border-bottom: 4px solid transparent;
+        }
+        
+        /* Microkernel Diagram */
+        .core {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #f59e0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            position: relative;
+        }
+        .plugin {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background-color: #fffbeb;
+            border: 2px solid #f59e0b;
+            color: #b45309;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        
+        /* Modular Monolith Diagram */
+        .module-container {
+            width: 170px;
+            height: 90px;
+            border: 3px solid #059669;
+            border-radius: 8px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            padding: 8px;
+        }
+        .module-box {
+            background-color: #ecfdf5;
+            border: 1px solid #059669;
+            color: #047857;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        
+        /* Service Architecture Diagram */
+        .service-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .services-row {
+            display: flex;
+            gap: 8px;
+        }
+        .service-box {
+            width: 40px;
+            height: 30px;
+            background-color: #e0f2fe;
+            border: 2px solid #0284c7;
+            color: #0369a1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        .database {
+            width: 60px;
+            height: 25px;
+            background-color: #f1f5f9;
+            border: 2px solid #64748b;
+            color: #475569;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        .service-line {
+            width: 2px;
+            height: 12px;
+            background-color: #0284c7;
+        }
+
+        /* Fix for consistent card heights */
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card-description {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-slate-900 mb-4">Software Architecture Styles</h1>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Explore different architectural patterns and learn when to use each one for your software projects.
+            </p>
+        </header>
+
+        <!-- Architecture Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            
+            <!-- Layered Architecture Card -->
+            <a href="architectural_styles/tla.html" class="card card-layered bg-white rounded-lg shadow-md overflow-hidden hover:no-underline">
+                <div class="p-6 card-content">
+                    <!-- Layered Architecture Diagram -->
+                    <div class="diagram">
+                        <div class="flex flex-col">
+                            <div class="layer-box bg-indigo-100 text-indigo-800 border border-indigo-300">Presentation Layer</div>
+                            <div class="layer-box bg-indigo-200 text-indigo-800 border border-indigo-300">Business Layer</div>
+                            <div class="layer-box bg-indigo-300 text-indigo-800 border border-indigo-400">Persistence Layer</div>
+                            <div class="layer-box bg-indigo-400 text-indigo-900 border border-indigo-500">Database Layer</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <h2 class="text-2xl font-bold text-indigo-700 mb-3">The Layered Architecture</h2>
+                        <p class="text-slate-600 mb-4">
+                            The traditional N-tier pattern with horizontal layers organized by technical concern.
+                        </p>
+                        <div class="flex items-center mt-auto">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 text-sm font-medium text-indigo-600">Simple & Traditional</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-indigo-50 px-6 py-4">
+                    <span class="text-indigo-700 font-semibold">View Details →</span>
+                </div>
+            </a>
+
+            <!-- Pipeline Architecture Card -->
+            <a href="architectural_styles/tpa.html" class="card card-pipeline bg-white rounded-lg shadow-md overflow-hidden hover:no-underline">
+                <div class="p-6 card-content">
+                    <!-- Pipeline Architecture Diagram -->
+                    <div class="diagram">
+                        <div class="flex items-center">
+                            <div class="pipe-component">Source</div>
+                            <div class="pipe-line"><div class="pipe-arrow"></div></div>
+                            <div class="pipe-component">Process</div>
+                            <div class="pipe-line"><div class="pipe-arrow"></div></div>
+                            <div class="pipe-component">Sink</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <h2 class="text-2xl font-bold text-purple-700 mb-3">The Pipeline Architecture</h2>
+                        <p class="text-slate-600 mb-4">
+                            A sequence of processing elements where output from one is input to the next.
+                        </p>
+                        <div class="flex items-center mt-auto">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 text-sm font-medium text-purple-600">Data Processing</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-purple-50 px-6 py-4">
+                    <span class="text-purple-700 font-semibold">View Details →</span>
+                </div>
+            </a>
+
+            <!-- Microkernel Architecture Card -->
+            <a href="architectural_styles/mka.html" class="card card-microkernel bg-white rounded-lg shadow-md overflow-hidden hover:no-underline">
+                <div class="p-6 card-content">
+                    <!-- Microkernel Architecture Diagram -->
+                    <div class="diagram">
+                        <div class="relative">
+                            <div class="core">Core</div>
+                            <div class="plugin" style="top: -10px; left: 50%; transform: translateX(-50%);">Plugin 1</div>
+                            <div class="plugin" style="bottom: -10px; left: 50%; transform: translateX(-50%);">Plugin 2</div>
+                            <div class="plugin" style="left: -40px; top: 50%; transform: translateY(-50%);">Plugin 3</div>
+                            <div class="plugin" style="right: -40px; top: 50%; transform: translateY(-50%);">Plugin 4</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <h2 class="text-2xl font-bold text-amber-700 mb-3">The Microkernel Architecture</h2>
+                        <p class="text-slate-600 mb-4">
+                            A plug-in architecture with a core system and extensible components.
+                        </p>
+                        <div class="flex items-center mt-auto">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 text-sm font-medium text-amber-600">Extensible & Adaptable</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-amber-50 px-6 py-4">
+                    <span class="text-amber-700 font-semibold">View Details →</span>
+                </div>
+            </a>
+
+            <!-- Modular Monolith Card -->
+            <a href="architectural_styles/mma.html" class="card card-modular bg-white rounded-lg shadow-md overflow-hidden hover:no-underline">
+                <div class="p-6 card-content">
+                    <!-- Modular Monolith Diagram -->
+                    <div class="diagram">
+                        <div class="module-container">
+                            <div class="module-box">Orders</div>
+                            <div class="module-box">Catalog</div>
+                            <div class="module-box">Users</div>
+                            <div class="module-box">Payments</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <h2 class="text-2xl font-bold text-emerald-700 mb-3">The Modular Monolith</h2>
+                        <p class="text-slate-600 mb-4">
+                            A domain-partitioned monolithic application with well-defined boundaries between modules.
+                        </p>
+                        <div class="flex items-center mt-auto">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 text-sm font-medium text-emerald-600">Domain-Focused</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-emerald-50 px-6 py-4">
+                    <span class="text-emerald-700 font-semibold">View Details →</span>
+                </div>
+            </a>
+
+            <!-- Service-Based Architecture Card -->
+            <a href="architectural_styles/sba.html" class="card card-service bg-white rounded-lg shadow-md overflow-hidden hover:no-underline">
+                <div class="p-6 card-content">
+                    <!-- Service-Based Architecture Diagram -->
+                    <div class="diagram">
+                        <div class="service-container">
+                            <div class="services-row">
+                                <div class="service-box">Svc 1</div>
+                                <div class="service-box">Svc 2</div>
+                                <div class="service-box">Svc 3</div>
+                            </div>
+                            <div class="service-line"></div>
+                            <div class="database">Database</div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <h2 class="text-2xl font-bold text-sky-700 mb-3">The Service-Based Architecture</h2>
+                        <p class="text-slate-600 mb-4">
+                            A distributed architecture with separate, domain-based services and a shared database.
+                        </p>
+                        <div class="flex items-center mt-auto">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-sky-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 text-sm font-medium text-sky-600">API-Driven</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-sky-50 px-6 py-4">
+                    <span class="text-sky-700 font-semibold">View Details →</span>
+                </div>
+            </a>
+
+            <!-- Coming Soon Card -->
+            <div class="card bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-slate-400">
+                <div class="p-6 card-content">
+                    <!-- Exploration Diagram -->
+                    <div class="diagram">
+                        <div class="relative w-20 h-20">
+                            <!-- Compass Rose / Exploration Diagram -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full text-slate-300">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="5" fill="currentColor"/>
+                                <!-- North -->
+                                <path d="M50,5 L50,20 M50,5 L45,15 M50,5 L55,15" stroke="currentColor" stroke-width="2"/>
+                                <text x="50" y="30" text-anchor="middle" fill="currentColor" font-size="10">N</text>
+                                <!-- East -->
+                                <path d="M95,50 L80,50 M95,50 L85,45 M95,50 L85,55" stroke="currentColor" stroke-width="2"/>
+                                <text x="70" y="50" text-anchor="middle" fill="currentColor" font-size="10">E</text>
+                                <!-- South -->
+                                <path d="M50,95 L50,80 M50,95 L45,85 M50,95 L55,85" stroke="currentColor" stroke-width="2"/>
+                                <text x="50" y="75" text-anchor="middle" fill="currentColor" font-size="10">S</text>
+                                <!-- West -->
+                                <path d="M5,50 L20,50 M5,50 L15,45 M5,50 L15,55" stroke="currentColor" stroke-width="2"/>
+                                <text x="30" y="50" text-anchor="middle" fill="currentColor" font-size="10">W</text>
+                                <!-- Diagonal lines -->
+                                <line x1="25" y1="25" x2="35" y2="35" stroke="currentColor" stroke-width="1"/>
+                                <line x1="25" y1="75" x2="35" y2="65" stroke="currentColor" stroke-width="1"/>
+                                <line x1="75" y1="25" x2="65" y2="35" stroke="currentColor" stroke-width="1"/>
+                                <line x1="75" y1="75" x2="65" y2="65" stroke="currentColor" stroke-width="1"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-description">
+                        <h2 class="text-2xl font-bold text-slate-700 mb-3">More styles in the wild ...</h2>
+                        <p class="text-slate-600 mb-4">
+                            This list only scratches the surface of architectural styles. There are many more patterns that are widely used in the industry.
+                        </p>
+                        <div class="flex items-center mt-auto">
+                            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 text-sm font-medium text-slate-600">Explore yourself</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

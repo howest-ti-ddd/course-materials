@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Service-Based Architecture Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .content-section {
+            display: none;
+            border-left: 3px solid #0284c7; /* Changed from indigo to sky */
+        }
+        .active {
+            display: block;
+        }
+        .star-rating .filled {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <a href="../architectural_styles.html" class="inline-flex items-center text-sky-600 mb-4 hover:text-sky-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Architecture Styles
+            </a>
+            <h1 class="text-4xl md:text-5xl font-bold text-sky-700">The Service-Based Architecture Style</h1>
+            <p class="text-lg text-slate-600 mt-2">A Pragmatic Approach to Distributed Systems</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <nav class="lg:col-span-3">
+                <ul class="sticky top-8 space-y-2">
+                    <li><a href="#goal" class="nav-link block p-3 rounded-lg font-semibold bg-white shadow-sm text-sky-600 hover:bg-sky-100">Goal</a></li>
+                    <li><a href="#description" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Description</a></li>
+                    <li><a href="#properties" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Properties</a></li>
+                    <li><a href="#core-concept" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Core Concept</a></li>
+                    <li><a href="#details" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Details</a></li>
+                    <li><a href="#scorecard" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Scorecard</a></li>
+                    <li><a href="#deploy" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Deploy</a></li>
+                    <li><a href="#teams" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Teams</a></li>
+                    <li><a href="#usage" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Usage Guide</a></li>
+                    <li><a href="#usecase" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-sky-100">Usecase Example</a></li>
+                </ul>
+            </nav>
+
+            <main class="lg:col-span-9 space-y-16">
+                
+                <section id="goal" class="content-section active bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Goal</h2>
+                    <p class="text-lg text-slate-700">
+                        To build a distributed system using a small number of coarse-grained, independently deployed services, balancing the benefits of a distributed architecture with the simplicity of a monolith.
+                    </p>
+                </section>
+
+                <section id="description" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Description</h2>
+                    <p class="text-slate-700 mb-4">
+                        Service-Based Architecture is a pragmatic hybrid between a monolith and microservices. It breaks a system down into a manageable number of <strong>coarse-grained domain services</strong> (usually 4 to 12). These services are separately deployed but often share a single, monolithic database, making it less complex than a full microservices architecture.
+                    </p>
+                    <div class="bg-slate-100 p-4 rounded-lg mt-6 border">
+                        <h3 class="font-semibold text-lg text-slate-800 mb-4 text-center">The Granularity Spectrum</h3>
+                        <div class="flex justify-between items-center text-center">
+                            <div class="w-1/3">
+                                <div class="p-4 bg-slate-200 rounded-lg">Monolith</div>
+                                <div class="text-sm text-slate-600 mt-1">1 large unit</div>
+                            </div>
+                            <div class="w-1/3 font-bold text-sky-600">
+                                <div class="p-4 bg-sky-100 border-2 border-sky-500 rounded-lg">Service-Based</div>
+                                <div class="text-sm mt-1">A few medium units</div>
+                            </div>
+                            <div class="w-1/3">
+                                <div class="p-4 bg-slate-200 rounded-lg">Microservices</div>
+                                <div class="text-sm text-slate-600 mt-1">Many small units</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="properties" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Properties</h2>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li><strong>Distributed Architecture:</strong> Services are deployed independently, often as self-contained applications.</li>
+                        <li><strong>Domain Partitioned:</strong> Each service is scoped to a specific business domain (e.g., Ordering, Invoicing, Shipping).</li>
+                        <li><strong>Coarse-Grained Services:</strong> Unlike microservices, each service encapsulates a significant portion of business functionality.</li>
+                        <li><strong>Shared Database:</strong> Typically uses a single, monolithic database, although service-specific databases are possible.</li>
+                         <li><strong>Architectural Quantum:</strong> Can range from a single quantum (if UI and database are shared) to many (if UI and database are federated).</li>
+                    </ul>
+                </section>
+                
+                <section id="core-concept" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Core Concept: A Distributed Macro-Layer</h2>
+                    <p class="text-slate-700 mb-6">The architecture consists of a separately deployed User Interface, a set of remote Domain Services, and a central Database. The UI communicates directly with the services, often via REST.</p>
+                     <div class="bg-slate-100 p-4 rounded-lg text-center border">
+                        <h3 class="font-semibold text-lg text-slate-800 mb-4">System Topology</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded shadow font-semibold">User Interface</div>
+                            <div class="flex justify-center text-2xl text-slate-400">↓</div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                               <div class="bg-sky-100 p-3 rounded shadow-md border border-sky-300">Service A</div>
+                               <div class="bg-sky-100 p-3 rounded shadow-md border border-sky-300">Service B</div>
+                               <div class="bg-sky-100 p-3 rounded shadow-md border border-sky-300">Service C</div>
+                               <div class="bg-sky-100 p-3 rounded shadow-md border border-sky-300">Service D</div>
+                            </div>
+                             <div class="flex justify-center text-2xl text-slate-400">↓</div>
+                             <div class="inline-flex items-center space-x-2 bg-white p-4 rounded-full shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                <span class="font-semibold">Monolithic Database</span>
+                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="details" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">In-Depth Details</h2>
+                    <div class="space-y-8">
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Service Design</h3>
+                            <p class="text-slate-700 mb-4">Each coarse-grained domain service is often a mini-monolith itself, typically designed using a layered architecture (API, Business, Persistence) or a modular monolith style internally.</p>
+                             <div class="bg-slate-100 p-4 rounded-lg text-center border">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <div class="bg-sky-100 p-4 rounded-lg shadow-md border border-sky-300 font-semibold">Domain Service</div>
+                                    <div class="text-2xl text-slate-400">→</div>
+                                    <div class="bg-white p-4 rounded-lg shadow space-y-2 border">
+                                        <div class="bg-slate-200 p-2 rounded">API Facade</div>
+                                        <div class="bg-slate-200 p-2 rounded">Business Logic</div>
+                                        <div class="bg-slate-200 p-2 rounded">Persistence</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Database Change Management</h3>
+                            <p class="text-slate-700 mb-4">A key challenge is managing changes in the shared database. The anti-pattern is to use a single shared library for all database entities. A better approach is to logically partition the database schema by domain and create separate shared libraries for each partition. A change to the "Invoicing" tables only affects services that use the `invoicing_entities` library.</p>
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                 <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                     <h4 class="font-semibold text-red-800">Anti-Pattern</h4>
+                                     <p class="text-xs text-red-700">A change to one table impacts all services.</p>
+                                     <div class="mt-2 p-2 bg-white rounded border border-red-200 text-center">
+                                         <p class="font-mono text-sm">single_shared_lib.jar</p>
+                                     </div>
+                                 </div>
+                                 <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                     <h4 class="font-semibold text-green-800">Better Pattern</h4>
+                                     <p class="text-xs text-green-700">A change only impacts relevant services.</p>
+                                     <div class="mt-2 grid grid-cols-2 gap-2">
+                                        <div class="p-2 bg-white rounded border text-center"><p class="font-mono text-sm">customer_lib.jar</p></div>
+                                        <div class="p-2 bg-white rounded border text-center"><p class="font-mono text-sm">invoicing_lib.jar</p></div>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Transaction Management</h3>
+                            <p class="text-slate-700">Because a single service handles a complete business workflow (e.g., placing an order), it can use standard ACID database transactions (commit/rollback). This is a major advantage over microservices, which often require complex compensating transactions (eventual consistency).</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="scorecard" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-6">Architecture Scorecard</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Characteristic</th>
+                                    <th class="p-3 font-semibold text-center">Rating</th>
+                                    <th class="p-3 font-semibold">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Overall</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Overall Cost</td>
+                                    <td class="p-3 text-center text-2xl font-bold text-amber-600">$$</td>
+                                    <td class="p-3">More expensive than a monolith, but cheaper and less complex than microservices.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Engineering & Agility</td></tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Deployability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">High. Services are deployed independently, allowing for frequent releases with less risk.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Testability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">High. Each domain service can be tested in isolation.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Operational</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Fault Tolerance</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">High. If one service fails, it generally does not affect the others.</td>
+                                </tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Scalability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★</span><span class="text-slate-300">★★</span></td>
+                                    <td class="p-3">Average. Services can be scaled independently, but the coarse-grained nature is less efficient than microservices.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="deploy" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Deployment & Cloud</h2>
+                    <p class="text-slate-700">
+                       This style is a great fit for cloud environments. The coarse-grained domain services are typically deployed as containerized services (e.g., using Docker or Kubernetes) rather than as serverless functions due to their larger scope. They can easily leverage other cloud services like managed databases and file storage.
+                    </p>
+                </section>
+
+                <section id="teams" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Team Topology</h2>
+                    <p class="text-slate-700 mb-6">
+                        Because the architecture is domain-partitioned, it works best with teams that are also aligned by domain area.
+                    </p>
+                    <div class="bg-sky-50 p-4 rounded-lg border border-sky-200">
+                        <p class="text-sky-800"><strong>Stream-aligned teams</strong> are a natural fit, where each team owns a specific domain service from end to end. Technically-partitioned teams (UI team, backend team, DB team) are a poor fit and will lead to communication overhead and delays.
+                        </p>
+                    </div>
+                </section>
+
+                <section id="usage" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-6">Usage Guide</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-xl text-green-800 mb-2">When to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-green-700">
+                                <li>As a first step when migrating a monolith to a distributed architecture.</li>
+                                <li>For business applications that need a good balance of agility and simplicity.</li>
+                                <li>When you have clear domain boundaries.</li>
+                                <li>When you want ACID transactions in a distributed system.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h3 class="font-bold text-xl text-red-800 mb-2">When Not to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-red-700">
+                                <li>If you have more than ~12 services (can cause database contention issues).</li>
+                                <li>If you require extreme scalability and elasticity (microservices may be a better fit).</li>
+                                <li>If your domains are not well-defined, leading to high inter-service communication.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="usecase" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-sky-600 mb-4">Usecase Example: E-commerce System</h2>
+                    <p class="text-slate-700 mb-6">An e-commerce application is broken into logical domain services. Customer-facing services like <strong>Quoting</strong> and <strong>Item Status</strong> can be scaled independently to handle high traffic, while internal services like <strong>Receiving</strong>, <strong>Assessment</strong>, and <strong>Accounting</strong> only require single instances. The UI and database can also be split to provide better security and fault tolerance.</p>
+                     <div class="bg-slate-50 border rounded-lg p-6">
+                        <div class="text-center font-bold text-slate-700 mb-4 bg-white p-2 rounded-full shadow">Customer-Facing Quantum</div>
+                        <div class="grid grid-cols-2 gap-4">
+                             <div class="bg-sky-100 p-3 rounded shadow border border-sky-300">Quoting Service</div>
+                             <div class="bg-sky-100 p-3 rounded shadow border border-sky-300">Item Status Service</div>
+                        </div>
+                        <hr class="my-6 border-dashed border-slate-400">
+                        <div class="text-center font-bold text-slate-700 mb-4 bg-white p-2 rounded-full shadow">Internal Operations Quantum</div>
+                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                             <div class="bg-sky-100 p-3 rounded shadow border border-sky-300">Receiving Service</div>
+                             <div class="bg-sky-100 p-3 rounded shadow border border-sky-300">Assessment Service</div>
+                             <div class="bg-sky-100 p-3 rounded shadow border border-sky-300">Recycling Service</div>
+                             <div class="bg-sky-100 p-3 rounded shadow border border-sky-300">Accounting Service</div>
+                        </div>
+                     </div>
+                </section>
+                
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                links.forEach(link => {
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('bg-white', 'shadow-sm', 'text-sky-600');
+                        link.classList.remove('text-slate-700');
+                    } else {
+                        link.classList.remove('bg-white', 'shadow-sm', 'text-sky-600');
+                        link.classList.add('text-slate-700');
+                    }
+                });
+            }
+
+            function showSection(targetId) {
+                 sections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                     // Smooth scroll to the main content area for better UX on mobile
+                    if (window.innerWidth < 1024) {
+                        document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Set initial state
+            updateActiveLink('goal');
+            showSection('goal');
+        });
+    </script>
+
+</body>
+</html>
+

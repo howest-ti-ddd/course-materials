@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Understanding Architectural Characteristics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .infographic-section {
+            transition: all 0.3s ease-in-out;
+            border-left: 4px solid transparent;
+        }
+        .infographic-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .section-title-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        details[open] .section-title-icon {
+            transform: rotate(90deg);
+        }
+        .characteristic-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .characteristic-card:hover {
+            transform: scale(1.05);
+            background-color: #f0f9ff; /* light blue */
+        }
+        .tradeoff-arrow {
+            font-size: 2rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Architectural Characteristics</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="space-y-8">
+
+            <!-- Section 1: What Are They? -->
+            <section id="definition" class="infographic-section bg-white p-8 rounded-2xl shadow-lg border-l-4 border-blue-500">
+                <details open>
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <h2 class="text-2xl font-bold text-blue-700 flex items-center">
+                            <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                            What Are Architectural Characteristics?
+                        </h2>
+                        <span class="text-blue-500 section-title-icon">&#9656;</span>
+                    </summary>
+                    <div class="mt-6 text-gray-700 space-y-4">
+                        <p>Architectural Characteristics define the <strong class="text-gray-900">capabilities and constraints</strong> of a system that are independent of the business logic (the "domain"). They specify <strong class="text-gray-900">how</strong> a system should operate, not just <strong class="text-gray-900">what</strong> it should do. They are preferred over the term "non-functional requirements" because they are critical to the system's success.</p>
+                        
+                        <div class="mt-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                            <h3 class="text-lg font-semibold text-blue-800">The 3 Core Criteria:</h3>
+                            <div class="mt-4 grid md:grid-cols-3 gap-6 text-center">
+                                <div class="p-4">
+                                    <div class="flex justify-center mb-3">
+                                        <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                    </div>
+                                    <h4 class="font-bold">1. Nondomain Design</h4>
+                                    <p class="text-sm">Specifies a design consideration not related to the core business functionality (e.g., performance, not order processing).</p>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-center mb-3">
+                                         <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                    </div>
+                                    <h4 class="font-bold">2. Influences Structure</h4>
+                                    <p class="text-sm">Requires specific architectural decisions and structural support to be achieved (e.g., microservices for scalability).</p>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-center mb-3">
+                                        <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                                    </div>
+                                    <h4 class="font-bold">3. Critical for Success</h4>
+                                    <p class="text-sm">The system would fail or be inadequate without it. They are not nice-to-haves, but essentials.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <!-- Section 2: Categories -->
+            <section id="categories" class="infographic-section bg-white p-8 rounded-2xl shadow-lg border-l-4 border-green-500">
+                <details>
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <h2 class="text-2xl font-bold text-green-700 flex items-center">
+                            <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                            Categories of Characteristics
+                        </h2>
+                        <span class="text-green-500 section-title-icon">&#9656;</span>
+                    </summary>
+                    <div class="mt-6 space-y-8">
+                        
+                        <!-- Operational -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                Operational
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    <strong>Performance:</strong> Response time, stress testing, and peak analysis.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                    <strong>Scalability:</strong> Ability to handle increased load/users.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                                    <strong>Availability:</strong> Uptime requirements, often 24/7.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                    <strong>Reliability:</strong> Fail-safe needs for mission-critical systems.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    <strong>Recoverability:</strong> How quickly the system must get back online after a disaster.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                    <strong>Continuity:</strong> Disaster recovery capability.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Structural -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                Structural
+                            </h3>
+                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <strong>Maintainability:</strong> Ease of applying changes and enhancements.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                                    <strong>Extensibility:</strong> How well new features can be added.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
+                                    <strong>Configurability:</strong> How easily users can change system settings.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                    <strong>Portability:</strong> Ability to run on different platforms.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                                    <strong>Localization:</strong> Support for multiple languages.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cross-Cutting -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                Cross-Cutting
+                            </h3>
+                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                    <strong>Security:</strong> Authentication, authorization, and data protection.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <strong>Accessibility:</strong> Usable by people with disabilities.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                    <strong>Usability:</strong> How easy it is for users to achieve their goals.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                                    <strong>Legal:</strong> Constraints from laws like GDPR or Sarbanes-Oxley.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+                                    <strong>Privacy:</strong> Encrypting and hiding sensitive transactions.
+                                </div>
+                            </div>
+                        </div>
+                         
+                        <!-- Cloud -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                Cloud
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                    <strong>On-demand Scalability:</strong> Cloud provider's ability to scale resources dynamically.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                                    <strong>On-demand Elasticity:</strong> Flexibility as resource demands spike.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+                                    <strong>Zone-based Availability:</strong> Separating resources by computing zones for resilience.
+                                </div>
+                                <div class="characteristic-card border border-gray-200 rounded-lg p-4 text-center">
+                                    <svg class="w-6 h-6 mx-auto mb-2 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <strong>Region-based Privacy:</strong> Storing data in specific geographic regions to comply with laws.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Summary Diagram -->
+                        <div class="mt-10 p-6 bg-white rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Architectural Characteristics at a Glance</h3>
+                            <div class="w-full flex justify-center">
+                                <div class="grid grid-cols-2 gap-6 md:gap-10">
+                                    <div class="p-4 rounded-lg bg-green-100 border border-green-300 text-center">
+                                        <svg class="w-12 h-12 mx-auto mb-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                        <h4 class="font-bold">Operational</h4>
+                                        <p class="text-sm mt-1">Runtime qualities like performance and availability</p>
+                                    </div>
+                                    <div class="p-4 rounded-lg bg-blue-100 border border-blue-300 text-center">
+                                        <svg class="w-12 h-12 mx-auto mb-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                        <h4 class="font-bold">Structural</h4>
+                                        <p class="text-sm mt-1">Code-level qualities like maintainability</p>
+                                    </div>
+                                    <div class="p-4 rounded-lg bg-purple-100 border border-purple-300 text-center">
+                                        <svg class="w-12 h-12 mx-auto mb-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                        <h4 class="font-bold">Cross-Cutting</h4>
+                                        <p class="text-sm mt-1">System-wide concerns like security</p>
+                                    </div>
+                                    <div class="p-4 rounded-lg bg-cyan-100 border border-cyan-300 text-center">
+                                        <svg class="w-12 h-12 mx-auto mb-2 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                        <h4 class="font-bold">Cloud</h4>
+                                        <p class="text-sm mt-1">Cloud-specific capabilities and concerns</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </details>
+            </section>
+            
+            <!-- Section 3: Trade-Offs -->
+            <section id="tradeoffs" class="infographic-section bg-white p-8 rounded-2xl shadow-lg border-l-4 border-red-500">
+                 <details>
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <h2 class="text-2xl font-bold text-red-700 flex items-center">
+                            <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                            The Great Balancing Act: Trade-Offs
+                        </h2>
+                         <span class="text-red-500 section-title-icon">&#9656;</span>
+                    </summary>
+                     <div class="mt-6 text-gray-700 space-y-4">
+                        <p>Supporting every architectural characteristic is impossible. Each one adds complexity, cost, and often conflicts with others. Software architecture is about making <strong class="text-gray-900">informed trade-offs</strong> to find the best balance for the specific problem.</p>
+
+                        <div class="mt-6 p-6 bg-red-50 rounded-lg border border-red-200">
+                             <h3 class="text-lg font-semibold text-red-800 text-center">The Golden Rule of Architecture:</h3>
+                            <blockquote class="text-center italic text-xl text-red-900 mt-2">
+                                "Never strive for the best architecture; aim for the <strong class="font-bold">least worst</strong> architecture."
+                            </blockquote>
+                        </div>
+                        
+                        <div class="mt-8 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
+                            <div class="text-center p-4 rounded-lg bg-gray-100">
+                                <h4 class="font-bold text-lg">High Security</h4>
+                                <p class="text-sm">More encryption, validation, and checks.</p>
+                            </div>
+                            <div class="tradeoff-arrow text-red-500 font-bold transform md:rotate-0 rotate-90">&harr;</div>
+                             <div class="text-center p-4 rounded-lg bg-gray-100">
+                                <h4 class="font-bold text-lg">Lower Performance</h4>
+                                <p class="text-sm">These security measures consume CPU cycles.</p>
+                            </div>
+                        </div>
+                         <p class="text-center mt-4 text-gray-600">Improving one characteristic often degrades another. The architect's job is to find the right compromise.</p>
+                    </div>
+                 </details>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Simple script to handle smooth scrolling if needed, or other interactions
+        document.querySelectorAll('details').forEach((detail) => {
+            detail.addEventListener('toggle', () => {
+                if (detail.open) {
+                    // Optional: Close other details when one opens
+                    document.querySelectorAll('details').forEach((otherDetail) => {
+                        if (otherDetail !== detail) {
+                           // otherDetail.removeAttribute('open');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

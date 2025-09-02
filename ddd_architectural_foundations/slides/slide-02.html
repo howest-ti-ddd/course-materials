@@ -1,0 +1,33 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-8 text-center text-indigo-300">What does DDD Imply for Architecture?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4 text-lg text-gray-300">
+                    <p>DDD shifts our focus from <strong class="text-red-400">technical layers</strong> to the <strong class="text-green-400">business domain</strong>.</p>
+                    <p>Instead of thinking "UI" or "Data", we think "Ordering" or "Inventory".</p>
+                    <p>This creates an architecture that mirrors the business, making it easier to understand and evolve.</p>
+                    <p class="mt-6 p-4 text-xl bg-gray-800 rounded-lg border border-indigo-500 text-center">The goal: Align your code with the business problem.</p>
+                </div>
+                <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <svg viewBox="0 0 400 200" class="w-full h-auto">
+                        <text x="200" y="20" font-size="16" fill="#D1D5DB" text-anchor="middle" font-weight="bold">Architectural Focus Shift</text>
+                        <!-- Technical Layers -->
+                        <rect x="20" y="40" width="150" height="30" rx="5" fill="#4B5563"/><text x="95" y="60" fill="white" text-anchor="middle">Presentation</text>
+                        <rect x="20" y="80" width="150" height="30" rx="5" fill="#4B5563"/><text x="95" y="100" fill="white" text-anchor="middle">Business Logic</text>
+                        <rect x="20" y="120" width="150" height="30" rx="5" fill="#4B5563"/><text x="95" y="140" fill="white" text-anchor="middle">Data Access</text>
+                        <text x="95" y="170" fill="#F87171" text-anchor="middle">Technical View</text>
+
+                        <!-- Arrow -->
+                        <path d="M180 100 L220 100" stroke="#6366F1" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6366F1"/></marker></defs>
+                        
+                        <!-- Business Domains -->
+                        <rect x="230" y="40" width="150" height="30" rx="5" fill="#34D399"/><text x="305" y="60" fill="black" text-anchor="middle">Ordering</text>
+                        <rect x="230" y="80" width="150" height="30" rx="5" fill="#34D399"/><text x="305" y="100" fill="black" text-anchor="middle">Inventory</text>
+                        <rect x="230" y="120" width="150" height="30" rx="5" fill="#34D399"/><text x="305" y="140" fill="black" text-anchor="middle">Shipping</text>
+                        <text x="305" y="170" fill="#6EE7B7" text-anchor="middle">Business Domain View</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>

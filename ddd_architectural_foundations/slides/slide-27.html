@@ -1,0 +1,67 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-6 text-center text-indigo-300">AC: Deployability</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <svg viewBox="0 0 300 200" class="w-full h-auto">
+                        <text x="150" y="20" fill="#D1D5DB" text-anchor="middle" font-weight="bold">Release Risk & Frequency</text>
+                        
+                        <!-- Good Deployability Section -->
+                        <g transform="translate(30,0)">
+                            <text x="50" y="45" fill="#34D399" text-anchor="middle" font-weight="bold">Small, Frequent</text>
+                            
+                            <!-- Timeline representation -->
+                            <line x1="0" y1="70" x2="100" y2="70" stroke="#4B5563" stroke-width="2"/>
+                            
+                            <!-- Deployment boxes (small) -->
+                            <rect x="10" y="60" width="10" height="20" rx="2" fill="#34D399"/>
+                            <rect x="30" y="60" width="10" height="20" rx="2" fill="#34D399"/>
+                            <rect x="50" y="60" width="10" height="20" rx="2" fill="#34D399"/>
+                            <rect x="70" y="60" width="10" height="20" rx="2" fill="#34D399"/>
+                            <rect x="90" y="60" width="10" height="20" rx="2" fill="#34D399"/>
+                            
+                            <!-- Risk indicator (low) -->
+                            <text x="50" y="100" fill="#6EE7B7" text-anchor="middle" font-size="10">Low Risk</text>
+                            <rect x="20" y="110" width="60" height="10" rx="5" fill="#374151"/>
+                            <rect x="20" y="110" width="15" height="10" rx="5" fill="#34D399"/>
+                        </g>
+                        
+                        <!-- Bad Deployability Section -->
+                        <g transform="translate(170,0)">
+                            <text x="50" y="45" fill="#F87171" text-anchor="middle" font-weight="bold">Large, Infrequent</text>
+                            
+                            <!-- Timeline representation -->
+                            <line x1="0" y1="70" x2="100" y2="70" stroke="#4B5563" stroke-width="2"/>
+                            
+                            <!-- Deployment box (large) -->
+                            <rect x="10" y="55" width="80" height="30" rx="2" fill="#F87171"/>
+                            
+                            <!-- Risk indicator (high) -->
+                            <text x="50" y="100" fill="#FCA5A5" text-anchor="middle" font-size="10">High Risk</text>
+                            <rect x="20" y="110" width="60" height="10" rx="5" fill="#374151"/>
+                            <rect x="20" y="110" width="50" height="10" rx="5" fill="#F87171"/>
+                        </g>
+                        
+                        <!-- Deployment Frequency -->
+                        <text x="80" y="150" fill="#34D399" text-anchor="middle" font-size="12">Multiple times per day</text>
+                        <text x="220" y="150" fill="#F87171" text-anchor="middle" font-size="12">Once per month</text>
+                        
+                        <!-- Recovery Time -->
+                        <text x="80" y="170" fill="#34D399" text-anchor="middle" font-size="12">Minutes to recover</text>
+                        <text x="220" y="170" fill="#F87171" text-anchor="middle" font-size="12">Hours to recover</text>
+                    </svg>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-xl text-gray-300"><strong class="text-white">What:</strong> The ease, speed, and safety of deploying a new version of the software.</p>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-green-400">Impact (Done Right)</h3>
+                        <p class="text-gray-300">Low-risk, frequent releases. Fast feature delivery. Quick recovery from failed deployments.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-red-400">Impact (Done Wrong)</h3>
+                        <p class="text-gray-300">Infrequent, high-risk "big bang" releases. Long lead times for changes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

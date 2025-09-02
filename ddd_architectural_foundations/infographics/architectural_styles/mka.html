@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Microkernel Architecture Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .content-section {
+            display: none;
+            border-left: 3px solid #f59e0b; /* Changed from indigo to amber */
+        }
+        .active {
+            display: block;
+        }
+        .star-rating .filled {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <a href="../architectural_styles.html" class="inline-flex items-center text-amber-600 mb-4 hover:text-amber-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Architecture Styles
+            </a>
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-700">The Microkernel Architecture Style</h1>
+            <p class="text-lg text-slate-600 mt-2">A Guide to the Plug-in Pattern</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <nav class="lg:col-span-3">
+                <ul class="sticky top-8 space-y-2">
+                    <li><a href="#goal" class="nav-link block p-3 rounded-lg font-semibold bg-white shadow-sm text-amber-600 hover:bg-amber-100">Goal</a></li>
+                    <li><a href="#description" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Description</a></li>
+                    <li><a href="#properties" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Properties</a></li>
+                    <li><a href="#core-concept" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Core Concept</a></li>
+                    <li><a href="#details" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Details</a></li>
+                    <li><a href="#scorecard" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Scorecard</a></li>
+                    <li><a href="#deploy" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Deploy</a></li>
+                    <li><a href="#teams" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Teams</a></li>
+                    <li><a href="#usage" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Usage Guide</a></li>
+                    <li><a href="#usecase" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-amber-100">Usecase Example</a></li>
+                </ul>
+            </nav>
+
+            <main class="lg:col-span-9 space-y-16">
+                
+                <section id="goal" class="content-section active bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Goal</h2>
+                    <p class="text-lg text-slate-700">
+                        To create a highly extensible and adaptable system by separating minimal, core functionality from extended or custom features, which are implemented as independent plug-in components.
+                    </p>
+                </section>
+
+                <section id="description" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Description</h2>
+                    <p class="text-slate-700 mb-4">
+                        Also known as the <strong class="text-amber-600">Plug-in Architecture</strong>, this style is a simple monolithic architecture composed of two main parts: a central <strong>core system</strong> and multiple <strong>plug-in components</strong>. It is a natural fit for product-based applications that require customization or have features that can be added or removed, like IDEs (Eclipse), browsers (Chrome), or task managers (Jira).
+                    </p>
+                </section>
+
+                <section id="properties" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Properties</h2>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li><strong>Partitioning:</strong> Uniquely, it can be both technically partitioned (e.g., core has layers) and domain partitioned (e.g., plug-ins for specific business rules).</li>
+                        <li><strong>Extensibility:</strong> New features can be added as new plug-ins with minimal changes to the core system.</li>
+                        <li><strong>Isolation:</strong> Application features and volatile code are isolated within plug-ins, improving maintainability and testability.</li>
+                        <li><strong>Monolithic Deployment:</strong> Typically deployed as a single, self-contained unit.</li>
+                    </ul>
+                </section>
+                
+                <section id="core-concept" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Core Concept: Core & Plug-ins</h2>
+                    <p class="text-slate-700 mb-6">The architecture is defined by the relationship between the core system and its plug-ins.</p>
+                     <div class="bg-slate-100 p-4 rounded-lg text-center border">
+                        <h3 class="font-semibold text-lg text-slate-800 mb-4">System Topology</h3>
+                        <div class="flex items-center justify-center">
+                            <div class="flex flex-col space-y-2">
+                                <div class="bg-white p-2 rounded shadow text-sm">Plug-in A</div>
+                                <div class="bg-white p-2 rounded shadow text-sm">Plug-in B</div>
+                            </div>
+                            <div class="w-8 h-px bg-slate-400 mx-2"></div>
+                            <div class="bg-indigo-600 text-white p-8 rounded-lg shadow-lg">Core System</div>
+                             <div class="w-8 h-px bg-slate-400 mx-2"></div>
+                             <div class="flex flex-col space-y-2">
+                                <div class="bg-white p-2 rounded shadow text-sm">Plug-in C</div>
+                                <div class="bg-white p-2 rounded shadow text-sm">Plug-in D</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-amber-700">1. The Core System</h3>
+                            <p class="text-sm text-slate-600">Contains only the minimal functionality required to run the system (the "happy path"). It knows how to find and invoke plug-ins but is not concerned with their specific implementation details.</p>
+                        </div>
+                         <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-amber-700">2. Plug-in Components</h3>
+                            <p class="text-sm text-slate-600">Independent, standalone components that contain specialized processing, additional features, or custom logic. Ideally, plug-ins do not depend on each other.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="details" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">In-Depth Details</h2>
+                    <div class="space-y-8">
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Registry & Contracts</h3>
+                            <p class="text-slate-700 mb-4">The core system uses a <strong>Registry</strong> (like a HashMap or a discovery tool) to know what plug-ins are available. Communication happens via a standardized <strong>Contract</strong> (like a Java Interface) that defines what data is sent to the plug-in and what is expected back.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Plug-in Communication</h3>
+                            <p class="text-slate-700 mb-4">Plug-ins can be connected to the core system in different ways, each with trade-offs between simplicity and scalability.</p>
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <h4 class="font-semibold">Point-to-Point (Simple)</h4>
+                                    <p class="text-xs text-slate-600 mb-2">Plug-ins are shared libraries (JARs, DLLs) or packages within the same codebase. Simple and fast.</p>
+                                    <div class="font-mono bg-slate-200 text-slate-700 p-1 rounded inline-block text-xs">devicePlugin.assess();</div>
+                                </div>
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <h4 class="font-semibold">Remote Access (Complex)</h4>
+                                    <p class="text-xs text-slate-600 mb-2">Plug-ins are deployed as separate services, communicating via REST or messaging. More scalable but complex.</p>
+                                    <div class="font-mono bg-slate-200 text-slate-700 p-1 rounded inline-block text-xs">POST /assess/iphone6s</div>
+                                </div>
+                             </div>
+                        </div>
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Data Topologies</h3>
+                            <p class="text-slate-700 mb-4">Typically, the core system manages a central database. Plug-ins should not access this directly. Instead, the core passes necessary data to them. Plug-ins can, however, own their own separate, specialized data stores.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="scorecard" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-6">Architecture Scorecard</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Characteristic</th>
+                                    <th class="p-3 font-semibold text-center">Rating</th>
+                                    <th class="p-3 font-semibold">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Overall</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Overall Cost</td>
+                                    <td class="p-3 text-center text-2xl font-bold text-green-600">$</td>
+                                    <td class="p-3">Low cost and simple for product-based or customizable apps.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Structural</td></tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Simplicity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">The core concept is simple and easy to understand.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Modularity & Evolvability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★</span><span class="text-slate-300">★★</span></td>
+                                    <td class="p-3">Good. Functionality is isolated in plug-ins, making the system easy to change and extend.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Engineering</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Testability & Deployability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★</span><span class="text-slate-300">★★</span></td>
+                                    <td class="p-3">Above average. Plug-ins can be tested and deployed independently of the core (if using runtime plug-ins).</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Operational</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Scalability & Elasticity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Very low due to the monolithic nature of the core system.</td>
+                                </tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Fault Tolerance</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Low. An issue in the core system brings the entire application down.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="deploy" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Deployment & Cloud</h2>
+                    <p class="text-slate-700">
+                        Deployment options are generally coarse-grained because the architecture is monolithic. You can deploy the entire application to the cloud, but separating the core and plug-ins across on-premise and cloud environments is challenging and can introduce significant network latency, impacting performance.
+                    </p>
+                </section>
+
+                <section id="teams" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Team Topology</h2>
+                    <p class="text-slate-700 mb-6">
+                        This architecture maps well to team structures, allowing for a clear separation of concerns.
+                    </p>
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <p class="text-amber-800">A <strong>stream-aligned team</strong> can own the core system, while specialized <strong>enabling</strong> or <strong>complicated-subsystem teams</strong> can focus on developing and maintaining individual plug-ins for experiments or complex features.
+                        </p>
+                    </div>
+                </section>
+
+                <section id="usage" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-6">Usage Guide</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-xl text-green-800 mb-2">When to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-green-700">
+                                <li>Product-based applications (IDEs, browsers, Jira, Jenkins).</li>
+                                <li>Systems with frequently changing rules that vary by context (e.g., insurance rules by state).</li>
+                                <li>Applications where third parties can add features.</li>
+                                <li>When you need to isolate volatile code from a stable core.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h3 class="font-bold text-xl text-red-800 mb-2">When Not to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-red-700">
+                                <li>When the core system itself is volatile and changes constantly.</li>
+                                <li>When plug-ins have many dependencies on each other.</li>
+                                <li>For systems requiring high scalability and fault tolerance.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="usecase" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-amber-600 mb-4">Usecase Example: Tax Software</h2>
+                    <p class="text-slate-700 mb-6">In tax preparation software, the main tax form (e.g., Form 1040) acts as the <strong>core system</strong>. It defines the overall process. Each supporting schedule or worksheet (Schedule A for deductions, Schedule C for business income, etc.) is implemented as a separate <strong>plug-in</strong>. When tax laws change, only the affected plug-in needs to be updated, not the entire system.</p>
+                     <div class="bg-slate-50 border rounded-lg p-6 text-center">
+                        <div class="relative flex flex-col items-center">
+                            <div class="bg-indigo-600 text-white p-4 rounded-lg shadow-lg z-10 w-1/2">Form 1040 (Core System)</div>
+
+                            <div class="absolute top-1/2 left-0 right-0 h-px bg-slate-300"></div>
+
+                            <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
+                                <div class="bg-white p-3 rounded-lg shadow z-10">
+                                    <p class="font-semibold">Schedule A</p>
+                                    <p class="text-xs text-slate-500">(Plug-in)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow z-10">
+                                    <p class="font-semibold">Schedule C</p>
+                                    <p class="text-xs text-slate-500">(Plug-in)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow z-10">
+                                    <p class="font-semibold">Form 8812</p>
+                                    <p class="text-xs text-slate-500">(Plug-in)</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg shadow z-10">
+                                    <p class="font-semibold">Worksheet X</p>
+                                    <p class="text-xs text-slate-500">(Plug-in)</p>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                </section>
+                
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                links.forEach(link => {
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('bg-white', 'shadow-sm', 'text-amber-600');
+                        link.classList.remove('text-slate-700');
+                    } else {
+                        link.classList.remove('bg-white', 'shadow-sm', 'text-amber-600');
+                        link.classList.add('text-slate-700');
+                    }
+                });
+            }
+
+            function showSection(targetId) {
+                 sections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                     document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            updateActiveLink('goal');
+            showSection('goal');
+        });
+    </script>
+
+</body>
+</html>

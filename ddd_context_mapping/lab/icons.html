@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Lab Icons Handout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            #print-button {
+                display: none;
+            }
+            .page-break-before {
+                page-break-before: always;
+            }
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .icon {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 2rem;
+            line-height: 1;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        .icon-core { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+        .icon-supp { background: linear-gradient(135deg, #0ea5e9, #22d3ee); }
+        .icon-gen { background: linear-gradient(135deg, #4b5563, #6b7280); }
+        .icon-p { background: linear-gradient(135deg, #22c55e, #10b981); }
+        .icon-sk { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
+        .icon-cs { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
+        .icon-cf { background: linear-gradient(135deg, #f59e0b, #facc15); color: #1f2937; text-shadow: none;}
+        .icon-acl { background: linear-gradient(135deg, #f97316, #fb923c); }
+        .icon-ohs { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+        .icon-pl { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+        .icon-sw { background: linear-gradient(135deg, #64748b, #94a3b8); }
+        .icon-dir { background: linear-gradient(135deg, #a1a1aa, #d4d4d8); color: #1f2937; text-shadow: none;}
+    </style>
+</head>
+<body class="bg-white p-8">
+
+    
+    <div class="space-y-4">
+        <!-- Subdomain Icons -->
+        <div class="icon-grid">
+            <div class="icon icon-core">Core</div>
+            <div class="icon icon-core">Core</div>
+            <div class="icon icon-core">Core</div>
+            <div class="icon icon-core">Core</div>
+            <div class="icon icon-core">Core</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-supp">Supp</div>
+            <div class="icon icon-supp">Supp</div>
+            <div class="icon icon-supp">Supp</div>
+            <div class="icon icon-supp">Supp</div>
+            <div class="icon icon-supp">Supp</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-gen">Gen</div>
+            <div class="icon icon-gen">Gen</div>
+            <div class="icon icon-gen">Gen</div>
+            <div class="icon icon-gen">Gen</div>
+            <div class="icon icon-gen">Gen</div>
+        </div>
+        
+        <!-- Relationship Icons -->
+        <div class="icon-grid">
+            <div class="icon icon-p">P</div>
+            <div class="icon icon-p">P</div>
+            <div class="icon icon-p">P</div>
+            <div class="icon icon-p">P</div>
+            <div class="icon icon-p">P</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-sk">SK</div>
+            <div class="icon icon-sk">SK</div>
+            <div class="icon icon-sk">SK</div>
+            <div class="icon icon-sk">SK</div>
+            <div class="icon icon-sk">SK</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-cs">C/S</div>
+            <div class="icon icon-cs">C/S</div>
+            <div class="icon icon-cs">C/S</div>
+            <div class="icon icon-cs">C/S</div>
+            <div class="icon icon-cs">C/S</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-cf">CF</div>
+            <div class="icon icon-cf">CF</div>
+            <div class="icon icon-cf">CF</div>
+            <div class="icon icon-cf">CF</div>
+            <div class="icon icon-cf">CF</div>
+        </div>
+        <div class="icon-grid page-break-before">
+            <div class="icon icon-acl">ACL</div>
+            <div class="icon icon-acl">ACL</div>
+            <div class="icon icon-acl">ACL</div>
+            <div class="icon icon-acl">ACL</div>
+            <div class="icon icon-acl">ACL</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-ohs">OHS</div>
+            <div class="icon icon-ohs">OHS</div>
+            <div class="icon icon-ohs">OHS</div>
+            <div class="icon icon-ohs">OHS</div>
+            <div class="icon icon-ohs">OHS</div>
+        </div>
+         <div class="icon-grid">
+            <div class="icon icon-pl">PL</div>
+            <div class="icon icon-pl">PL</div>
+            <div class="icon icon-pl">PL</div>
+            <div class="icon icon-pl">PL</div>
+            <div class="icon icon-pl">PL</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-sw">SW</div>
+            <div class="icon icon-sw">SW</div>
+            <div class="icon icon-sw">SW</div>
+            <div class="icon icon-sw">SW</div>
+            <div class="icon icon-sw">SW</div>
+        </div>
+
+        <!-- Directional Icons -->
+        <div class="icon-grid">
+            <div class="icon icon-dir">U ↑</div>
+            <div class="icon icon-dir">U ↑</div>
+            <div class="icon icon-dir">U ↑</div>
+            <div class="icon icon-dir">U ↑</div>
+            <div class="icon icon-dir">U ↑</div>
+        </div>
+        <div class="icon-grid">
+            <div class="icon icon-dir">D ↓</div>
+            <div class="icon icon-dir">D ↓</div>
+            <div class="icon icon-dir">D ↓</div>
+            <div class="icon icon-dir">D ↓</div>
+            <div class="icon icon-dir">D ↓</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+

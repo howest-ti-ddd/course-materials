@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD: Domains & Strategic Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .card-active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-3xl md:text-5xl font-bold text-slate-900">Untangling DDD Concepts</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Domains & Strategic designs</p>
+        </header>
+
+        <main>
+            <!-- Section 0: What is a Domain -->
+            <section id="what-is-domain" class="mb-20">
+                <div class="text-center mb-12">
+                     <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-600">The Starting Point</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">What is a Domain?</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                    <p class="text-xl text-center text-slate-700">In DDD, a Domain is not just "the business." It is the specific, complex <strong class="text-blue-600">sphere of knowledge and activity</strong> where the business operates and seeks to provide value.</p>
+                    <div class="mt-6 border-t border-slate-200 pt-6">
+                        <p class="text-slate-600">It encompasses all the business rules, logic, processes, and terminology that make that particular area unique. It's the "world" of the business experts.</p>
+                        <p class="mt-4 text-sm text-slate-600 bg-slate-100 p-3 rounded-md"><strong>Example:</strong> For a bank, "lending" is a domain. For an airline, "reservations" is a domain. For an e-commerce company, "shipping" is a domain. Each is a world of its own with deep complexity.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 1: The Problem Space -->
+            <section id="problem-space" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-blue-600">The Problem Space</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Deconstructing the Business</p>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">A Domain is too big to model all at once. So, we first decompose it into logical parts, called Subdomains, to understand where the real business value lies.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Core Domain Card -->
+                    <div id="card-core" class="subdomain-card bg-white p-6 rounded-lg shadow-sm border-2 border-transparent transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-slate-800">🎯 Core Domain</h3>
+                        <p class="mt-2 text-slate-600">The heart of the business; its unique competitive advantage. This is where you innovate.</p>
+                    </div>
+                    <!-- Supporting Domain Card -->
+                    <div id="card-supporting" class="subdomain-card bg-white p-6 rounded-lg shadow-sm border-2 border-transparent transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-slate-800">⚙️ Supporting Subdomain</h3>
+                        <p class="mt-2 text-slate-600">Essential for the business to function, but not a differentiator. Often requires custom work.</p>
+                    </div>
+                    <!-- Generic Domain Card -->
+                    <div id="card-generic" class="subdomain-card bg-white p-6 rounded-lg shadow-sm border-2 border-transparent transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-slate-800">📦 Generic Subdomain</h3>
+                        <p class="mt-2 text-slate-600">A solved problem common to many businesses. The strategy is to buy, not build.</p>
+                    </div>
+                </div>
+
+                <div id="subdomain-details" class="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200 min-h-[150px]">
+                    <!-- Details will be injected here -->
+                    <p class="text-slate-500 text-center pt-12">Click a card above to see details and examples.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: How to Discover Domains -->
+            <section id="how-to-discover" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-amber-600">The Discovery Process</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How Do We Find the Seams?</p>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">Subdomains aren't always obvious. Discovery is a collaborative process of exploration with business experts to map the landscape and find the natural boundaries.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-400">
+                        <h3 class="text-xl font-semibold text-slate-800">🌪️ EventStorming</h3>
+                        <p class="mt-2 text-slate-600">A collaborative workshop where business and technical people map a business process using sticky notes representing domain events. Excellent for revealing the Ubiquitous Language.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-400">
+                        <h3 class="text-xl font-semibold text-slate-800">🗺️ Business Capability Mapping</h3>
+                        <p class="mt-2 text-slate-600">A strategic exercise to identify *what* a business does to generate value, regardless of *how* it does it. This provides a stable, high-level view of domain boundaries.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-400">
+                        <h3 class="text-xl font-semibold text-slate-800">🗣️ Stakeholder Interviews</h3>
+                        <p class="mt-2 text-slate-600">Structured conversations with domain experts to uncover hidden rules, ambiguities in language, and the nuances that formal documentation often misses.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: The Solution Space -->
+            <section id="solution-space" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-green-600">The Solution Space</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">How Do We Model the Software?</p>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">This is where we design the software. A Bounded Context is our primary tool for managing complexity in the solution.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                    <h3 class="text-2xl font-bold text-slate-900">What is a Bounded Context?</h3>
+                    <p class="mt-4 text-slate-700">A Bounded Context is an explicit boundary within the software. Inside this boundary, a specific domain model and its associated Ubiquitous Language are internally consistent, unambiguous, and authoritative.</p>
+                    <p class="mt-4 text-slate-700">Think of it as a "conceptual fence." Inside the fence for "Inventory," the word "Product" means something specific (SKU, stock level). Inside the fence for "Marketing," "Product" means something else (description, images). This separation prevents confusion and keeps models clean.</p>
+                </div>
+            </section>
+
+            <!-- Section 4: Strategic vs Tactical -->
+            <section id="strategic-vs-tactical" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-indigo-600">The Two Lenses of DDD</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Strategic vs. Tactical Design</p>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">DDD is not just one thing; it's a collection of patterns viewed through two lenses: the "macro" view of the system architecture and the "micro" view of the code inside a single boundary.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white p-8 rounded-lg shadow-md border-t-4 border-indigo-400">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">🔭 Strategic DDD</h3>
+                        <p class="font-semibold text-indigo-700">The "Macro" View: System Architecture</p>
+                        <p class="mt-2 text-slate-600">Deals with the big picture. It focuses on identifying Subdomains and defining clear Bounded Contexts and the relationships between them (Context Maps). It helps you decide where to place your boundaries.</p>
+                        <p class="mt-4 font-semibold text-slate-800">Key Question: "What should we build and where?"</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md border-t-4 border-indigo-400">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">⚙️ Tactical DDD</h3>
+                        <p class="font-semibold text-indigo-700">The "Micro" View: Model Implementation</p>
+                        <p class="mt-2 text-slate-600">Deals with the details *inside* a single Bounded Context. It provides building blocks like Aggregates, Entities, Value Objects, and Repositories to create a rich, expressive domain model.</p>
+                        <p class="mt-4 font-semibold text-slate-800">Key Question: "How should we build it?"</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Use Case -->
+            <section id="use-case" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-teal-600">Bringing It All Together</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Use Case: "GourmetGo" Food Delivery</p>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">Let's apply these concepts to a real-world example: building an online food delivery platform.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <!-- Step 1: The Domain -->
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-xl">1</div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold">The Domain: Online Food Delivery</h3>
+                            <p class="mt-1 text-slate-600">This is our sphere of knowledge. It includes restaurants, menus, customers, orders, drivers, payments, and the complex logistics of getting hot food to hungry people on time.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2: Strategic Design -->
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-xl">2</div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold">Strategic Design: Finding Subdomains & Bounded Contexts</h3>
+                            <p class="mt-1 text-slate-600 mb-4">Through discovery workshops (EventStorming, etc.), we identify the parts of our domain and map them to software boundaries.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg border">
+                                    <h4 class="font-bold">🎯 Core: <span class="font-normal">Real-time Logistics</span></h4>
+                                    <p class="text-sm text-slate-500">Our secret sauce. This is how we win. → <strong class="text-green-600">Logistics Context</strong></p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border">
+                                    <h4 class="font-bold">⚙️ Supporting: <span class="font-normal">Ordering & Menus</span></h4>
+                                    <p class="text-sm text-slate-500">Crucial, but not the differentiator. → <strong class="text-green-600">Ordering Context, Restaurant Context</strong></p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border col-span-1 sm:col-span-2">
+                                    <h4 class="font-bold">📦 Generic: <span class="font-normal">Authentication & Payments</span></h4>
+                                    <p class="text-sm text-slate-500">Solved problems. We'll integrate services. → <strong class="text-green-600">Identity Context, Payments Context</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 3: Tactical Design -->
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-xl">3</div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold">Tactical Design: Inside the "Ordering Context"</h3>
+                            <p class="mt-1 text-slate-600 mb-4">Now we zoom into a single Bounded Context to model its details using tactical patterns.</p>
+                            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                                <p class="mb-4">Inside the <strong class="text-green-600">Ordering Context</strong>, we define an <strong class="text-indigo-600">Order Aggregate</strong>. This is a cluster of objects that are treated as a single unit for data changes.</p>
+                                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                    <li><strong>Aggregate Root (Entity):</strong> The `Order` itself. It has a unique ID and is the only entry point for modifications to the aggregate.</li>
+                                    <li><strong>Entity:</strong> Each `LineItem` within the order. It has its own identity (e.g., you can change the quantity of one line item without affecting others).</li>
+                                    <li><strong>Value Object:</strong> The `DeliveryAddress`. It has no ID and is defined entirely by its attributes (street, city, zip). If the address changes, you replace the entire object.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: The Relationship -->
+            <section id="relationship">
+                 <div class="text-center mb-12">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-purple-600">The Relationship</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Problem Space ➔ Solution Space</p>
+                    <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">The goal is to align our solution (Bounded Contexts) with the business problem (Subdomains). This mapping is a key strategic decision.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Left Column: Analogy -->
+                    <div class="bg-white p-8 rounded-lg shadow-md h-full">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">A Simple Analogy</h3>
+                         <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl">🗺️</div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">Subdomains are like Countries on a Map.</h4>
+                                <p class="text-slate-600">They represent distinct territories of the business world, each with its own language and culture (rules). They exist independently of any specific travel plan.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-2xl">✈️</div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">Bounded Contexts are like Flight Itineraries.</h4>
+                                <p class="text-slate-600">They are carefully planned routes for our software. An itinerary might cover one country perfectly (1:1), or it might be a multi-country tour (1 Bounded Context for multiple simple subdomains).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Mapping -->
+                    <div class="bg-white p-8 rounded-lg shadow-md h-full">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">Mapping Scenarios</h3>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <button data-map="ideal" class="map-btn bg-slate-200 text-slate-700 px-3 py-1 rounded-full text-sm font-medium">Ideal 1:1 Mapping</button>
+                            <button data-map="complex" class="map-btn bg-slate-200 text-slate-700 px-3 py-1 rounded-full text-sm font-medium">Complex Subdomain</button>
+                            <button data-map="merged" class="map-btn bg-slate-200 text-slate-700 px-3 py-1 rounded-full text-sm font-medium">Merged Subdomains</button>
+                        </div>
+                        <div id="mapping-visual" class="border-2 border-dashed border-slate-300 rounded-lg p-4 min-h-[200px] flex items-center justify-center">
+                            <!-- Mapping visual will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Subdomain Card Interaction ---
+            const subdomainCards = document.querySelectorAll('.subdomain-card');
+            const detailsContainer = document.getElementById('subdomain-details');
+            const cardData = {
+                core: {
+                    title: '🎯 Core Domain',
+                    description: 'This is the area that provides a unique competitive advantage. It\'s where the business excels and what sets it apart. The Core Domain demands bespoke, innovative solutions and the most significant investment.',
+                    example: '<strong>Example:</strong> For an e-commerce site, a "Personalized Recommendation Engine" that drives sales is Core.'
+                },
+                supporting: {
+                    title: '⚙️ Supporting Subdomain',
+                    description: 'These are essential for the business to operate but are not competitive differentiators themselves. They often support the Core Domain. Custom solutions may be needed, but deep innovation isn\'t the primary goal.',
+                    example: '<strong>Example:</strong> A custom "Order Fulfillment" system is critical but doesn\'t directly attract customers.'
+                },
+                generic: {
+                    title: '📦 Generic Subdomain',
+                    description: 'These are functionalities common to many businesses for which off-the-shelf solutions exist. They are necessary but provide no competitive edge. The strategy is to buy or integrate, not build.',
+                    example: '<strong>Example:</strong> Using a third-party service for "Email Notifications" or "Payment Processing".'
+                }
+            };
+
+            subdomainCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    subdomainCards.forEach(c => c.classList.remove('card-active'));
+                    card.classList.add('card-active');
+
+                    const key = card.id.split('-')[1];
+                    const data = cardData[key];
+
+                    detailsContainer.innerHTML = `
+                        <h4 class="text-xl font-semibold text-slate-800">${data.title}</h4>
+                        <p class="mt-2 text-slate-700">${data.description}</p>
+                        <p class="mt-4 text-sm text-slate-600 bg-blue-100 p-3 rounded-md">${data.example}</p>
+                    `;
+                });
+            });
+
+            // --- Mapping Visualizer Interaction ---
+            const mappingButtons = document.querySelectorAll('.map-btn');
+            const visualContainer = document.getElementById('mapping-visual');
+            const mappingVisuals = {
+                ideal: `
+                    <div class="text-center w-full">
+                        <p class="font-semibold text-lg mb-4">Ideal: 1 Subdomain to 1 Bounded Context</p>
+                        <div class="flex justify-center items-center space-x-4">
+                            <div class="p-4 bg-blue-100 rounded text-blue-800 border border-blue-300">Subdomain A</div>
+                            <div class="text-2xl font-bold text-slate-400">&rarr;</div>
+                            <div class="p-4 bg-green-100 rounded text-green-800 border border-green-300">Context A</div>
+                        </div>
+                    </div>`,
+                complex: `
+                    <div class="text-center w-full">
+                        <p class="font-semibold text-lg mb-4">Complex Subdomain split into multiple Bounded Contexts</p>
+                        <div class="flex justify-center items-center">
+                            <div class="p-4 bg-blue-100 rounded text-blue-800 border border-blue-300">Subdomain B (Finance)</div>
+                            <div class="text-2xl font-bold text-slate-400 mx-4">&rarr;</div>
+                            <div class="flex flex-col space-y-2">
+                               <div class="p-2 bg-green-100 rounded text-green-800 border border-green-300 text-sm">Context B1 (Payables)</div>
+                               <div class="p-2 bg-green-100 rounded text-green-800 border border-green-300 text-sm">Context B2 (Receivables)</div>
+                            </div>
+                        </div>
+                    </div>`,
+                merged: `
+                    <div class="text-center w-full">
+                        <p class="font-semibold text-lg mb-4">Multiple simple Subdomains in 1 Bounded Context</p>
+                        <div class="flex justify-center items-center">
+                            <div class="flex flex-col space-y-2">
+                               <div class="p-2 bg-blue-100 rounded text-blue-800 border border-blue-300 text-sm">Subdomain C (Currency)</div>
+                               <div class="p-2 bg-blue-100 rounded text-blue-800 border border-blue-300 text-sm">Subdomain D (Units)</div>
+                            </div>
+                            <div class="text-2xl font-bold text-slate-400 mx-4">&rarr;</div>
+                            <div class="p-4 bg-green-100 rounded text-green-800 border border-green-300">Context CD (Utilities)</div>
+                        </div>
+                    </div>`
+            };
+            
+            function updateMappingVisual(type) {
+                visualContainer.innerHTML = mappingVisuals[type];
+                mappingButtons.forEach(btn => {
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.classList.add('bg-slate-200', 'text-slate-700');
+                    if (btn.dataset.map === type) {
+                        btn.classList.add('bg-purple-600', 'text-white');
+                        btn.classList.remove('bg-slate-200', 'text-slate-700');
+                    }
+                });
+            }
+
+            mappingButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    updateMappingVisual(btn.dataset.map);
+                });
+            });
+            
+            // Set initial states
+            updateMappingVisual('ideal');
+            document.getElementById('card-core').click();
+
+        });
+    </script>
+
+</body>
+</html>
+

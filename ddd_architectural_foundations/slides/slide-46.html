@@ -1,0 +1,18 @@
+<div class="slide active">
+        <div class="slide-content wide">
+            <h2 class="text-5xl font-bold mb-8 text-center text-indigo-300">Service-Based: DDD Fit & Pitfalls</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-blue-400">DDD Readiness: Very Good Fit</h3>
+                    <p class="text-xl text-gray-300">This is a natural fit. Each coarse-grained domain service can be a direct implementation of a Bounded Context, providing clear, physically separate boundaries.</p>
+                </div>
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-yellow-400">Common Anti-Patterns</h3>
+                     <ul class="list-disc list-inside space-y-3 text-xl text-gray-300">
+                        <li><strong>Chatty Services:</strong> Too much direct communication between services, indicating poor domain boundaries.</li>
+                        <li><strong>The Shared Database Trap:</strong> Failing to logically partition the shared DB, meaning a table change breaks multiple services.</li>
+                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>

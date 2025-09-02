@@ -1,0 +1,61 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-2 text-center text-indigo-300">Architectural Style: Microservices</h2>
+            <p class="text-lg mb-6 text-gray-400">An architecture of fine-grained, independently deployed services, each owning its own data.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="diagram-bg p-6 rounded-xl shadow-lg flex flex-col justify-center">
+                   <svg viewBox="0 0 400 300" class="w-full h-auto">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                            </marker>
+                        </defs>
+
+                        <rect x="150" y="10" width="100" height="40" rx="5" fill="#059669"/>
+                        <text x="200" y="35" fill="white" text-anchor="middle">Client App</text>
+
+                        <rect x="125" y="80" width="150" height="40" rx="5" fill="#4338CA"/>
+                        <text x="200" y="105" fill="white" text-anchor="middle">API Gateway</text>
+
+                        <path d="M200 50 V 80" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                        <g>
+                            <rect x="20" y="150" width="100" height="50" rx="5" fill="#A78BFA"/>
+                            <text x="70" y="170" fill="black" text-anchor="middle" font-size="12">Order</text>
+                            <text x="70" y="185" fill="black" text-anchor="middle" font-size="12">Service</text>
+                            <ellipse cx="70" cy="230" rx="30" ry="15" fill="#C4B5FD"/>
+                            <text x="70" y="233" fill="black" text-anchor="middle" font-size="10">Order DB</text>
+                            <path d="M70 200 V 215" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        </g>
+
+                        <g>
+                            <rect x="150" y="150" width="100" height="50" rx="5" fill="#A78BFA"/>
+                            <text x="200" y="170" fill="black" text-anchor="middle" font-size="12">Payment</text>
+                            <text x="200" y="185" fill="black" text-anchor="middle" font-size="12">Service</text>
+                            <ellipse cx="200" cy="230" rx="30" ry="15" fill="#C4B5FD"/>
+                            <text x="200" y="233" fill="black" text-anchor="middle" font-size="10">Payment DB</text>
+                            <path d="M200 200 V 215" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        </g>
+
+                        <g>
+                            <rect x="280" y="150" width="100" height="50" rx="5" fill="#A78BFA"/>
+                            <text x="330" y="170" fill="black" text-anchor="middle" font-size="12">Inventory</text>
+                            <text x="330" y="185" fill="black" text-anchor="middle" font-size="12">Service</text>
+                            <ellipse cx="330" cy="230" rx="30" ry="15" fill="#C4B5FD"/>
+                            <text x="330" y="233" fill="black" text-anchor="middle" font-size="10">Inventory DB</text>
+                            <path d="M330 200 V 215" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        </g>
+
+                        <path d="M162.5 120 Q 120 130 70 150" stroke="#9CA3AF" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M200 120 V 150" stroke="#9CA3AF" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M237.5 120 Q 280 130 330 150" stroke="#9CA3AF" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                   </svg>
+                </div>
+                <div class="space-y-4 text-lg text-gray-300">
+                    <p>Unlike service-based, microservices are <strong class="text-white">fine-grained</strong> and focused on a single responsibility.</p>
+                    <p>Crucially, each service <strong class="text-white">owns its own database</strong>. No shared data.</p>
+                    <p>This provides maximum autonomy but introduces significant complexity in data management and consistency.</p>
+                </div>
+            </div>
+        </div>
+    </div>

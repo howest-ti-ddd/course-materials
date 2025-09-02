@@ -1,0 +1,25 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-2 text-center text-indigo-300">Architectural Style: Event-Driven (EDA)</h2>
+            <p class="text-lg mb-6 text-gray-400">An asynchronous, decoupled architecture where services react to events.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="diagram-bg p-6 rounded-xl shadow-lg flex flex-col justify-center">
+                    <svg viewBox="0 0 300 150" class="w-full h-auto">
+                         <text x="150" y="20" font-size="12" fill="white" text-anchor="middle">Event Broker (e.g., Kafka, RabbitMQ)</text>
+                         <rect x="50" y="30" width="200" height="40" rx="5" fill="#4338CA" />
+                         <rect x="20" y="100" width="70" height="40" rx="5" fill="#059669"/><text x="55" y="125" fill="white" font-size="10" text-anchor="middle">Producer</text>
+                         <rect x="115" y="100" width="70" height="40" rx="5" fill="#DC2626"/><text x="150" y="125" fill="white" font-size="10" text-anchor="middle">Consumer</text>
+                         <rect x="210" y="100" width="70" height="40" rx="5" fill="#DC2626"/><text x="245" y="125" fill="white" font-size="10" text-anchor="middle">Consumer</text>
+                         <path d="M55 100 V 70" stroke="#6EE7B7" stroke-width="2" marker-start="url(#arrowhead)"/>
+                         <path d="M150 70 V 100" stroke="#FCA5A5" stroke-width="2" marker-end="url(#arrowhead)"/>
+                         <path d="M245 70 V 100" stroke="#FCA5A5" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    </svg>
+                </div>
+                <div class="space-y-4 text-lg text-gray-300">
+                    <p><strong class="text-white">Producers</strong> publish events (e.g., `OrderPlaced`) to an <strong class="text-white">Event Broker</strong> without knowing who is listening.</p>
+                    <p><strong class="text-white">Consumers</strong> subscribe to events and react to them independently.</p>
+                    <p>This creates extreme decoupling, as services don't need to know about each other.</p>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,36 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-8 text-center text-indigo-300">Architectural Partitioning: How We Slice the Cake</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold mb-4 text-red-400">Technical Partitioning</h3>
+                    <div class="diagram-bg p-4 rounded-xl shadow-lg">
+                        <svg viewBox="0 0 200 250" class="w-full h-auto max-w-sm mx-auto">
+                            <rect x="10" y="10" width="180" height="40" rx="5" fill="#4B5563"/><text x="100" y="35" fill="white" text-anchor="middle">Presentation</text>
+                            <rect x="10" y="60" width="180" height="40" rx="5" fill="#4B5563"/><text x="100" y="85" fill="white" text-anchor="middle">Business Rules</text>
+                            <rect x="10" y="110" width="180" height="40" rx="5" fill="#4B5563"/><text x="100" y="135" fill="white" text-anchor="middle">Persistence</text>
+                            <ellipse cx="100" cy="200" rx="60" ry="20" fill="#6B7280"/> <text x="100" y="205" fill="white" text-anchor="middle">Database</text>
+                            <path d="M100 150 L100 180" stroke="#9CA3AF" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <p class="mt-4 text-gray-300">Code is grouped by its <strong class="text-white">technical role</strong>. This is the classic Layered Architecture.</p>
+                    <p class="mt-2 text-red-300">A business feature like 'Checkout' is spread across all layers.</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold mb-4 text-green-400">Domain Partitioning</h3>
+                     <div class="diagram-bg p-4 rounded-xl shadow-lg">
+                        <svg viewBox="0 0 200 250" class="w-full h-auto max-w-sm mx-auto">
+                            <rect x="10" y="10" width="85" height="60" rx="5" fill="#10B981"/><text x="52.5" y="40" fill="black" text-anchor="middle" font-size="12">Catalog</text>
+                            <rect x="105" y="10" width="85" height="60" rx="5" fill="#10B981"/><text x="147.5" y="40" fill="black" text-anchor="middle" font-size="12">Checkout</text>
+                            <rect x="10" y="80" width="85" height="60" rx="5" fill="#10B981"/><text x="52.5" y="110" fill="black" text-anchor="middle" font-size="12">Shipping</text>
+                            <rect x="105" y="80" width="85" height="60" rx="5" fill="#10B981"/><text x="147.5" y="110" fill="black" text-anchor="middle" font-size="12">Reporting</text>
+                            <ellipse cx="100" cy="200" rx="60" ry="20" fill="#34D399"/> <text x="100" y="205" fill="black" text-anchor="middle">Database</text>
+                            <path d="M100 140 L100 180" stroke="#9CA3AF" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <p class="mt-4 text-gray-300">Code is grouped by its <strong class="text-white">business capability</strong>. This is core to DDD, Modular Monoliths, and Microservices.</p>
+                    <p class="mt-2 text-green-300">All code for 'Checkout' lives in one module.</p>
+                </div>
+            </div>
+        </div>
+    </div>

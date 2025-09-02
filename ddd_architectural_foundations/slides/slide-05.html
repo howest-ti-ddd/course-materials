@@ -1,0 +1,49 @@
+<!-- Slide 4: Recap Strategic DDD -->
+    <div id="slide-4" class="slide active">
+        <div class="slide-content flex flex-col items-center">
+            <h2 class="text-4xl font-bold mb-8 text-indigo-300 text-center">Logical vs. Physical Architecture</h2>
+            <p class="text-center mb-6 text-lg">Strategic DDD defines your <strong class="text-indigo-400">logical</strong> blueprint. Your architectural style brings it to life as a <strong class="text-teal-400">physical</strong> system.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">Logical (The "What")</h3>
+                    <p class="text-center text-sm text-gray-400 mb-4">Focuses on business capabilities and their interactions.</p>
+                     <svg viewBox="0 0 400 300" class="w-full h-auto">
+                        <defs>
+                            <marker id="arrowhead-dark" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/></marker></defs>
+                        <!-- Components -->
+                        <g class="transform hover:scale-105 transition-transform"><rect x="150" y="20" width="100" height="40" rx="5" fill="#4338CA"/><text x="200" y="45" fill="white" text-anchor="middle">Order Placement</text></g>
+                        <g class="transform hover:scale-105 transition-transform"><rect x="20" y="100" width="100" height="40" rx="5" fill="#4338CA"/><text x="70" y="125" fill="white" text-anchor="middle">Inventory</text></g>
+                        <g class="transform hover:scale-105 transition-transform"><rect x="150" y="100" width="100" height="40" rx="5" fill="#4338CA"/><text x="200" y="125" fill="white" text-anchor="middle">Payment</text></g>
+                        <g class="transform hover:scale-105 transition-transform"><rect x="280" y="100" width="100" height="40" rx="5" fill="#4338CA"/><text x="330" y="125" fill="white" text-anchor="middle">Notification</text></g>
+                        <g class="transform hover:scale-105 transition-transform"><rect x="150" y="180" width="100" height="40" rx="5" fill="#4338CA"/><text x="200" y="205" fill="white" text-anchor="middle">Shipping</text></g>
+                        <!-- Connections -->
+                        <path d="M200 60 L200 100" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead-dark)"/>
+                        <path d="M175 60 L95 100" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead-dark)"/>
+                        <path d="M225 60 L305 100" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead-dark)"/>
+                        <path d="M200 140 L200 180" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrowhead-dark)"/>
+                    </svg>
+                </div>
+                <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-200">Physical (The "How")</h3>
+                    <p class="text-center text-sm text-gray-400 mb-4">Describes deployment units like services and databases.</p>
+                     <svg viewBox="0 0 400 300" class="w-full h-auto">
+                        <!-- UI -->
+                        <rect x="50" y="20" width="300" height="40" rx="5" fill="#059669"/><text x="200" y="45" fill="white" text-anchor="middle">User Interface</text>
+                        <!-- Services -->
+                        <rect x="20" y="100" width="100" height="80" rx="5" fill="#60A5FA"/><text x="70" y="130" fill="black" text-anchor="middle">Order</text><text x="70" y="150" fill="black" text-anchor="middle">Service</text>
+                        <rect x="150" y="100" width="100" height="80" rx="5" fill="#60A5FA"/><text x="200" y="130" fill="black" text-anchor="middle">Shipping</text><text x="200" y="150" fill="black" text-anchor="middle">Service</text>
+                        <rect x="280" y="100" width="100" height="80" rx="5" fill="#60A5FA"/><text x="330" y="130" fill="black" text-anchor="middle">Notification</text><text x="330" y="150" fill="black" text-anchor="middle">Service</text>
+                        <!-- Database -->
+                        <ellipse cx="200" cy="250" rx="80" ry="25" fill="#93C5FD"></ellipse><text x="200" y="255" fill="black" text-anchor="middle">Database</text>
+                        <!-- Connections -->
+                        <path d="M100 60 L70 100" stroke="#9CA3AF" stroke-width="2" />
+                        <path d="M200 60 L200 100" stroke="#9CA3AF" stroke-width="2" />
+                        <path d="M300 60 L330 100" stroke="#9CA3AF" stroke-width="2" />
+                        <path d="M70 180 L150 235" stroke="#9CA3AF" stroke-width="2" />
+                        <path d="M200 180 L200 225" stroke="#9CA3AF" stroke-width="2" />
+                        <path d="M330 180 L250 235" stroke="#9CA3AF" stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>

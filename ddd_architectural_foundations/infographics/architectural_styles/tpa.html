@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Pipeline Architecture Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        .content-section {
+            display: none;
+            border-left: 3px solid #8b5cf6; /* Changed from indigo to purple */
+        }
+        .active {
+            display: block;
+        }
+        .star-rating .filled {
+            color: #f59e0b; /* Tailwind amber-500 */
+        }
+        .filter {
+            border: 2px solid #8b5cf6; /* Changed from indigo to purple */
+            padding: 1rem;
+            margin: 0.5rem;
+            border-radius: 9999px;
+            text-align: center;
+            font-weight: 600;
+            background-color: #f3f0ff; /* Updated to purple-50 */
+            color: #6d28d9; /* Updated to purple-800 */
+        }
+        .pipe {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #8b5cf6; /* Changed from indigo to purple */
+            position: relative;
+        }
+        .pipe::after {
+            content: '▶';
+            color: #8b5cf6; /* Changed from indigo to purple */
+            position: absolute;
+            right: -8px;
+            top: -11px;
+            font-size: 1.2rem;
+        }
+        /* Styles for the flowchart diagram */
+        .flow-node {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            text-align: center;
+            border-width: 2px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            width: 90%;
+            margin: 0 auto;
+        }
+        .flow-arrow {
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+        .flow-branch-container {
+            display: grid;
+            grid-template-columns: 1fr 2px 1fr;
+            width: 100%;
+            align-items: stretch;
+            gap: 1rem;
+        }
+        .flow-branch-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .flow-label {
+            font-weight: 600;
+            color: #475569;
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Title -->
+        <header class="text-center mb-12">
+            <a href="../architectural_styles.html" class="inline-flex items-center text-purple-600 mb-4 hover:text-purple-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Architecture Styles
+            </a>
+            <h1 class="text-4xl md:text-5xl font-bold text-purple-700">The Pipeline Architecture Style</h1>
+            <p class="text-lg text-slate-600 mt-2">A Guide to the Pipes and Filters Pattern</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Navigation -->
+            <nav class="lg:col-span-3">
+                <ul class="sticky top-8 space-y-2">
+                    <li><a href="#goal" class="nav-link block p-3 rounded-lg font-semibold bg-white shadow-sm text-purple-600 hover:bg-purple-100">Goal</a></li>
+                    <li><a href="#description" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Description</a></li>
+                    <li><a href="#properties" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Properties</a></li>
+                    <li><a href="#core-concept" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Core Concept</a></li>
+                    <li><a href="#details" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Details</a></li>
+                    <li><a href="#scorecard" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Scorecard</a></li>
+                    <li><a href="#deploy" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Deploy</a></li>
+                    <li><a href="#teams" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Teams</a></li>
+                    <li><a href="#usage" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Usage Guide</a></li>
+                    <li><a href="#usecase" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-purple-100">Usecase Example</a></li>
+                </ul>
+            </nav>
+
+            <!-- Content -->
+            <main class="lg:col-span-9 space-y-16">
+                
+                <section id="goal" class="content-section active bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Goal</h2>
+                    <p class="text-lg text-slate-700">
+                        To structure an application as a series of discrete, single-purpose, and independent components (filters) that process data sequentially through communication channels (pipes). This promotes reuse and simplifies complex processing tasks.
+                    </p>
+                </section>
+
+                <section id="description" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Description</h2>
+                    <p class="text-slate-700 mb-4">
+                        Also known as the <strong class="text-purple-600">Pipes and Filters</strong> architecture, this is a fundamental style where functionality is broken down into separate processing steps. It's famously the underlying principle of Unix shell commands (`grep | sort | uniq`), and is common in functional programming and ETL (Extract, Transform, Load) tools.
+                    </p>
+                </section>
+
+                <section id="properties" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Properties</h2>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li><strong>Technically Partitioned:</strong> Components (filters) are separated by their specific function or task.</li>
+                        <li><strong>Unidirectional Flow:</strong> Data moves in one direction through the pipes, from one filter to the next.</li>
+                        <li><strong>Stateless Filters:</strong> Filters are typically self-contained, stateless, and independent of other filters.</li>
+                        <li><strong>Monolithic or Distributed:</strong> While often monolithic, filters can be deployed as distributed services or serverless functions.</li>
+                    </ul>
+                </section>
+                
+                <section id="core-concept" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Core Concept: Pipes and Filters</h2>
+                    <p class="text-slate-700 mb-6">The architecture has two component types: **Filters**, which perform the work, and **Pipes**, which connect them. There are four types of filters:</p>
+                    <div class="space-y-4">
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-purple-700">1. Producer (Source)</h3>
+                            <p class="text-sm text-slate-600">The starting point of the pipeline. It creates data and sends it to the first pipe.</p>
+                        </div>
+                         <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-purple-700">2. Transformer (Map)</h3>
+                            <p class="text-sm text-slate-600">Accepts input, transforms it (e.g., converts format, enhances data), and passes it on.</p>
+                        </div>
+                         <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-purple-700">3. Tester (Reduce)</h3>
+                            <p class="text-sm text-slate-600">Tests data against criteria and decides whether to pass the data on or terminate a branch.</p>
+                        </div>
+                         <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-bold text-purple-700">4. Consumer (Sink)</h3>
+                            <p class="text-sm text-slate-600">The termination point. It receives the final data, and might save it to a database or display it on a UI.</p>
+                        </div>
+                    </div>
+                    <!-- New Diagram -->
+                    <div class="mt-8 pt-6 border-t border-slate-200">
+                        <h3 class="text-xl font-semibold text-center text-slate-700 mb-4">Example Flow</h3>
+                        <div class="flex items-center justify-center text-sm flex-wrap">
+                            <div class="filter !bg-green-100 !text-green-800 !border-green-500">Producer</div>
+                            <div class="pipe"></div>
+                            <div class="filter !bg-blue-100 !text-blue-800 !border-blue-500">Transformer</div>
+                            <div class="pipe"></div>
+                            <div class="filter !bg-amber-100 !text-amber-800 !border-amber-500">Tester</div>
+                            <div class="pipe"></div>
+                            <div class="filter !bg-red-100 !text-red-800 !border-red-500">Consumer</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="details" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">In-Depth Details</h2>
+                    <div class="space-y-8">
+                        <!-- New Sub-section and Diagram -->
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Data Topologies</h3>
+                            <p class="text-slate-700 mb-4">Filters can interact with one or more databases. A pipeline can use a single monolithic database or have different filters access their own specific data stores.</p>
+                            <div class="bg-slate-100 p-4 rounded-lg text-center">
+                                <div class="flex flex-col sm:flex-row justify-around items-center sm:items-start space-y-4 sm:space-y-0">
+                                    <!-- Filter 1 with DB -->
+                                    <div class="flex flex-col items-center">
+                                        <div class="filter">Capture Data</div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-500 mt-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                        <p class="text-xs font-semibold mt-1">Raw Data DB</p>
+                                    </div>
+                                    <!-- Pipe -->
+                                    <div class="w-2/3 pipe mt-8 hidden sm:block"></div>
+                                    <!-- Filter 2 with DB -->
+                                    <div class="flex flex-col items-center">
+                                        <div class="filter">Analyze Trend</div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-500 mt-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                        <p class="text-xs font-semibold mt-1">Analytics DB</p>
+                                    </div>
+                                    <!-- Pipe -->
+                                    <div class="w-2/3 pipe mt-8 hidden sm:block"></div>
+                                    <!-- Filter 3 -->
+                                    <div class="flex flex-col items-center mt-0 sm:mt-5">
+                                        <div class="filter">Generate Report</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Common Risks</h3>
+                             <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                <li><strong>Overloaded Filters:</strong> A filter doing too many things violates the single-purpose principle.</li>
+                                <li><strong>Bidirectional Communication:</strong> Pipes should be one-way. If back-and-forth communication is needed, this is likely the wrong architecture.</li>
+                                <li><strong>Error Handling:</strong> It can be difficult to manage fatal errors and determine how to recover once a pipeline is running.</li>
+                                <li><strong>Contract Management:</strong> Changing the data format in a pipe requires careful coordination to avoid breaking downstream filters.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Governance</h3>
+                            <p class="text-slate-700">Governance focuses on ensuring filters adhere to their specific roles. A common technique is to use tags (annotations in Java, attributes in C#) to programmatically label each filter's type (`@Filter(FilterType.PRODUCER)`), making its purpose clear to developers.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="scorecard" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-6">Architecture Scorecard</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Characteristic</th>
+                                    <th class="p-3 font-semibold text-center">Rating</th>
+                                    <th class="p-3 font-semibold">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3 font-bold text-purple-600" colspan="3">Overall</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Overall Cost</td>
+                                    <td class="p-3 text-center text-2xl font-bold text-green-600">$</td>
+                                    <td class="p-3">Relatively low cost to build and maintain due to simplicity.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-purple-600" colspan="3">Structural</td></tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Simplicity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">A primary strength. Simple and easy to understand.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Modularity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★</span><span class="text-slate-300">★★★</span></td>
+                                    <td class="p-3">Good separation of concerns between filters.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-purple-600" colspan="3">Engineering</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Testability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★</span><span class="text-slate-300">★★</span></td>
+                                    <td class="p-3">Individual filters are easy to test in isolation.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Evolvability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★</span><span class="text-slate-300">★★</span></td>
+                                    <td class="p-3">Easy to add new filters into the pipeline or replace existing ones.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-purple-600" colspan="3">Operational</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Scalability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Poor in a monolithic deployment. Can be improved by deploying filters as separate services.</td>
+                                </tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Fault Tolerance</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Low in a monolithic deployment; an error in one filter can crash the system.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="deploy" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Deployment & Cloud</h2>
+                    <p class="text-slate-700 mb-6">
+                        This style is highly suited for the cloud. While it can be a simple monolith, its modularity shines when filters are deployed as individual serverless functions (like AWS Lambda) and orchestrated with a workflow service (like AWS Step Functions).
+                    </p>
+                    <div class="bg-slate-100 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 text-center">AWS Step Function Example</h3>
+                        <div class="flex items-center justify-center text-sm">
+                            <div class="filter !p-2">Lambda 1</div>
+                            <div class="pipe"></div>
+                            <div class="filter !p-2">Lambda 2</div>
+                            <div class="pipe"></div>
+                            <div class="filter !p-2">Lambda 3</div>
+                        </div>
+                         <p class="text-xs text-slate-600 mt-4 text-center">Each filter is deployed as a separate, independently scalable function, and the pipes become remote calls orchestrated by the Step Function workflow.</p>
+                    </div>
+                </section>
+
+                <section id="teams" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Team Topology</h2>
+                    <p class="text-slate-700 mb-6">
+                        Like the Layered style, the Pipeline architecture is generally independent of team topologies and works well with any team configuration due to its high modularity and clear, single-purpose components.
+                    </p>
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                        <p class="text-purple-800">Whether it's a <strong>stream-aligned team</strong> owning an entire pipeline, an <strong>enabling team</strong> adding a new analysis filter, or a <strong>complicated-subsystem team</strong> focusing on one complex filter, the architecture's structure supports various team models effectively.</p>
+                    </div>
+                </section>
+
+                <section id="usage" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-6">Usage Guide</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-xl text-green-800 mb-2">When to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-green-700">
+                                <li>Simple, one-way processing tasks.</li>
+                                <li>ETL (Extract, Transform, Load) jobs.</li>
+                                <li>Data processing and transformation pipelines.</li>
+                                <li>Projects with tight budget and time constraints.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h3 class="font-bold text-xl text-red-800 mb-2">When Not to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-red-700">
+                                <li>Systems that require high scalability or fault tolerance (in a monolithic deployment).</li>
+                                <li>Scenarios with complex, back-and-forth interactions between components.</li>
+                                <li>Non-deterministic workflows with many branching conditions.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="usecase" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-purple-600 mb-4">Usecase Example: Service Telemetry</h2>
+                    <p class="text-slate-700 mb-6">This diagram shows how a pipeline processes streaming data. It checks if a message is a "duration" metric or an "uptime" metric, processes it accordingly, and then sends the result to a central database.</p>
+                     <!-- New, corrected diagram -->
+                     <div class="bg-slate-50 border rounded-lg p-4 text-sm">
+                        <div class="flex flex-col items-center">
+                            
+                            <div class="flow-node bg-green-100 text-green-800 border-green-500 w-auto">Service Info Capture (Producer)</div>
+                            
+                            <div class="flow-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M12 19L18 13M12 19L6 13" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+
+                            <div class="flow-node bg-amber-100 text-amber-800 border-amber-500 w-auto">Is it Duration Data? (Tester)</div>
+
+                            <div class="flow-branch-container mt-4">
+                                <!-- YES Path -->
+                                <div class="flow-branch-path">
+                                    <div class="flow-label">YES</div>
+                                    <div class="w-full h-px bg-slate-400"></div>
+                                    <div class="flow-arrow">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M12 19L18 13M12 19L6 13" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </div>
+                                    <div class="flow-node bg-blue-100 text-blue-800 border-blue-500">Calculate Duration (Transformer)</div>
+                                </div>
+                                
+                                <!-- Vertical Divider -->
+                                <div class="bg-slate-300"></div>
+
+                                <!-- NO Path -->
+                                <div class="flow-branch-path">
+                                    <div class="flow-label">NO</div>
+                                    <div class="w-full h-px bg-slate-400"></div>
+                                    <div class="flow-arrow">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M12 19L18 13M12 19L6 13" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </div>
+                                    <div class="flow-node bg-amber-100 text-amber-800 border-amber-500">Is it Uptime Data? (Tester)</div>
+                                    <div class="flow-arrow">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M12 19L18 13M12 19L6 13" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </div>
+                                    <div class="flow-node bg-blue-100 text-blue-800 border-blue-500">Calculate Uptime (Transformer)</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Joining Line -->
+                            <div class="w-1/2 h-px bg-slate-400 mt-6"></div>
+                            <div class="w-px h-6 bg-slate-400"></div>
+                            
+                            <div class="flow-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19M12 19L18 13M12 19L6 13" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+
+                            <div class="flow-node bg-red-100 text-red-800 border-red-500 w-auto">Save to DB (Consumer)</div>
+                        </div>
+                     </div>
+                </section>
+                
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                links.forEach(link => {
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('bg-white', 'shadow-sm', 'text-purple-600');
+                        link.classList.remove('text-slate-700');
+                    } else {
+                        link.classList.remove('bg-white', 'shadow-sm', 'text-purple-600');
+                        link.classList.add('text-slate-700');
+                    }
+                });
+            }
+
+            function showSection(targetId) {
+                 sections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                     // Scroll to the top of the main content area for better visibility on mobile
+                    document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Set initial state
+            updateActiveLink('goal');
+            showSection('goal');
+        });
+    </script>
+
+</body>
+</html>

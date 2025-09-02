@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Strategic Design Cheatsheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* gray-50 */
+        }
+        .title-font {
+            font-family: 'Poppins', sans-serif;
+        }
+        .card {
+            background-color: #ffffff; /* white */
+            border-radius: 0.75rem; /* rounded-xl */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* gap-3 */
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+        }
+        .card-content {
+            padding: 1rem;
+        }
+        .item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .item:last-child {
+            margin-bottom: 0;
+        }
+        .icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 0.875rem; /* text-sm */
+            line-height: 1;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .icon-core { background-color: #4f46e5; border: 1px solid #6366f1; }
+        .icon-supp { background-color: #0ea5e9; border: 1px solid #38bdf8; }
+        .icon-gen { background-color: #4b5563; border: 1px solid #6b7280; }
+        .icon-p { background-color: #22c55e; border: 1px solid #4ade80; }
+        .icon-sk { background-color: #14b8a6; border: 1px solid #2dd4bf; }
+        .icon-cs { background-color: #0ea5e9; border: 1px solid #38bdf8; }
+        .icon-cf { background-color: #f59e0b; border: 1px solid #facc15; }
+        .icon-acl { background-color: #f97316; border: 1px solid #fb923c; }
+        .icon-ohs { background-color: #3b82f6; border: 1px solid #60a5fa; }
+        .icon-pl { background-color: #8b5cf6; border: 1px solid #a78bfa; }
+        .icon-sw { background-color: #64748b; border: 1px solid #94a3b8; }
+        .icon-dir { background-color: #e5e7eb; border: 1px solid #d1d5db; color: #1f2937;}
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="p-8 max-w-5xl mx-auto">
+        <h1 class="text-4xl font-bold text-center text-gray-900 mb-2 title-font">DDD Strategic Patterns</h1>
+        <p class="text-center text-gray-500 mb-10">A Quick Reference Guide</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Card 1: Core Concepts -->
+            <div class="card lg:col-span-1">
+                <div class="card-header">
+                    <h2 class="text-lg font-semibold text-gray-900 title-font">Core Concepts</h2>
+                </div>
+                <div class="card-content space-y-4">
+                    <div>
+                        <h3 class="font-bold text-gray-900">Domain</h3>
+                        <p class="text-gray-600 text-sm">The business problem space. What the software is for.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900">Bounded Context</h3>
+                        <p class="text-gray-600 text-sm">A boundary where a specific model is consistent. Protects the model's integrity.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900">Ubiquitous Language</h3>
+                        <p class="text-gray-600 text-sm">A shared, rigorous language between developers and experts, used in code.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Subdomain Patterns -->
+            <div class="card lg:col-span-1">
+                <div class="card-header">
+                    <h2 class="text-lg font-semibold text-gray-900 title-font">Subdomain Patterns</h2>
+                </div>
+                <div class="card-content">
+                    <div class="item">
+                        <div class="icon icon-core">Core</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Core Domain</h3>
+                            <p class="text-gray-600 text-sm">The business's competitive advantage. Assign your best team.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-supp">Sup</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Supporting</h3>
+                            <p class="text-gray-600 text-sm">Necessary, but not a differentiator. Build simply or outsource.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-gen">Gen</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Generic</h3>
+                            <p class="text-gray-600 text-sm">A "solved problem" not specific to the business. Always buy, never build.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Flow / Direction -->
+            <div class="card lg:col-span-1">
+                 <div class="card-header">
+                    <h2 class="text-lg font-semibold text-gray-900 title-font">Flow / Direction</h2>
+                </div>
+                 <div class="card-content">
+                     <div class="item">
+                         <div class="icon icon-dir">U</div>
+                         <div>
+                             <h3 class="font-bold text-gray-900">Upstream (U)</h3>
+                             <p class="text-gray-600 text-sm">The context that influences or provides a service to another.</p>
+                         </div>
+                     </div>
+                     <div class="item">
+                         <div class="icon icon-dir">D</div>
+                         <div>
+                             <h3 class="font-bold text-gray-900">Downstream (D)</h3>
+                             <p class="text-gray-600 text-sm">The context that is influenced by or consumes a service.</p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Context Map Relationships -->
+            <div class="card lg:col-span-3">
+                <div class="card-header">
+                    <h2 class="text-lg font-semibold text-gray-900 title-font">Context Map Relationships</h2>
+                </div>
+                <div class="card-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="item">
+                        <div class="icon icon-p">P</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Partnership</h3>
+                            <p class="text-gray-600 text-sm">Two teams succeed or fail together. High coordination needed.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-sk">SK</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Shared Kernel</h3>
+                            <p class="text-gray-600 text-sm">Contexts share a small, co-owned model subset. Keep it tiny!</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-cs">C/S</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Customer-Supplier</h3>
+                            <p class="text-gray-600 text-sm">Upstream (Supplier) prioritizes needs of Downstream (Customer).</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-cf">CF</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Conformist</h3>
+                            <p class="text-gray-600 text-sm">Downstream blindly adopts the Upstream model. No translation.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-acl">ACL</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Anticorruption Layer</h3>
+                            <p class="text-gray-600 text-sm">Downstream builds a translation layer to protect its model.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-ohs">OHS</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Open Host Service</h3>
+                            <p class="text-gray-600 text-sm">A context offers a public API for many consumers.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-pl">PL</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Published Language</h3>
+                            <p class="text-gray-600 text-sm">A documented, shared data format for an OHS.</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="icon icon-sw">SW</div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">Separate Ways</h3>
+                            <p class="text-gray-600 text-sm">Contexts are not integrated as there is little value in doing so.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

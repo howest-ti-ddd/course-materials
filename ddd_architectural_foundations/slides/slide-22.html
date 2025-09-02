@@ -1,0 +1,17 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-8 text-center text-indigo-300">Key Fallacies: Reliability & Latency</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-3 text-red-400">Fallacy: The Network Is Reliable</h3>
+                    <p class="text-gray-300 mb-4">In reality, networks fail. Packets are lost. Connections drop. A service might be perfectly healthy but unreachable.</p>
+                    <p class="text-gray-200"><strong>Impact:</strong> We must design for failure using patterns like <strong class="text-white">retries, timeouts, and circuit breakers</strong>.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-3 text-red-400">Fallacy: Latency Is Zero</h3>
+                    <p class="text-gray-300 mb-4">A local function call takes nanoseconds. A network call takes milliseconds, which is thousands of times slower. It's never zero.</p>
+                    <p class="text-gray-200"><strong>Impact:</strong> Every remote call adds delay. Architectures with "chatty" services become slow. We must minimize cross-service calls.</p>
+                </div>
+            </div>
+        </div>
+    </div>

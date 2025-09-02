@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Lecture: Domain, Bounded Contexts & Context Mapping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* slate-900 */
+            color: #D1D5DB; /* gray-300 */
+            overflow: hidden;
+        }
+
+        #presentation-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .slide {
+            display: flex;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            position: absolute;
+            transform: scale(0.95) translateX(50px);
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+        
+        .slide.exit {
+            transform: scale(0.95) translateX(-50px);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .legend-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .context-box {
+            border: 2px solid;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .arrow {
+            position: absolute;
+            stroke: #67E8F9; /* cyan-300 */
+            stroke-width: 2.5;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        .arrow-label {
+            position: absolute;
+            background-color: #1E293B;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #E5E7EB;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #818CF8;
+            background: linear-gradient(90deg, #A78BFA 0%, #F472B6 100%);
+            width: 0%;
+            transition: width 0.4s ease-out;
+            z-index: 100;
+            box-shadow: 0 0 10px #A78BFA;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .quiz-option:not([disabled]):hover {
+            transform: translateY(-2px);
+            background-color: rgba(71, 85, 105, 0.8);
+        }
+        .quiz-option.correct {
+            background-color: #10B981 !important; /* Emerald 500 */
+            border-color: #34D399;
+            color: white;
+        }
+        .quiz-option.incorrect {
+            background-color: #EF4444 !important; /* Red 500 */
+            border-color: #F87171;
+            color: white;
+            opacity: 0.7;
+        }
+        .quiz-option[disabled] {
+            cursor: not-allowed;
+        }
+        .feedback {
+            transition: opacity 0.3s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+    <div id="progress-bar"></div>
+    <div id="presentation-wrapper" class="w-full h-screen flex flex-col items-center justify-center p-4">
+        <div id="presentation-container" class="relative w-full h-full flex items-center justify-center">
+             <!-- Slides will be injected here -->
+        </div>
+    </div>
+
+    <div id="navigation" class="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center bg-slate-800/50 backdrop-blur-sm border border-slate-700 shadow-lg rounded-full px-4 py-2 z-50">
+        <button id="prev-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <span id="slide-counter" class="mx-4 text-gray-300 font-medium w-16 text-center">1 / 65</span>
+        <button id="next-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- SVG Definitions for Arrows -->
+    <svg width="0" height="0">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#67E8F9" />
+        </marker>
+      </defs>
+    </svg>
+
+<script>
+    const slidesData = [
+        // NEW SLIDE 1: Warm-up Quiz
+        {
+            type: 'quiz',
+            title: 'Warm-up Question',
+            question: 'What is the primary challenge when multiple teams work on a single, large codebase without clear boundaries?',
+            options: [
+                { text: 'Code duplication.', correct: false, feedback: 'While code duplication is a problem, the core issue is often more about conflicting changes and lack of clarity.' },
+                { text: 'Difficulty in deploying the software.', correct: false, feedback: 'Deployment difficulty is a symptom. The real problem lies in how the code is structured and managed.' },
+                { text: 'Integration chaos and model corruption.', correct: true, feedback: 'Exactly! Different teams have different mental models, which leads to conflicting code and unreliable software when not managed.' },
+                { text: 'When to drink coffee.', correct: false, feedback: 'Always a valid question, but not the primary challenge DDD addresses! Let\'s get into it.' }
+            ]
+        },
+        // SLIDE 2: Title (was 1)
+        {
+            type: 'title',
+            title: 'DDD Strategic Design',
+            subtitle: 'Domain, Bounded Contexts & Context Mapping',
+            author: 'A Conference-Style Lecture for Final-Year Software Engineering Students'
+        },
+        // SLIDE 3: Hook (was 2)
+        {
+            type: 'hook',
+            title: 'The Hook: Same Word, Different Meaning',
+            content: `
+                <div class="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center text-center">
+                    <div class="glass-card p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-sky-400 mb-3">Sales Team</h3>
+                        <svg class="w-16 h-16 mx-auto mb-2 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        <p class="text-xl font-semibold mb-2 text-white">"Customer"</p>
+                        <p class="text-slate-400">A potential lead, someone we are actively trying to sell to. Has contact info and a sales stage.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-emerald-400 mb-3">Support Team</h3>
+                        <svg class="w-16 h-16 mx-auto mb-2 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <p class="text-xl font-semibold mb-2 text-white">"Customer"</p>
+                        <p class="text-slate-400">An existing user with a subscription plan and a history of support tickets. Needs an account ID.</p>
+                    </div>
+                </div>
+                <div class="mt-8 text-center bg-amber-900/50 border-l-4 border-amber-500 text-amber-300 p-4 rounded-r-lg max-w-3xl">
+                    <p class="font-bold text-xl">Integration chaos ensues when they share a single ` + '`Customer`' + ` class.</p>
+                    <p class="mt-2 text-lg">A model is consistent <span class="font-black text-amber-100">only</span> within its context. Boundaries are not optional.</p>
+                </div>
+            `
+        },
+        // SLIDE 3: Goal
+        {
+            type: 'standard',
+            title: 'Today\'s Goal',
+            points: [
+                'Give you the strategic DDD tools to carve a complex problem space into clear <span class="font-bold text-indigo-400">Bounded Contexts</span>.',
+                'Equip you to map relationships between contexts using a <span class="font-bold text-indigo-400">Context Map</span>.',
+                'Enable your teams to integrate systems <span class="font-bold text-indigo-400">safely</span> and <span class="font-bold text-indigo-400">deliberately</span>.'
+            ]
+        },
+        // SLIDE 4: Learning Objectives
+        {
+            type: 'objectives',
+            title: 'Learning Objectives',
+            subtitle: 'By the end of this lecture, you will be able to:',
+            objectives: [
+                'Define Domain, Subdomains, and Bounded Contexts with examples.',
+                'Explain why multiple models must coexist and how to maintain model integrity.',
+                'Draw a Context Map, labeling contexts, flows, and relationships.',
+                'Choose appropriate integration patterns for different team dynamics.',
+                'Spot architectural red flags (like the "Big Ball of Mud") and propose mitigations.',
+                'Contrast technical partitioning with domain partitioning.'
+            ]
+        },
+        // SECTION 1
+        {
+            type: 'section_title',
+            section: 'PART I',
+            title: 'Why We Need Strategic Design'
+        },
+        // SLIDE 7: Why DDD (was 6)
+        {
+            type: 'graphic_right',
+            title: 'Why was DDD Created?',
+            subtitle: 'Addressing the Chronic Pain of Complex Software (c. late 90s)',
+            points: [
+                '<span class="font-semibold text-red-400">Anemic Models:</span> Data structures with no behavior.',
+                '<span class="font-semibold text-red-400">Tech-Driven Coupling:</span> Changes in the database break the UI.',
+                '<span class="font-semibold text-red-400">Lost Knowledge:</span> Business rules hidden in obscure code.',
+                '<span class="font-semibold text-red-400">Integration Failure:</span> Systems that can\'t talk to each other reliably.'
+            ],
+            graphic: `
+                <div class="text-center p-8 glass-card rounded-2xl">
+                    <svg class="w-32 h-32 mx-auto text-red-400" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 20 20 C 40 10, 60 10, 80 20 S 90 40, 80 60 S 90 90, 50 80 S 10 90, 20 60 S 10 40, 20 20" fill="none" stroke="currentColor" stroke-width="1"/>
+                        <path d="M 25 25 C 15 45, 15 65, 25 85 S 45 95, 65 85 S 95 65, 85 45 S 95 15, 65 25 S 35 15, 25 25" fill="none" stroke="currentColor" stroke-width="1"/>
+                        <path d="M 50 20 C 30 30, 30 70, 50 80 S 70 70, 70 30 S 30 30, 50 20" fill="none" stroke="currentColor" stroke-width="1"/>
+                        <path d="M 20 50 C 30 70, 70 70, 80 50 S 70 30, 30 30 S 30 70, 20 50" fill="none" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-gray-200 mt-4">The "Big Ball of Mud"</h3>
+                    <p class="text-slate-400 mt-2">Where everything is coupled to everything else, making change slow, risky, and expensive.</p>
+                </div>
+            `
+        },
+        // NEW SLIDE 8: Why DDD Quiz
+        {
+            type: 'quiz',
+            title: 'Knowledge Check!',
+            question: 'Domain-Driven Design was created primarily to address what kind of problem?',
+            options: [
+                { text: 'Slow database performance.', correct: false, feedback: 'While DDD can lead to better performance, it\'s not its primary goal. It\'s a design strategy, not a performance tuning technique.' },
+                { text: 'The complexity and communication gap between business experts and developers.', correct: true, feedback: 'Correct! DDD\'s core aim is to tackle complexity by creating a shared understanding (Ubiquitous Language) and model.' },
+                { text: 'A lack of standardized UI frameworks.', correct: false, feedback: 'UI frameworks are a separate concern. DDD focuses on modeling the business domain, not the presentation layer.' }
+            ]
+        },
+        // SLIDE 9: DDD as Strategy (was 7)
+        {
+            type: 'standard',
+            title: 'DDD as a Socio-Technical Strategy',
+            subtitle: 'It\'s about communication as much as code.',
+            points: [
+                '<strong>Align Language & Model:</strong> Business experts and developers create a shared <span class="text-indigo-400 font-bold">Ubiquitous Language</span> that is directly reflected in the code.',
+                '<strong>Partition by Domain:</strong> Structure the software around business capabilities (Bounded Contexts), not technical layers.',
+                '<strong>Enable Change:</strong> Create clear boundaries that allow teams to work autonomously and evolve their parts of the system safely.'
+            ]
+        },
+         // SECTION 2
+        {
+            type: 'section_title',
+            section: 'PART II',
+            title: 'Partitioning Strategies'
+        },
+        // SLIDE 9: Evolution of Partitioning
+        {
+            type: 'timeline',
+            title: 'The Evolution of System Partitioning'
+        },
+        // SLIDE 10: Technical Slicing
+        {
+            type: 'graphic_left',
+            title: 'The "Old" Way: Technical Slicing',
+            subtitle: 'Partitioning by technical layers.',
+            points: [
+                'All UI code lives in one "Presentation Layer".',
+                'All database code lives in one "Data Access Layer".',
+                'Often leads to a shared, monolithic database.',
+                'Business logic is smeared across all layers.'
+            ],
+            graphic: `
+                <div class="glass-card p-4 rounded-lg w-full">
+                    <h3 class="text-lg font-bold text-center mb-4 text-gray-200">Layered Monolith</h3>
+                    <div class="space-y-2">
+                        <div class="bg-sky-900 text-sky-300 p-3 rounded-md text-center font-semibold border border-sky-700">Presentation Layer</div>
+                        <div class="bg-emerald-900 text-emerald-300 p-3 rounded-md text-center font-semibold border border-emerald-700">Business Layer</div>
+                        <div class="bg-violet-900 text-violet-300 p-3 rounded-md text-center font-semibold border border-violet-700">Data Access Layer</div>
+                        <div class="flex justify-center mt-4">
+                            <svg class="w-12 h-12 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7l8 4 8-4m-8 12v-8"></path></svg>
+                        </div>
+                        <div class="bg-slate-700 text-slate-300 p-3 rounded-md text-center font-semibold mt-2 border border-slate-600">Shared Database</div>
+                    </div>
+                </div>
+            `,
+            pros: 'Fast to start a simple project.',
+            cons: 'Becomes brittle and tightly coupled as it grows. A change in one domain ripples through all layers.'
+        },
+        // SLIDE 11: Domain Slicing
+        {
+            type: 'graphic_left',
+            title: 'The DDD Way: Domain-First Slicing',
+            subtitle: 'Partitioning by business capability.',
+            points: [
+                'System is divided into business-centric <span class="font-bold">Bounded Contexts</span>.',
+                'Each context owns its model, language, and often its data.',
+                'Aligns teams to business capabilities (<span class="italic">Conway\'s Law</span>).',
+                'Integration is explicit and carefully managed.'
+            ],
+            graphic: `
+                 <div class="glass-card p-4 rounded-lg w-full">
+                    <h3 class="text-lg font-bold text-center mb-4 text-gray-200">Domain-Partitioned System</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-sky-900/50 text-sky-300 p-3 rounded-md text-center font-semibold border border-sky-700">Sales</div>
+                        <div class="bg-rose-900/50 text-rose-300 p-3 rounded-md text-center font-semibold border border-rose-700">Inventory</div>
+                        <div class="bg-amber-900/50 text-amber-300 p-3 rounded-md text-center font-semibold border border-amber-700">Shipping</div>
+                        <div class="bg-teal-900/50 text-teal-300 p-3 rounded-md text-center font-semibold border border-teal-700">Support</div>
+                    </div>
+                </div>
+            `,
+            pros: 'Safer integration, clearer ownership, teams can release independently.',
+            cons: 'Requires more upfront strategic thinking.'
+        },
+        // SECTION 3
+        {
+            type: 'section_title',
+            section: 'PART III',
+            title: 'The Bounded Context'
+        },
+        // SLIDE 13: Rapid Recap Vocab
+        {
+            type: 'standard',
+            title: 'Rapid Recap: Core Vocabulary',
+            points: [
+                '<strong>Domain:</strong> The world your software lives in. The business problem space. <span class="italic text-slate-400">(e.g., "E-commerce", "Insurance Claims")</span>',
+                '<strong>Problem Space:</strong> What the business needs to do.',
+                '<strong>Solution Space:</strong> How we model and build software to meet those needs.',
+                '<strong>Model:</strong> A system of abstractions that describes selected aspects of a domain and can be used to solve problems related to that domain.'
+            ]
+        },
+        // SLIDE 14: Subdomains -> EXPANDED TO 6 SLIDES
+        {
+            type: 'standard',
+            title: 'Discovering Subdomains',
+            subtitle: 'It all starts with understanding the business problem space.',
+            points: [
+                'A subdomain is a distinct part of the overall business domain.',
+                'Discovery is a collaborative process with <span class="text-amber-300">domain experts</span>, not just a technical task.',
+                'Analyze business processes, departmental structures, and areas of specialized knowledge.',
+                'Key Question: "What are the different, coherent parts of this business?"'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Classifying Subdomains',
+            subtitle: 'Not all parts of a business are equally important.',
+            points: [
+                '<strong class="text-indigo-400">Core:</strong> The secret sauce. What makes the business unique and profitable. Highest priority for your top talent.',
+                '<strong class="text-sky-400">Supporting:</strong> Necessary for the business to function, but not a key differentiator. Can be built in-house, but less complex than the core.',
+                '<strong class="text-slate-400">Generic:</strong> A solved problem. Not specific to the business. Ideal to buy off-the-shelf. (e.g., identity management, sending emails).'
+            ],
+            graphic: `
+                <div class="relative w-80 h-80 flex items-center justify-center">
+                    <div class="absolute w-80 h-80 bg-slate-700/50 rounded-full flex items-center justify-center border border-slate-600">
+                        <span class="font-semibold text-slate-300">Generic</span>
+                    </div>
+                    <div class="absolute w-56 h-56 bg-sky-900/50 rounded-full flex items-center justify-center border border-sky-700">
+                        <span class="font-semibold text-sky-300">Supporting</span>
+                    </div>
+                    <div class="absolute w-32 h-32 bg-indigo-800/60 rounded-full flex items-center justify-center border-2 border-indigo-500 shadow-[0_0_20px_theme(colors.indigo.500)]">
+                        <span class="font-bold text-indigo-200">Core</span>
+                    </div>
+                </div>
+            `
+        },
+        {
+            type: 'graphic_right',
+            title: 'Subdomains vs. Bounded Contexts',
+            subtitle: 'Problem Space vs. Solution Space',
+            points: [
+                '<strong class="text-amber-400">Subdomain:</strong> A part of the business problem. The "what".',
+                '<strong class="text-cyan-400">Bounded Context:</strong> A boundary for a software model. The "how".',
+                'We analyze the Subdomains to help us define the boundaries of our Bounded Contexts.',
+                'This strategic alignment is crucial for building software that matches the business structure.'
+            ],
+            graphic: `
+                <div class="w-full flex flex-col items-center justify-center text-center">
+                    <div class="glass-card p-4 rounded-lg w-64">
+                        <h3 class="font-bold text-lg text-amber-300">Problem Space</h3>
+                        <p class="text-sm text-slate-400 mt-1">(The Business)</p>
+                    </div>
+                    <svg class="w-12 h-12 my-4 text-slate-500"><path d="M 12 5 V 19 M 5 12 H 19" class="arrow" /></svg>
+                    <div class="glass-card p-4 rounded-lg w-64 border border-cyan-500">
+                        <h3 class="font-bold text-lg text-cyan-300">Solution Space</h3>
+                        <p class="text-sm text-slate-400 mt-1">(The Software)</p>
+                    </div>
+                </div>
+            `
+        },
+        {
+            type: 'graphic_left',
+            title: 'The Goal: One-to-One Mapping',
+            subtitle: 'Aligning software structure with business structure.',
+            points: [
+                'Ideally, each Subdomain maps to <span class="font-bold">exactly one</span> Bounded Context.',
+                'A Core Subdomain gets its own Bounded Context, where you can build a rich model.',
+                'A Generic Subdomain gets its own Bounded Context, likely wrapping an external system.',
+                'This clear alignment prevents model corruption and supports Conway\'s Law.'
+            ],
+            graphic: `
+                <div class="w-full h-96 relative flex items-center justify-around text-center">
+                    <!-- Left Side -->
+                    <div class="flex flex-col gap-4">
+                        <div class="context-box border-indigo-500 text-indigo-300 p-3">Core Subdomain</div>
+                        <div class="context-box border-sky-500 text-sky-300 p-3">Supporting Subdomain</div>
+                        <div class="context-box border-slate-500 text-slate-300 p-3">Generic Subdomain</div>
+                    </div>
+                    <!-- Arrows -->
+                    <svg class="w-24 h-24 text-slate-500"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    <!-- Right Side -->
+                    <div class="flex flex-col gap-4">
+                        <div class="context-box border-indigo-500 text-indigo-300 p-3">Core Context</div>
+                        <div class="context-box border-sky-500 text-sky-300 p-3">Supporting Context</div>
+                        <div class="context-box border-slate-500 text-slate-300 p-3">Generic Context</div>
+                    </div>
+                </div>
+            `
+        },
+        {
+            type: 'standard',
+            title: 'Strategy for Generic Subdomains',
+            subtitle: 'It\'s a solved problem. Don\'t reinvent it.',
+            points: [
+                '<strong>Primary Strategy: Buy, don\'t build.</strong> Use an off-the-shelf product or a SaaS solution.',
+                '<strong>Examples:</strong> Authentication (Auth0), Payments (Stripe), Email (SendGrid), Content Management (Contentful).',
+                'When you integrate, protect your Core Domain with an <span class="font-mono text-orange-300">Anticorruption Layer</span>.',
+                'Do not assign your top engineers to build a generic solution from scratch.'
+            ]
+        },
+        {
+            type: 'standard',
+            title: 'Strategy for Supporting Subdomains',
+            subtitle: 'Necessary for the business, but not a competitive advantage.',
+            points: [
+                '<strong>Primary Strategy: Build it in-house, but keep it simple.</strong> A standard CRUD-style application is often enough.',
+                'Avoid over-engineering. The model should be well-defined, but doesn\'t need the same depth as the Core.',
+                'Offload the work if possible: consider using a different team or outsourcing development.',
+                'The goal is a pragmatic, cost-effective solution, not a masterpiece of software engineering.'
+            ]
+        },
+        // SLIDE 15: QUIZ
+        {
+            type: 'quiz',
+            title: 'Knowledge Check!',
+            question: 'For an online university, which of the following is most likely the <strong>Core Domain</strong>?',
+            options: [
+                { text: 'Student enrollment and billing system.', correct: false, feedback: 'While important, billing is a common problem. This is likely a Supporting subdomain.' },
+                { text: 'A video streaming service for lectures.', correct: false, feedback: 'This is a solved technical problem. It\'s a Generic subdomain that should probably be bought (e.g., use Vimeo or YouTube).' },
+                { text: 'A proprietary interactive learning and assessment platform.', correct: true, feedback: 'Correct! This is the unique, complex part of the business that provides a competitive advantage.' }
+            ]
+        },
+        // SLIDE 16: Ubiquitous Language
+        {
+            type: 'standard',
+            title: 'The Heart of DDD: Ubiquitous Language',
+            subtitle: 'A shared, rigorous language between developers and domain experts.',
+            points: [
+                'It is used in all team communication: meetings, diagrams, and especially the <span class="font-bold text-amber-300">code</span>.',
+                'If a developer says "policy" and an expert says "policy", they mean the exact same thing.',
+                'This language <span class="font-bold">ties words to behavior</span>, not just database tables.',
+                'If a concept is ambiguous, it means the model is not yet clear.'
+            ]
+        },
+        // SLIDE 17: Bounded Context What
+        {
+            type: 'graphic_right',
+            title: 'Bounded Contexts: The "What"',
+            subtitle: 'The boundary where a model is true.',
+            points: [
+                'A <span class="font-bold">linguistic boundary</span> within which a particular domain model is consistent and self-contained.',
+                'Inside the boundary, every term from the Ubiquitous Language has a precise, unambiguous meaning.',
+                'It is a <span class="font-bold text-cyan-300">safety membrane</span> for your model.'
+            ],
+            graphic: `
+                <div class="relative w-96 h-80">
+                    <div class="absolute inset-0 border-2 border-dashed border-indigo-500 rounded-3xl transform -rotate-6 shadow-[0_0_25px_rgba(129,140,248,0.3)]"></div>
+                    <div class="absolute inset-0 glass-card p-6 rounded-3xl shadow-xl flex flex-col items-center justify-center text-center">
+                        <h3 class="text-2xl font-bold text-indigo-400 mb-4">Sales Context</h3>
+                        <p class="font-semibold mb-2 text-gray-200">Ubiquitous Language:</p>
+                        <p class="text-slate-400">"Customer = Lead"</p>
+                        <p class="text-slate-400">"Product = Catalog Item"</p>
+                        <p class="text-slate-400">"Order = Quote"</p>
+                        <div class="mt-4 text-emerald-400 font-bold text-lg flex items-center gap-2">
+                          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                          <span>CONSISTENT MODEL</span>
+                        </div>
+                    </div>
+                </div>
+            `
+        },
+        // SLIDE 18: Bounded Context Why
+        {
+            type: 'standard',
+            title: 'Bounded Contexts: The "Why"',
+            subtitle: 'To maintain model integrity and enable team autonomy.',
+            points: [
+                '<strong>Prevents Corruption:</strong> It stops the "Support" model of a Customer from leaking into and confusing the "Sales" model of a Customer.',
+                '<strong>Enables Focus:</strong> The Sales team can perfect their model for their needs, without worrying about breaking the Support team\'s workflow.',
+                '<strong>Clarifies Integration:</strong> When contexts need to interact, the translation between their models must be made explicit. No accidental sharing.'
+            ]
+        },
+        // SLIDE 19: QUIZ
+        {
+            type: 'quiz',
+            title: 'Knowledge Check!',
+            question: 'What is the primary strategic benefit of defining a Bounded Context?',
+            options: [
+                { text: 'It makes database schemas easier to design.', correct: false, feedback: 'While it can simplify schemas within a context, that\'s a side effect, not the primary strategic goal.' },
+                { text: 'It protects the integrity of a model and its language.', correct: true, feedback: 'Exactly! A Bounded Context creates a "safety membrane" where a model can be consistent and pure.' },
+                { text: 'It forces teams to use the same coding style.', correct: false, feedback: 'Coding style is a tactical concern; Bounded Contexts are about strategic design and model consistency.' }
+            ]
+        },
+        // SLIDE 20: Bounded Context How
+        {
+            type: 'standard',
+            title: 'Bounded Contexts: The "How"',
+            subtitle: 'How do you find the boundaries?',
+            points: [
+                '<strong>Team Organization:</strong> Often, one team owns one Bounded Context.',
+                '<strong>Codebases:</strong> A context might be a specific service or application.',
+                '<strong>Database Schemas:</strong> If two parts of a system have radically different schemas for the same concept, they are likely in different contexts.',
+                '<strong>Usage Areas:</strong> Different departments or user groups often imply different contexts.',
+                '<strong>Release Cadence:</strong> If two parts of the system can be released independently, they are in different contexts.'
+            ]
+        },
+        // SLIDE 21: Smells and Fixes
+        {
+            type: 'table',
+            title: 'Smells & Fixes: Is Your Model Splintering?',
+            headers: ['Smell (Red Flag)', 'Indicates...', 'Proposed Fix'],
+            rows: [
+                ['<strong class="text-red-400">False Cognates</strong><br><em class="text-sm text-slate-400">Same word, different meaning (e.g., "Customer")</em>', 'Two contexts are being mixed accidentally.', 'Explicitly separate the contexts. Introduce an <span class="font-mono text-orange-300">Anticorruption Layer</span> if they must communicate.'],
+                ['<strong class="text-red-400">Duplicate Concepts</strong><br><em class="text-sm text-slate-400">Two classes doing the same thing.</em>', 'A single context is fracturing internally.', 'Strengthen <span class="font-mono text-cyan-300">Continuous Integration</span>. Refactor to unify the concepts. Hold language refinement sessions.'],
+                ['<strong class="text-red-400">Casual Code Sharing</strong><br><em class="text-sm text-slate-400">"Let\'s just reuse this utility class from their service."</em>', 'Implicit, untracked dependencies between contexts.', 'STOP. Make the dependency explicit via a defined relationship (e.g., Shared Kernel, API).']
+            ]
+        },
+        // SLIDE 22: Mini Example
+        {
+            type: 'hook',
+            title: 'Mini-Example: Shipping Inc.',
+            content: `
+                <div class="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center text-left">
+                    <div class="glass-card p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-sky-400 mb-3">Booking Context</h3>
+                        <p class="text-slate-400">This context is concerned with capturing a customer's intent to ship cargo from an origin to a destination. Its model includes ` + '`Cargo`' + `, ` + '`RouteSpecification`' + `, and ` + '`Itinerary`' + `.</p>
+                        <p class="font-semibold text-gray-200 mt-4">Key Question: <span class="font-normal text-slate-400">Does this proposed journey meet the customer's requirements?</span></p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-fuchsia-400 mb-3">Voyage Scheduling Context</h3>
+                        <p class="text-slate-400">This context handles the physical reality of ships, their capacity, and their schedules. Its model includes ` + '`Vessel`' + `, ` + '`Voyage`' + `, and ` + '`Port`' + `.</p>
+                        <p class="font-semibold text-gray-200 mt-4">Key Question: <span class="font-normal text-slate-400">Which physical ship can carry this cargo, and when will it arrive?</span></p>
+                    </div>
+                </div>
+                <div class="mt-8 text-center bg-red-900/50 border-l-4 border-red-500 text-red-300 p-4 rounded-r-lg max-w-3xl">
+                    <p class="font-bold text-xl">DANGER: If these two teams casually share code or database tables, disaster is inevitable. Their models solve different problems.</p>
+                </div>
+            `
+        },
+        // SECTION 4
+        {
+            type: 'section_title',
+            section: 'PART IV',
+            title: 'Mapping The Landscape'
+        },
+        // SLIDE 24: Context Mapping Intro
+        {
+            type: 'standard',
+            title: 'Context Mapping: The Big Picture',
+            subtitle: 'A strategic diagram showing the landscape of your system\'s Bounded Contexts.',
+            points: [
+                'It is a <span class="font-bold">socio-technical</span> document: it describes both software integrations and team relationships.',
+                'The first rule: <span class="font-bold">Map what IS</span>, not what you want it to be.',
+                'It makes invisible boundaries and assumptions <span class="font-bold">visible</span> to everyone.',
+                'It provides a vocabulary to discuss and plan system integration deliberately.'
+            ]
+        },
+        // SLIDE 25: Drawing a Map
+        {
+            type: 'context_map_simple',
+            title: 'Drawing a Basic Context Map'
+        },
+        // SLIDE 26: Relationships Legend
+        {
+            type: 'legend',
+            title: 'Context Map Relationships: The Legend'
+        },
+        // SLIDE 27: Partnership
+        {
+            type: 'relationship',
+            pattern: 'Partnership (P)',
+            color: 'bg-green-500',
+            description: 'Two teams/contexts succeed or fail together. They must cooperate closely on planning and integration.',
+            when: 'When two contexts are highly dependent and a change in one often requires a change in the other. Requires excellent communication.',
+            tradeoffs: '<strong>Pro:</strong> Can build tightly integrated features. <strong>Con:</strong> High coordination overhead. One team can block the other.'
+        },
+         {
+            type: 'graphic_left',
+            title: 'Partnership: Use Case',
+            subtitle: 'An airline\'s Booking and Dynamic Pricing services.',
+            points: [
+                'The <span class="font-bold text-sky-400">Booking Context</span> allows users to reserve seats.',
+                'The <span class="font-bold text-emerald-400">Dynamic Pricing Context</span> adjusts ticket prices based on demand, time, and seat availability.',
+                'They are <span class="font-bold">interdependent</span>: Booking needs an immediate price, and Pricing needs real-time booking data.',
+                'The teams must schedule features together and have a joint integration plan.'
+            ],
+            graphic: `<div class="text-center p-4">
+                <div class="glass-card p-4 rounded-lg inline-block">
+                <svg class="w-16 h-16 mx-auto mb-2 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <div class="font-bold text-sky-400">Booking</div></div>
+                <div class="font-bold text-5xl my-4 text-slate-500">↔</div>
+                <div class="glass-card p-4 rounded-lg inline-block">
+                <svg class="w-16 h-16 mx-auto mb-2 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>
+                <div class="font-bold text-emerald-400">Pricing</div></div>
+                </div>`
+        },
+        {
+            type: 'graphic_right',
+            title: 'Partnership: Visualization',
+            subtitle: 'A two-way, tightly coupled relationship.',
+            points: [],
+            graphic: `<div class="w-full h-64 relative">
+                <div class="context-box border-green-500 text-green-300 absolute" style="top: 35%; left: 5%;">Team A Context</div>
+                <div class="context-box border-green-500 text-green-300 absolute" style="top: 35%; right: 5%;">Team B Context</div>
+                <svg class="w-full h-full absolute inset-0">
+                    <path d="M 200 128 H 430" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="5,5"/>
+                    <path d="M 210 118 L 420 118" class="arrow" marker-end="none" marker-start="url(#arrowhead)"/>
+                    <path d="M 210 138 L 420 138" class="arrow"/>
+                </svg>
+                <div class="arrow-label" style="top: 45%; left: 45%;">Co-dependent</div>
+            </div>`
+        },
+        {
+            type: 'quiz',
+            title: 'Knowledge Check: Partnership',
+            question: 'When is a Partnership relationship the most appropriate choice?',
+            options: [
+                { text: 'When one team wants to protect its model from another team\'s legacy system.', correct: false, feedback: 'Not quite. That scenario is best handled by an Anticorruption Layer.' },
+                { text: 'When two teams\' success is tightly coupled, and they must coordinate feature releases.', correct: true, feedback: 'Correct! Partnership is for co-dependent teams that succeed or fail together.' },
+                { text: 'When two teams decide integrating isn\'t worth the effort.', correct: false, feedback: 'This describes the Separate Ways pattern, where teams choose not to integrate.' }
+            ]
+        },
+        // SLIDE 31: Shared Kernel
+        {
+            type: 'relationship',
+            pattern: 'Shared Kernel (SK)',
+            color: 'bg-teal-500',
+            description: 'Two teams explicitly agree to share a small, well-defined subset of their model and code (e.g., a library).',
+            when: 'For genuinely common, stable concepts. The shared code is co-owned and changes require consultation.',
+            tradeoffs: '<strong>Pro:</strong> Reduces duplication. <strong>Con:</strong> High coupling. The kernel must be kept <strong class="text-red-400">TINY</strong>. A large shared kernel becomes a mini-monolith.'
+        },
+        {
+            type: 'standard',
+            title: 'Shared Kernel: Use Case',
+            subtitle: 'A financial application with multiple services.',
+            points: [
+                'The <span class="font-bold text-sky-400">Invoicing Context</span>, <span class="font-bold text-emerald-400">Payments Context</span>, and <span class="font-bold text-violet-400">Reporting Context</span> all need to perform calculations with money.',
+                'They decide to create a `Financials.Kernel` library.',
+                'This kernel contains only the essential, stable concepts: `Money`, `Currency`, and `ExchangeRate` value objects.',
+                'Any change to this kernel must be reviewed and agreed upon by all three teams.'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Shared Kernel: Visualization',
+            subtitle: 'An overlapping subset of two models.',
+            points: [],
+            graphic: `<div class="w-full h-80 relative flex justify-center items-center">
+                <div class="w-64 h-64 rounded-full border-2 border-sky-500 flex justify-center items-center text-sky-300 font-bold text-xl absolute" style="left: 20%; clip-path: polygon(0 0, 75% 0, 75% 100%, 0 100%);">Invoicing</div>
+                <div class="w-64 h-64 rounded-full border-2 border-emerald-500 flex justify-center items-center text-emerald-300 font-bold text-xl absolute" style="right: 20%; clip-path: polygon(25% 0, 100% 0, 100% 100%, 25% 100%);">Payments</div>
+                <div class="absolute w-32 h-64 bg-teal-500/30 backdrop-blur-sm text-center flex flex-col justify-center items-center text-teal-200">
+                    <span class="font-bold text-lg">Shared Kernel</span>
+                    <span class="text-sm font-mono mt-2">(Money, Currency)</span>
+                </div>
+            </div>`
+        },
+        {
+            type: 'quiz',
+            title: 'Knowledge Check: Shared Kernel',
+            question: 'What is the most critical rule when implementing a Shared Kernel?',
+            options: [
+                { text: 'It should contain as much shared logic as possible to maximize reuse.', correct: false, feedback: 'This is dangerous! A large Shared Kernel creates a high degree of coupling and can become a bottleneck.' },
+                { text: 'It should only be modified by the most senior (upstream) team.', correct: false, feedback: 'A Shared Kernel is co-owned. Changes must be coordinated and agreed upon by all teams that share it.' },
+                { text: 'It must be kept as small and stable as possible.', correct: true, feedback: 'Yes! The goal is to minimize the coupling surface. The kernel should contain only the absolute essentials.' }
+            ]
+        },
+        // SLIDE 35: Customer-Supplier
+        {
+            type: 'relationship',
+            pattern: 'Customer-Supplier (C/S)',
+            color: 'bg-sky-500',
+            description: 'A classic Upstream/Downstream relationship. The Downstream "Customer" team\'s needs are prioritized by the Upstream "Supplier" team.',
+            when: 'When one team provides a service for another, and there is a clear power dynamic and shared goals.',
+            tradeoffs: '<strong>Pro:</strong> Clear responsibilities. Downstream gets what it needs. <strong>Con:</strong> Upstream development can be constrained by downstream needs.'
+        },
+        {
+            type: 'standard',
+            title: 'Customer-Supplier: Use Case',
+            subtitle: 'An e-commerce site\'s Analytics and Sales teams.',
+            points: [
+                 'The <span class="font-bold text-violet-400">Analytics Context (Downstream)</span> needs to build dashboards on sales data.',
+                 'The <span class="font-bold text-rose-400">Sales Context (Upstream)</span> owns the core sales data and transactions.',
+                 'The Analytics team acts as a "customer", submitting feature requests (e.g., "expose a new `daily_sales_total` endpoint") to the Sales team.',
+                 'The Sales team budgets time to serve their downstream customer.'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Customer-Supplier: Visualization',
+            subtitle: 'A clear upstream/downstream flow with defined priorities.',
+            points: [],
+            graphic: `<div class="w-full h-64 relative">
+                <div class="context-box border-rose-500 text-rose-300 absolute" style="top: 10%; left: 30%;">Sales (Upstream Supplier)</div>
+                <div class="context-box border-violet-500 text-violet-300 absolute" style="top: 60%; left: 30%;">Analytics (Downstream Customer)</div>
+                <svg class="w-full h-full absolute inset-0"><path d="M 330 90 V 160" class="arrow"/></svg>
+                <div class="arrow-label" style="top: 40%; left: 55%;">Feature Requests ↑</div>
+                <div class="arrow-label" style="top: 40%; left: 20%;">↓ Data Flow</div>
+            </div>`
+        },
+        {
+            type: 'quiz',
+            title: 'Knowledge Check: Customer-Supplier',
+            question: 'In a Customer-Supplier relationship, who has more influence over the integration roadmap?',
+            options: [
+                { text: 'The Upstream ("Supplier") team.', correct: false, feedback: 'If the Upstream team has all the power, it leads to a Conformist or ACL relationship, not Customer-Supplier.' },
+                { text: 'Both teams have equal influence.', correct: false, feedback: 'Equal influence is characteristic of a Partnership, not a Customer-Supplier relationship.' },
+                { text: 'The Downstream ("Customer") team.', correct: true, feedback: 'Correct. The downstream team\'s requirements are explicitly planned and prioritized by the upstream team.' }
+            ]
+        },
+        // SLIDE 39: Conformist
+        {
+            type: 'relationship',
+            pattern: 'Conformist (CF)',
+            color: 'bg-yellow-500',
+            description: 'The Downstream team blindly adopts the model of the Upstream team. They have little to no influence.',
+            when: 'When integrating with a huge, unchangeable legacy system or an external service. When the cost of translation is too high.',
+            tradeoffs: '<strong>Pro:</strong> Simplest integration. No translation needed. <strong>Con:</strong> The downstream model is compromised. You are at the mercy of the upstream team.'
+        },
+        {
+            type: 'standard',
+            title: 'Conformist: Use Case',
+            subtitle: 'Integrating with a government tax calculation service.',
+            points: [
+                'Your new <span class="font-bold text-sky-400">E-commerce Context</span> needs to calculate sales tax.',
+                'You integrate with a national <span class="font-bold text-slate-400">Tax Authority API (Upstream)</span>.',
+                'The API\'s model is complex, uses SOAP, and has field names like `TAX_JUR_ID`. You cannot change it.',
+                'Your team decides to <span class="font-bold text-yellow-400">conform</span>: your internal `TaxService` will use the exact same terms and data structures as the government API to avoid complex translation.'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Conformist: Visualization',
+            subtitle: 'The downstream model mimics the upstream model.',
+            points: [],
+            graphic: `<div class="w-full h-80 relative flex flex-col justify-center items-center gap-8">
+                <div class="context-box border-slate-500 text-slate-300">Upstream (e.g., Legacy System)</div>
+                <svg class="w-12 h-12 text-slate-500"><path d="M 12 5 V 19 M 5 12 H 19" class="arrow" /></svg>
+                <div class="context-box border-yellow-500 text-yellow-300">Downstream (Your App)<div class="text-sm mt-2 text-slate-400">(Adopts Upstream Model)</div></div>
+                <div class="arrow-label" style="top: 45%; left: 55%;">Conforms To</div>
+            </div>`
+        },
+         {
+            type: 'quiz',
+            title: 'Knowledge Check: Conformist',
+            question: 'A downstream team chooses the Conformist pattern. What is the biggest risk they accept?',
+            options: [
+                { text: 'They will have to build a complex translation layer.', correct: false, feedback: 'No, the whole point of being a Conformist is to AVOID building a translation layer.' },
+                { text: 'Their own domain model is compromised and constrained by the upstream model.', correct: true, feedback: 'Correct. They sacrifice their model\'s integrity for the simplicity of integration.' },
+                { text: 'They will have a high communication overhead with the upstream team.', correct: false, feedback: 'The Conformist pattern is often chosen when communication is low or non-existent.' }
+            ]
+        },
+        // SLIDE 43: Anticorruption Layer
+        {
+            type: 'relationship',
+            pattern: 'Anticorruption Layer (ACL)',
+            color: 'bg-orange-500',
+            description: 'The Downstream team builds a translation layer that isolates their model from the Upstream model.',
+            when: 'To protect your Core Domain from a messy or incompatible upstream system (e.g., a legacy "Big Ball of Mud").',
+            tradeoffs: '<strong>Pro:</strong> Protects your model\'s integrity and allows it to be designed cleanly. <strong>Con:</strong> Requires effort to build and maintain the translation layer.'
+        },
+        {
+            type: 'standard',
+            title: 'Anticorruption Layer: Use Case',
+            subtitle: 'Modernizing an old manufacturing system.',
+            points: [
+                'A new, clean <span class="font-bold text-emerald-400">Production Scheduling Context</span> is being built.',
+                'It must get data from a 30-year-old <span class="font-bold text-red-400">Mainframe Inventory System (Upstream)</span>.',
+                'The mainframe data is cryptic and poorly structured. Conforming would pollute the new model.',
+                'The team builds an <span class="font-bold text-orange-400">ACL</span> that fetches mainframe data and translates it into clean, domain-rich objects for the new system.'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Anticorruption Layer: Visualization',
+            subtitle: 'A protective translation boundary.',
+            points: [],
+            graphic: `<div class="w-full h-80 relative flex justify-center items-center gap-4">
+                <div class="context-box border-red-500 text-red-300 w-48">Upstream "Big Ball of Mud"</div>
+                <div class="w-2 h-48 bg-orange-500 rounded-full shadow-[0_0_15px_theme(colors.orange.500)] flex flex-col justify-center items-center">
+                    <span class="-rotate-90 text-orange-200 font-bold tracking-widest">ACL</span>
+                </div>
+                <div class="context-box border-emerald-500 text-emerald-300 w-48">Your Clean Downstream Context</div>
+                <div class="arrow-label" style="top: 30%; left: 30%;">Messy Data In</div>
+                <div class="arrow-label" style="top: 60%; left: 55%;">Clean Model Out</div>
+            </div>`
+        },
+        {
+            type: 'quiz',
+            title: 'Knowledge Check: ACL',
+            question: 'Your team is building a new Shipping system (your Core Domain). You must integrate with an old, messy, and undocumented Orders system that you cannot change. Which pattern is most appropriate?',
+            options: [
+                { text: 'Customer-Supplier', correct: false, feedback: 'This requires the upstream team (Orders) to prioritize your needs, which isn\'t possible since you can\'t change their system.' },
+                { text: 'Conformist', correct: false, feedback: 'Conforming would mean adopting the messy model of the Orders system, which would pollute and corrupt your new Core Domain model.' },
+                { text: 'Anticorruption Layer (ACL)', correct: true, feedback: 'Correct! An ACL is the perfect choice to protect your new, clean model by creating a translation layer that isolates it from the upstream mess.' }
+            ]
+        },
+        // SLIDE 47: OHS + PL
+        {
+            type: 'relationship',
+            pattern: 'Open Host Service (OHS) + Published Language (PL)',
+            color: 'bg-blue-500',
+            description: 'The Upstream context offers a well-documented, public API (OHS) using a stable, shared data format (PL), like a defined JSON schema.',
+            when: 'When an upstream service needs to be consumed by many different downstream clients.',
+            tradeoffs: '<strong>Pro:</strong> Enables wide integration. Decouples clients from the host\'s internal model. <strong>Con:</strong> Requires significant effort to design a good, stable public API.'
+        },
+        {
+            type: 'standard',
+            title: 'Open Host + Published Language: Use Case',
+            subtitle: 'A central company-wide User Profile service.',
+            points: [
+                 'The <span class="font-bold text-blue-400">User Profile Context</span> is the single source of truth for all employee data.',
+                 'It exposes an <span class="font-bold">Open Host Service</span> (a REST API) that is stable and versioned.',
+                 'The API communicates using a <span class="font-bold">Published Language</span> (a documented JSON:API schema).',
+                 'Multiple downstream clients (HR App, IT Portal, Mobile Directory) can all integrate without needing custom translators.'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Open Host: Visualization',
+            subtitle: 'One host serving many different clients via a public protocol.',
+            points: [],
+            graphic: `<div class="w-full h-80 relative flex justify-center items-center">
+                <div class="context-box border-blue-500 text-blue-300 absolute" style="top: 35%; left: 5%;">User Profile (OHS)</div>
+                <div class="context-box border-gray-500 text-gray-300 absolute" style="top: 5%; right: 5%;">HR App</div>
+                <div class="context-box border-gray-500 text-gray-300 absolute" style="top: 35%; right: 5%;">IT Portal</div>
+                <div class="context-box border-gray-500 text-gray-300 absolute" style="top: 65%; right: 5%;">Mobile App</div>
+                <svg class="w-full h-full absolute inset-0">
+                    <path d="M 200 128 L 480 50" class="arrow"/>
+                    <path d="M 200 128 L 480 128" class="arrow"/>
+                    <path d="M 200 128 L 480 206" class="arrow"/>
+                </svg>
+                 <div class="arrow-label" style="top: 25%; left: 50%;">Published Language (API)</div>
+            </div>`
+        },
+        {
+            type: 'quiz',
+            title: 'Knowledge Check: Open Host Service',
+            question: 'An Open Host Service is most valuable when...',
+            options: [
+                { text: 'One Bounded Context needs to serve many different consumer contexts with a stable API.', correct: true, feedback: 'Exactly. OHS + PL is the classic pattern for creating a public, stable API for wide consumption.' },
+                { text: 'Two teams are working very closely on a new, innovative feature.', correct: false, feedback: 'Close collaboration on new features suggests a Partnership would be a better fit.' },
+                { text: 'You need to protect your model from a poorly designed external system.', correct: false, feedback: 'This is the job of an Anticorruption Layer, which is built by the consumer, not the provider.' }
+            ]
+        },
+        // SLIDE 51: Separate Ways
+        {
+            type: 'relationship',
+            pattern: 'Separate Ways',
+            color: 'bg-slate-500',
+            description: 'The teams decide that integration is not worth the cost and complexity. They have no connection.',
+            when: 'When the business value of connecting two contexts is negligible. Avoids forced, unnecessary complexity.',
+            tradeoffs: '<strong>Pro:</strong> Maximum autonomy. Simple solution. <strong>Con:</strong> Duplication of data or functionality might occur. Hard to reverse if integration is needed later.'
+        },
+        {
+            type: 'standard',
+            title: 'Separate Ways: Use Case',
+            subtitle: 'An internal company blog and the factory floor control system.',
+            points: [
+                'The <span class="font-bold text-rose-400">Internal Comms Context</span> runs the company blog.',
+                'The <span class="font-bold text-cyan-400">Factory Operations Context</span> manages robotic arms on the assembly line.',
+                'Is there any business requirement for these two systems to be integrated? No.',
+                'Trying to connect them would be a waste of resources. They should be developed and deployed completely independently.'
+            ]
+        },
+        {
+            type: 'graphic_right',
+            title: 'Separate Ways: Visualization',
+            subtitle: 'No connection means no integration overhead.',
+            points: [],
+            graphic: `<div class="w-full h-64 relative flex justify-around items-center">
+                <div class="context-box border-rose-500 text-rose-300">Internal Blog</div>
+                <div class="text-slate-600 text-center">
+                    <h3 class="font-bold text-xl text-slate-400">No Integration Needed</h3>
+                    <p>(A valid strategic choice)</p>
+                </div>
+                <div class="context-box border-cyan-500 text-cyan-300">Factory Controls</div>
+            </div>`
+        },
+        {
+            type: 'quiz',
+            title: 'Knowledge Check: Separate Ways',
+            question: 'When is "Separate Ways" a good strategic decision?',
+            options: [
+                { text: 'When you want to share a common set of value objects between two services.', correct: false, feedback: 'This is a perfect use case for a Shared Kernel, not Separate Ways.' },
+                { text: 'When two core parts of the business must exchange data in real-time.', correct: false, feedback: 'Real-time data exchange between core systems is a critical integration that would likely require a Partnership or Customer-Supplier relationship.' },
+                { text: 'When the cost and complexity of integration far outweigh the business value it would provide.', correct: true, feedback: 'Correct! Not integrating is often the simplest and most pragmatic choice when there\'s no compelling business need.' }
+            ]
+        },
+        // SLIDE 55: Anti-Patterns
+        {
+            type: 'hook',
+            title: 'Context Mapping Anti-Patterns',
+            content: `
+                <div class="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center text-left">
+                    <div class="glass-card p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-red-400 mb-3">Accidental Shared Model</h3>
+                        <p class="text-slate-400">Two contexts directly use the same database tables or shared classes without any formal contract. A change by Team A unexpectedly breaks Team B.</p>
+                        <p class="font-semibold text-gray-200 mt-4">Symptom: <span class="font-normal text-slate-400">"We can't change the User table because the Reporting team also uses it, and we don't know how."</span></p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-red-400 mb-3">Muddy Monolith</h3>
+                        <p class="text-slate-400">The entire system is treated as a single Bounded Context, but in reality, multiple conflicting models and languages exist within it, creating a "Big Ball of Mud".</p>
+                        <p class="font-semibold text-gray-200 mt-4">Symptom: <span class="font-normal text-slate-400">"To add a feature, we have to modify 15 different files across the entire codebase and coordinate with 4 other developers."</span></p>
+                    </div>
+                </div>
+            `
+        },
+        // SECTION 5
+        {
+            type: 'section_title',
+            section: 'PART V',
+            title: 'Application & Lab'
+        },
+        // SLIDE 58: Combined Lab Slide
+        {
+            type: 'lab_assignment',
+            title: 'Mini-Lab Assignment (12-15 minutes)',
+            scenarioTitle: 'Scenario: "Campus Ticketing"',
+            scenarioText: 'You are designing a new "Campus Ticketing" platform. It sells tickets for various university events (concerts, sports, guest lectures). Consider the different business capabilities involved.',
+            capabilities: [
+                'Ticketing (buying, reserving)',
+                'Payments (credit card, student accounts)',
+                'Identity & Access (students, faculty, public)',
+                'Reporting (sales, attendance)',
+                'Email/Notifications',
+                'Integration with a 3rd-party, legacy Accounting system',
+                'A mobile app for viewing tickets'
+            ],
+            taskTitle: 'Your Task (Teams of 3-4)',
+            tasks: [
+                '<strong>Identify & Name:</strong> Brainstorm and name 5-7 potential Bounded Contexts.',
+                '<strong>Draw Flows:</strong> Draw Upstream/Downstream arrows between contexts.',
+                '<strong>Label Relationships:</strong> Label each integration with a relationship pattern.',
+                '<strong>Mark a Contract:</strong> Choose the Accounting integration and decide: <strong>ACL</strong> or <strong>Conformist</strong>? Justify your choice.'
+            ],
+            deliverableTitle: 'Deliverable',
+            deliverable: 'One image of your board with a legend. Be prepared to explain your choices.'
+        },
+        // SLIDE 59: Key Takeaways (replaces Q&A and Debrief)
+        {
+            type: 'standard',
+            title: 'Key Takeaways',
+            subtitle: 'What to remember from today\'s session.',
+            points: [
+                '<strong>Models are contextual.</strong> A <span class="text-indigo-400">Bounded Context</span> protects a model\'s integrity and creates a safe space for development.',
+                '<strong>Language is design.</strong> The <span class="text-amber-300">Ubiquitous Language</span> is a core asset that aligns the team and reveals the domain.',
+                '<strong>Integrate deliberately.</strong> Use a <span class="text-cyan-400">Context Map</span> to make conscious, strategic decisions about how your systems and teams interact.',
+                '<strong>DDD is a socio-technical strategy.</strong> It\'s as much about team communication and organization as it is about code.'
+            ]
+        }
+    ];
+
+    const presentationContainer = document.getElementById('presentation-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const slideCounter = document.getElementById('slide-counter');
+    const progressBar = document.getElementById('progress-bar');
+    let currentSlide = 0;
+    let slides = [];
+
+    function createSlide(slideData, index) {
+        const slideEl = document.createElement('div');
+        slideEl.className = `slide p-8 flex-col items-center justify-center text-slate-800`;
+        slideEl.style.maxWidth = '1200px';
+        slideEl.style.maxHeight = '750px';
+        slideEl.style.aspectRatio = '16/10';
+
+        switch (slideData.type) {
+            case 'section_title':
+                slideEl.innerHTML = `
+                    <div class="text-center w-full">
+                         <p class="text-2xl font-bold text-indigo-400 mb-4 tracking-widest">${slideData.section}</p>
+                         <h2 class="text-6xl font-black tracking-tight text-gray-200">${slideData.title}</h2>
+                         <div class="w-24 h-1 bg-gradient-to-r from-purple-400 to-cyan-400 mx-auto mt-6 rounded-full"></div>
+                    </div>
+                `;
+                break;
+            case 'title':
+                slideEl.innerHTML = `
+                    <div class="text-center">
+                        <h1 class="text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400">${slideData.title}</h1>
+                        <p class="mt-4 text-4xl font-semibold text-slate-300">${slideData.subtitle}</p>
+                        ${slideData.author ? `<p class="mt-12 text-lg text-slate-400">${slideData.author}</p>` : ''}
+                    </div>
+                `;
+                break;
+            case 'hook':
+                slideEl.innerHTML = `
+                    <h2 class="text-4xl font-bold mb-8 text-center text-gray-200">${slideData.title}</h2>
+                    ${slideData.content}
+                `;
+                break;
+            case 'standard':
+                let pointsHtml = slideData.points.map(point => `<li class="mb-4 text-2xl text-slate-300 leading-relaxed">${point}</li>`).join('');
+                slideEl.innerHTML = `
+                    <div class="w-full px-12">
+                        <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
+                        ${slideData.subtitle ? `<p class="text-2xl text-slate-400 mb-10">${slideData.subtitle}</p>` : ''}
+                        <ul class="list-disc pl-8 space-y-4 marker:text-indigo-400">
+                            ${pointsHtml}
+                        </ul>
+                    </div>
+                `;
+                break;
+            case 'objectives':
+                let objectivesHtml = slideData.objectives.map(obj => `
+                    <li class="flex items-start">
+                        <svg class="h-8 w-8 text-emerald-400 mr-4 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="text-xl text-slate-300">${obj}</span>
+                    </li>
+                `).join('');
+                 slideEl.innerHTML = `
+                    <div class="w-full px-12">
+                        <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
+                        <p class="text-2xl text-slate-400 mb-10">${slideData.subtitle}</p>
+                        <ul class="space-y-5">
+                           ${objectivesHtml}
+                        </ul>
+                    </div>
+                `;
+                break;
+            case 'graphic_right':
+            case 'graphic_left':
+                 let contentPointsHtml = slideData.points.map(point => `<li class="text-xl mb-3 text-slate-300 leading-relaxed">${point}</li>`).join('');
+                 let prosConsHtml = '';
+                 if(slideData.pros || slideData.cons) {
+                     prosConsHtml = `
+                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-bold text-emerald-400">Pros:</h4>
+                                <p class="text-slate-400">${slideData.pros}</p>
+                            </div>
+                             <div>
+                                <h4 class="font-bold text-red-400">Cons:</h4>
+                                <p class="text-slate-400">${slideData.cons}</p>
+                            </div>
+                        </div>
+                     `
+                 }
+                 const graphicOrder = slideData.type === 'graphic_right' ? 'md:flex-row' : 'md:flex-row-reverse';
+                 slideEl.innerHTML = `
+                    <div class="w-full h-full flex flex-col ${graphicOrder} gap-8 p-8 items-center">
+                        <div class="w-full md:w-3/5">
+                             <h2 class="text-4xl font-extrabold mb-2 text-gray-200">${slideData.title}</h2>
+                             ${slideData.subtitle ? `<p class="text-xl text-slate-400 mb-6">${slideData.subtitle}</p>` : ''}
+                             <ul class="list-disc pl-6 space-y-2 marker:text-indigo-400">
+                                ${contentPointsHtml}
+                             </ul>
+                             ${prosConsHtml}
+                        </div>
+                        <div class="w-full md:w-2/5 flex items-center justify-center p-4">
+                            ${slideData.graphic}
+                        </div>
+                    </div>
+                 `;
+                break;
+             case 'timeline':
+                slideEl.innerHTML = `
+                    <h2 class="text-5xl font-extrabold mb-10 text-center text-gray-200">${slideData.title}</h2>
+                    <div class="w-full max-w-5xl flex items-center justify-center relative py-16">
+                        <div class="absolute w-full h-1 bg-slate-700 rounded-full"></div>
+                        <div class="absolute w-full h-1 bg-gradient-to-r from-slate-500 to-indigo-500 rounded-full" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);"></div>
+
+                        <div class="relative flex flex-col items-center">
+                            <div class="w-6 h-6 bg-slate-500 rounded-full z-10 border-4 border-slate-900"></div>
+                            <div class="absolute top-10 text-center w-64 glass-card p-4 rounded-lg">
+                                <h3 class="font-bold text-lg text-gray-300">Early Days: Technical Slicing</h3>
+                                <p class="text-sm text-slate-400 mt-1">Group code by layers: UI, Business, Data. Leads to tight coupling.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow text-center mx-8">
+                           <svg class="w-24 h-24 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                           <p class="text-sm text-slate-400 -mt-4">Complexity Grows</p>
+                        </div>
+
+                        <div class="relative flex flex-col items-center">
+                            <div class="w-8 h-8 bg-indigo-500 rounded-full z-10 ring-4 ring-indigo-500/30 border-4 border-slate-900"></div>
+                            <div class="absolute top-10 text-center w-64 glass-card p-4 rounded-lg border-indigo-500 border">
+                                <h3 class="font-bold text-lg text-indigo-300">Modern DDD: Domain-First</h3>
+                                <p class="text-sm text-slate-400 mt-1">Group code by business capability. Promotes autonomy and clear ownership.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+            case 'table':
+                let headersHtml = slideData.headers.map(h => `<th class="p-4 text-left font-bold text-slate-300">${h}</th>`).join('');
+                let rowsHtml = slideData.rows.map(row => `
+                    <tr class="border-t border-slate-700">
+                        ${row.map(cell => `<td class="p-4 text-slate-400 align-top">${cell}</td>`).join('')}
+                    </tr>
+                `).join('');
+                slideEl.innerHTML = `
+                    <div class="w-full px-12">
+                        <h2 class="text-5xl font-extrabold mb-8 text-gray-200">${slideData.title}</h2>
+                        <div class="glass-card rounded-lg overflow-hidden">
+                            <table class="w-full table-auto text-lg">
+                                <thead>
+                                    <tr class="bg-slate-800/80">
+                                        ${headersHtml}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${rowsHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                break;
+            case 'context_map_simple':
+                slideEl.innerHTML = `
+                    <h2 class="text-4xl font-bold mb-8 text-center text-gray-200">${slideData.title}</h2>
+                    <div id="simple-map-container" class="relative w-full max-w-4xl h-96">
+                        <!-- Contexts -->
+                        <div id="sales" class="context-box border-sky-500 text-sky-300 absolute" style="top: 20%; left: 10%;">Sales</div>
+                        <div id="shipping" class="context-box border-amber-500 text-amber-300 absolute" style="top: 50%; left: 40%;">Shipping</div>
+                        <div id="support" class="context-box border-teal-500 text-teal-300 absolute" style="top: 20%; left: 70%;">Support</div>
+                    </div>
+                    <div class="mt-6 text-center text-slate-400">
+                        <strong>Upstream (U):</strong> The context that influences or provides a service. <br>
+                        <strong>Downstream (D):</strong> The context that is influenced or consumes a service.
+                    </div>
+                `;
+                break;
+            case 'legend':
+                slideEl.innerHTML = `
+                    <h2 class="text-4xl font-bold mb-6 text-center text-gray-200">${slideData.title}</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 p-8">
+                        <div class="legend-item"><div class="legend-icon bg-green-500">P</div><strong class="text-gray-200">Partnership</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-teal-500">SK</div><strong class="text-gray-200">Shared Kernel</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-sky-500">C/S</div><strong class="text-gray-200">Customer-Supplier</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-yellow-500">CF</div><strong class="text-gray-200">Conformist</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-orange-500">ACL</div><strong class="text-gray-200">Anticorruption Layer</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-blue-500">OHS</div><strong class="text-gray-200">Open Host Service</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-violet-500">PL</div><strong class="text-gray-200">Published Language</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-slate-500">SW</div><strong class="text-gray-200">Separate Ways</strong></div>
+                    </div>
+                `;
+                break;
+            case 'relationship':
+                slideEl.innerHTML = `
+                    <div class="w-full px-12 text-center">
+                        <div class="inline-flex items-center mb-6">
+                            <div class="legend-icon text-2xl ${slideData.color}">${
+                                slideData.pattern === 'Separate Ways' 
+                                ? 'SW' 
+                                : slideData.pattern.match(/\((.*?)\)/)?.[1] || slideData.pattern.charAt(0)
+                            }</div>
+                            <h2 class="text-5xl font-extrabold text-gray-200">${slideData.pattern}</h2>
+                        </div>
+                        <p class="text-2xl text-slate-400 max-w-4xl mx-auto mb-10">${slideData.description}</p>
+                        <div class="grid md:grid-cols-2 gap-8 text-left">
+                            <div class="glass-card p-6 rounded-lg">
+                                <h3 class="font-bold text-xl mb-2 text-sky-400">When to Use It:</h3>
+                                <p class="text-lg text-slate-300">${slideData.when}</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-lg">
+                                <h3 class="font-bold text-xl mb-2 text-gray-200">Trade-offs:</h3>
+                                <p class="text-lg text-slate-300">${slideData.tradeoffs}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+            case 'quiz':
+                let optionsHtml = slideData.options.map((opt, i) => `
+                    <button class="quiz-option w-full text-left p-4 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-lg" data-correct="${opt.correct}" data-feedback="${opt.feedback}">
+                        <span class="font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${opt.text}
+                    </button>
+                `).join('');
+                slideEl.innerHTML = `
+                    <div class="w-full max-w-4xl text-center">
+                         <h2 class="text-4xl font-bold mb-4 text-gray-200">${slideData.title}</h2>
+                         <p class="text-2xl text-slate-300 mb-8">${slideData.question}</p>
+                         <div class="quiz-options-container space-y-4 mb-6">
+                            ${optionsHtml}
+                         </div>
+                         <div class="feedback-container h-24 text-lg p-4 rounded-lg opacity-0"></div>
+                    </div>
+                `;
+                break;
+            case 'lab_assignment':
+                let capabilitiesHtml = slideData.capabilities.map(cap => `<li>${cap}</li>`).join('');
+                let labTasksHtml = slideData.tasks.map(task => `<li class="flex items-start text-lg mb-3"><svg class="w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg><span>${task}</span></li>`).join('');
+
+                slideEl.innerHTML = `
+                    <div class="w-full px-8">
+                        <h2 class="text-5xl font-extrabold mb-8 text-center text-gray-200">${slideData.title}</h2>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="glass-card p-6 rounded-lg border-l-4 border-indigo-500">
+                                <h3 class="text-3xl font-bold text-indigo-300 mb-4">${slideData.scenarioTitle}</h3>
+                                <p class="text-lg text-slate-300 mb-4">${slideData.scenarioText}</p>
+                                <strong class="block mb-2 text-indigo-300">Potential capabilities:</strong>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-400 text-sm">
+                                    ${capabilitiesHtml}
+                                </ul>
+                            </div>
+                            <div class="glass-card p-6 rounded-lg border-l-4 border-cyan-500">
+                                 <h3 class="text-3xl font-bold text-cyan-300 mb-4">${slideData.taskTitle}</h3>
+                                 <ul class="space-y-3 text-slate-300">
+                                    ${labTasksHtml}
+                                 </ul>
+                                 <hr class="border-slate-700 my-4">
+                                 <h3 class="text-3xl font-bold text-gray-200 mb-2">${slideData.deliverableTitle}</h3>
+                                 <p class="text-lg text-slate-300">${slideData.deliverable}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+        }
+
+        return slideEl;
+    }
+    
+    function drawSimpleMap() {
+        const container = document.getElementById('simple-map-container');
+        if (!container) return;
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'absolute inset-0 w-full h-full');
+        container.appendChild(svg);
+        
+        setTimeout(() => {
+            const existingSvg = container.querySelector('svg');
+            if (existingSvg) existingSvg.innerHTML = '';
+             
+             const from1 = document.getElementById('sales');
+             const to1 = document.getElementById('shipping');
+             const from2 = document.getElementById('shipping');
+             const to2 = document.getElementById('support');
+             
+             if(from1 && to1) {
+                const p1 = createArrowPath(from1, to1);
+                existingSvg.appendChild(p1.arrow);
+                container.appendChild(p1.label);
+             }
+             if(from2 && to2) {
+                const p2 = createArrowPath(from2, to2);
+                existingSvg.appendChild(p2.arrow);
+                container.appendChild(p2.label);
+             }
+        }, 50); // a slight delay to ensure DOM is ready
+    }
+    
+    function createArrowPath(fromEl, toEl) {
+        const container = fromEl.parentElement;
+        const fromRect = fromEl.getBoundingClientRect();
+        const toRect = toEl.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        const fromCenterX = (fromRect.left - containerRect.left) + fromRect.width / 2;
+        const fromCenterY = (fromRect.top - containerRect.top) + fromRect.height / 2;
+        const toCenterX = (toRect.left - containerRect.left) + toRect.width / 2;
+        const toCenterY = (toRect.top - containerRect.top) + toRect.height / 2;
+
+        let startX = fromCenterX, startY = fromCenterY, endX = toCenterX, endY = toCenterY;
+
+        // Calculate intersection point
+        const dx = toCenterX - fromCenterX;
+        const dy = toCenterY - fromCenterY;
+        const angle = Math.atan2(dy, dx);
+        
+        startX = fromCenterX + (fromRect.width / 2) * Math.cos(angle);
+        startY = fromCenterY + (fromRect.height / 2) * Math.sin(angle);
+        
+        // This is a simplification; a true intersection with a rect is more complex
+        // For simplicity, let's connect from edge to edge based on general direction
+        if (dx > Math.abs(dy)) { // more horizontal
+            startX = fromRect.right - containerRect.left;
+            endX = toRect.left - containerRect.left;
+            startY = fromCenterY; endY = toCenterY;
+        } else { // more vertical
+            startX = fromCenterX; endX = toCenterX;
+            if (dy > 0) {
+                 startY = fromRect.bottom - containerRect.top;
+                 endY = toRect.top - containerRect.top;
+            } else {
+                 startY = fromRect.top - containerRect.top;
+                 endY = toRect.bottom - containerRect.top;
+            }
+        }
+
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', 'arrow');
+        path.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
+        
+        const label = document.createElement('div');
+        label.className = 'arrow-label';
+        label.innerHTML = 'U <span class="text-cyan-300">→</span> D';
+        label.style.left = `${(startX + endX) / 2 - 20}px`;
+        label.style.top = `${(startY + endY) / 2 - 12}px`;
+
+        return {arrow: path, label};
+    }
+
+    function handleQuizInteraction(e) {
+        const option = e.target.closest('.quiz-option');
+        if (!option) return;
+
+        const container = option.closest('.quiz-options-container');
+        const options = container.querySelectorAll('.quiz-option');
+        const feedbackContainer = container.nextElementSibling;
+        
+        if (option.disabled) return;
+
+        options.forEach(opt => {
+            opt.disabled = true;
+            if (opt.dataset.correct === 'true') {
+                opt.classList.add('correct');
+            }
+        });
+        
+        if (option.dataset.correct !== 'true') {
+            option.classList.add('incorrect');
+        }
+
+        feedbackContainer.innerHTML = option.dataset.feedback;
+        feedbackContainer.style.opacity = '1';
+
+        if(option.dataset.correct === 'true') {
+            feedbackContainer.classList.add('bg-emerald-900/50', 'text-emerald-300');
+        } else {
+            feedbackContainer.classList.add('bg-red-900/50', 'text-red-300');
+        }
+        
+        setTimeout(() => {
+            nextBtn.click();
+        }, 3000);
+    }
+
+    function renderSlides() {
+        presentationContainer.innerHTML = '';
+        slides = slidesData.map((slideData, index) => {
+            const slide = createSlide(slideData, index);
+            if (slideData.type === 'quiz') {
+                const optionsContainer = slide.querySelector('.quiz-options-container');
+                optionsContainer.addEventListener('click', handleQuizInteraction);
+            }
+            presentationContainer.appendChild(slide);
+            return slide;
+        });
+    }
+
+    let previousSlide = 0;
+    function showSlide(index) {
+        slides[previousSlide]?.classList.remove('active');
+        slides[previousSlide]?.classList.add('exit');
+        
+        slides[index]?.classList.add('active');
+        slides[index]?.classList.remove('exit');
+
+        previousSlide = index;
+        currentSlide = index;
+
+        slideCounter.textContent = `${index + 1} / ${slidesData.length}`;
+        progressBar.style.width = `${((index + 1) / slidesData.length) * 100}%`;
+        updateNavButtons();
+        
+        if (slidesData[index].type === 'context_map_simple') {
+            drawSimpleMap();
+        }
+    }
+
+    function updateNavButtons() {
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slidesData.length - 1;
+    }
+    
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            showSlide(currentSlide - 1);
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < slidesData.length - 1) {
+            showSlide(currentSlide + 1);
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            // Do not advance if a quiz is unanswered
+            const currentSlideData = slidesData[currentSlide];
+            const currentSlideEl = slides[currentSlide];
+            if(currentSlideData.type === 'quiz') {
+                const firstOption = currentSlideEl.querySelector('.quiz-option');
+                if(!firstOption || !firstOption.disabled) {
+                    return;
+                }
+            }
+            nextBtn.click();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevBtn.click();
+        }
+    });
+
+    // Initial render
+    renderSlides();
+    showSlide(0);
+
+</script>
+</body>
+</html>
+
+

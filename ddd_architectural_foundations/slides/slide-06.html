@@ -1,0 +1,32 @@
+<div class="slide active">
+    <div class="slide-content">
+        <h2 class="text-4xl font-bold mb-8 text-center text-indigo-300">DDD Recap: Ubiquitous Language</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-4 text-yellow-400">What is it?</h3>
+                <p class="text-gray-300 mb-4">A common vocabulary shared between developers and domain experts. Everyone speaks the same language about the business.</p>
+                <div class="bg-gray-800 p-4 rounded-lg border border-indigo-500">
+                    <p class="text-indigo-300 font-semibold">Key Rule:</p>
+                    <p class="text-gray-300">If domain experts don't use a term, neither should your code.</p>
+                </div>
+            </div>
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-4 text-red-400">❌ Bad Example</h3>
+                <div class="bg-red-900/20 p-4 rounded-lg mb-4">
+                    <code class="text-red-300">class DataProcessor {<br/>
+                    &nbsp;&nbsp;processUserData(input)<br/>
+                    }</code>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-green-400">✅ Good Example</h3>
+                <div class="bg-green-900/20 p-4 rounded-lg">
+                    <code class="text-green-300">class OrderProcessor {<br/>
+                    &nbsp;&nbsp;processCustomerOrder(order)<br/>
+                    }</code>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 text-center">
+            <p class="text-xl text-gray-300">In <strong class="text-yellow-400">Howestprime</strong> project: Use terms like "Visitor", "Ticket", "Movie" - not "User", "Item", "Container".</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Modular Monolith Architecture Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        .content-section {
+            display: none;
+            border-left: 3px solid #059669; /* Tailwind emerald-600 */
+        }
+        .active {
+            display: block;
+        }
+        .star-rating .filled {
+            color: #f59e0b; /* Tailwind amber-500 */
+        }
+        .module {
+            border: 2px solid #059669;
+            padding: 1rem;
+            margin: 0.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            background-color: #ecfdf5;
+            color: #047857;
+            flex-grow: 1;
+        }
+        .module-arrow {
+            font-size: 2rem;
+            color: #059669;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Title -->
+        <header class="text-center mb-12">
+            <a href="../architectural_styles.html" class="inline-flex items-center text-emerald-600 mb-4 hover:text-emerald-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Architecture Styles
+            </a>
+            <h1 class="text-4xl md:text-5xl font-bold text-emerald-700">The Modular Monolith Architecture</h1>
+            <p class="text-lg text-slate-600 mt-2">A Guide to Domain-Partitioned Monolithic Systems</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Navigation -->
+            <nav class="lg:col-span-3">
+                <ul class="sticky top-8 space-y-2">
+                    <li><a href="#goal" class="nav-link block p-3 rounded-lg font-semibold bg-white shadow-sm text-emerald-600 hover:bg-emerald-100">Goal</a></li>
+                    <li><a href="#description" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Description</a></li>
+                    <li><a href="#properties" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Properties</a></li>
+                    <li><a href="#core-concept" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Core Concept</a></li>
+                    <li><a href="#details" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Details</a></li>
+                    <li><a href="#scorecard" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Scorecard</a></li>
+                    <li><a href="#deploy" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Deploy</a></li>
+                    <li><a href="#teams" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Teams</a></li>
+                    <li><a href="#usage" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Usage Guide</a></li>
+                    <li><a href="#usecase" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-emerald-100">Usecase Example</a></li>
+                </ul>
+            </nav>
+
+            <!-- Content -->
+            <main class="lg:col-span-9 space-y-16">
+                
+                <section id="goal" class="content-section active bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Goal</h2>
+                    <p class="text-lg text-slate-700">
+                        To build a monolithic, single-deployment application that is internally structured around business domains. The aim is to achieve high modularity and clear boundaries within a monolith, making it easier to develop, maintain, and potentially evolve into microservices later.
+                    </p>
+                </section>
+
+                <section id="description" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Description</h2>
+                    <p class="text-slate-700 mb-4">
+                        A modular monolith is a <strong class="text-emerald-600">domain-partitioned</strong> architecture deployed as a single unit. Unlike the traditional layered architecture, which is partitioned by technical concerns (e.g., UI, business), this style organizes functionality into independent modules that represent specific business domains (e.g., Ordering, Inventory, Payment). It has gained significant popularity with the rise of Domain-Driven Design (DDD).
+                    </p>
+                </section>
+
+                <section id="properties" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Properties</h2>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li><strong>Domain Partitioned:</strong> The primary organizing principle is the business domain, not technical layers.</li>
+                        <li><strong>Monolithic Deployment:</strong> The entire application is packaged and deployed as a single artifact (e.g., WAR, EAR, single assembly).</li>
+                        <li><strong>Single Quantum:</strong> Because it's a monolith, the architectural quantum is 1.</li>
+                        <li><strong>High Modularity:</strong> Aims for well-defined, independent modules with clear boundaries and minimal coupling.</li>
+                    </ul>
+                </section>
+                
+                <section id="core-concept" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Core Concept: Domain Modules</h2>
+                    <p class="text-slate-700 mb-6">The system is composed of modules, each representing a business domain or subdomain. These modules can be structured in two primary ways:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-semibold text-lg text-center mb-2">Monolithic Structure</h3>
+                            <div class="bg-slate-100 p-4 rounded-lg text-center">
+                                <p class="text-sm text-slate-600 mb-4">All modules exist in a single source-code repository, separated by namespaces or directory structures.</p>
+                                <div class="font-mono text-xs bg-slate-200 p-2 rounded">/com/app/<strong>ordermanagement</strong>/</div>
+                                <div class="font-mono text-xs bg-slate-200 p-2 rounded mt-1">/com/app/<strong>paymentprocessing</strong>/</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg text-center mb-2">Modular Structure</h3>
+                            <div class="bg-slate-100 p-4 rounded-lg text-center">
+                                <p class="text-sm text-slate-600 mb-4">Each module is a self-contained artifact (e.g., JAR, DLL) combined into a single unit at deployment.</p>
+                                <div class="font-mono text-xs bg-slate-200 p-2 rounded">order-management.jar</div>
+                                <div class="font-mono text-xs bg-slate-200 p-2 rounded mt-1">payment-processing.jar</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="details" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">In-Depth Details</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Module Communication</h3>
+                            <p class="text-slate-700 mb-2">While minimal communication is ideal, it's often necessary. There are two main approaches:</p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                <li><strong>Peer-to-Peer:</strong> A class in one module directly calls a class in another. Simple, but risks creating a tangled "Big Ball of Mud."</li>
+                                <li><strong>Mediator:</strong> A central component orchestrates requests between modules, decoupling them from each other but coupling them to the mediator.</li>
+                            </ul>
+                        </div>
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Common Risks</h3>
+                             <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                <li><strong>Growing Too Big:</strong> Like any monolith, it can become too large to maintain, test, and deploy effectively.</li>
+                                <li><strong>Excessive Code Reuse:</strong> Too much shared code can blur module boundaries, leading to an unstructured monolith.</li>
+                                <li><strong>High Inter-Module Communication:</strong> If modules are too chatty, it might indicate poorly defined domain boundaries.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Governance</h3>
+                            <p class="text-slate-700">Governance is crucial to maintain module boundaries. Fitness functions can be used to automatically check for illegal dependencies between modules or ensure all code belongs to a defined module.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="scorecard" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-6">Architecture Scorecard</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Characteristic</th>
+                                    <th class="p-3 font-semibold text-center">Rating</th>
+                                    <th class="p-3 font-semibold">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3 font-bold text-emerald-600" colspan="3">Overall</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Overall Cost</td>
+                                    <td class="p-3 text-center text-2xl font-bold text-green-600">$</td>
+                                    <td class="p-3">Low cost to build and maintain due to its monolithic nature.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-emerald-600" colspan="3">Structural</td></tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Modularity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">Very high. The core strength of this architecture.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Simplicity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★</span><span class="text-slate-300">★</span></td>
+                                    <td class="p-3">Simpler than distributed styles, easy to understand.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-emerald-600" colspan="3">Engineering</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Testability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★</span><span class="text-slate-300">★★★</span></td>
+                                    <td class="p-3">Better than layered due to modularity, but still requires full regression tests.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Deployability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★</span><span class="text-slate-300">★★★</span></td>
+                                    <td class="p-3">Slightly better than layered, but still a high-risk monolithic deployment.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-emerald-600" colspan="3">Operational</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Scalability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Poor. The entire monolithic application must be scaled together.</td>
+                                </tr>
+                                 <tr class="border-b">
+                                    <td class="p-3">Elasticity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Very low, as it cannot take advantage of on-demand provisioning.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="deploy" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Deployment & Data</h2>
+                    <p class="text-slate-700 mb-6">
+                        As a monolith, it's a single deployment unit. This simplicity extends to the database, which is often also monolithic. However, independent modules can justify their own separate databases.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                         <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Monolithic Database</h3>
+                            <div class="flex flex-wrap justify-center p-2 mb-2 bg-white rounded border border-slate-300">
+                                <div class="module !p-2 !m-1">Module A</div><div class="module !p-2 !m-1">Module B</div><div class="module !p-2 !m-1">Module C</div>
+                            </div>
+                            <div class="module-arrow text-3xl">&darr;</div>
+                            <div class="border-2 border-slate-400 rounded p-2 bg-white font-semibold">Single Database</div>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Database Per Module</h3>
+                            <div class="flex flex-wrap justify-center p-2 mb-2 bg-white rounded border border-slate-300">
+                                <div class="module !p-2 !m-1">Module A</div><div class="module !p-2 !m-1">Module B</div><div class="module !p-2 !m-1">Module C</div>
+                            </div>
+                             <div class="module-arrow text-3xl">&darr;</div>
+                             <div class="flex justify-around">
+                                <div class="border-2 border-slate-400 rounded p-2 bg-white font-semibold text-sm">DB A</div>
+                                <div class="border-2 border-slate-400 rounded p-2 bg-white font-semibold text-sm">DB B</div>
+                                 <div class="border-2 border-slate-400 rounded p-2 bg-white font-semibold text-sm">DB C</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="teams" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Team Topology</h2>
+                    <p class="text-slate-700 mb-6">
+                        This architecture works best when teams are aligned by domain, as it mirrors the structure of the software itself.
+                    </p>
+                    <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-200">
+                        <h3 class="font-bold text-xl text-emerald-800 mb-2">Good Fit: Domain-Aligned Teams</h3>
+                        <p class="text-emerald-700">Cross-functional teams that specialize in a business domain (e.g., the "Payments Team") can work on their module from end-to-end with minimal coordination with other teams.</p>
+                    </div>
+                     <div class="mt-4 bg-red-50 p-4 rounded-lg border border-red-200">
+                        <h3 class="font-bold text-xl text-red-800 mb-2">Poor Fit: Technically-Aligned Teams</h3>
+                        <p class="text-red-700">Teams organized by technical skill (UI team, backend team, DB team) are a bad match, as a single feature requires complex coordination across all teams.</p>
+                    </div>
+                </section>
+
+                <section id="usage" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-6">Usage Guide</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-xl text-green-800 mb-2">When to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-green-700">
+                                <li>As a starting point for new systems with an unclear future direction.</li>
+                                <li>For medium-sized applications where domain complexity is the main driver.</li>
+                                <li>When using Domain-Driven Design (DDD).</li>
+                                <li>When teams are organized around business domains.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h3 class="font-bold text-xl text-red-800 mb-2">When Not to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-red-700">
+                                <li>For systems requiring high scalability, elasticity, or fault tolerance.</li>
+                                <li>When changes are primarily technical (e.g., swapping a UI framework), as this would impact every module.</li>
+                                <li>For very small, simple applications where a layered approach is sufficient.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="usecase" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-emerald-600 mb-4">Usecase Example: EasyMeals Delivery</h2>
+                    <p class="text-slate-700 mb-6">A small restaurant delivery service is a perfect fit. The system can be divided into clear business domains, and the operational needs (scalability, etc.) are low.</p>
+                     <div class="bg-slate-50 border rounded-lg p-4">
+                        <div class="flex flex-wrap justify-center">
+                            <div class="module">Place Order</div>
+                            <div class="module">Payment</div>
+                            <div class="module">Prepare Order</div>
+                            <div class="module">Delivery</div>
+                            <div class="module">Recipes</div>
+                            <div class="module">Inventory</div>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-4 text-center">Each box represents an independent module within the single monolithic application. For example, the "Place Order" module communicates with "Prepare Order" to send a finalized order to the kitchen staff.</p>
+                     </div>
+                </section>
+                
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                links.forEach(link => {
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('bg-white', 'shadow-sm', 'text-emerald-600');
+                        link.classList.remove('text-slate-700');
+                    } else {
+                        link.classList.remove('bg-white', 'shadow-sm', 'text-emerald-600');
+                        link.classList.add('text-slate-700');
+                    }
+                });
+            }
+
+            function showSection(targetId) {
+                 sections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                     // Scroll to the top of the main content area for better visibility on mobile
+                    document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Set initial state
+            updateActiveLink('goal');
+            showSection('goal');
+        });
+    </script>
+
+</body>
+</html>

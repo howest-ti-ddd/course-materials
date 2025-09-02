@@ -1,0 +1,23 @@
+<div class="slide active">
+        <div class="slide-content wide">
+            <h2 class="text-5xl font-bold mb-8 text-center text-indigo-300">Microkernel: Trade-offs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-green-400">When to Use</h3>
+                    <ul class="list-disc list-inside space-y-3 text-xl text-gray-300">
+                        <li>Products needing third-party extensibility (VS Code, Jenkins, Eclipse).</li>
+                        <li>Systems with a generic core and highly variable rules (tax software, insurance claims).</li>
+                        <li>Applications where features need to be enabled/disabled at runtime.</li>
+                    </ul>
+                </div>
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-red-400">When Not to Use</h3>
+                     <ul class="list-disc list-inside space-y-3 text-xl text-gray-300">
+                        <li>When the "core" functionality is not stable and changes often.</li>
+                        <li>When plug-ins need to communicate directly with each other.</li>
+                        <li>Simple apps that don't need high extensibility.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>

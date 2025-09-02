@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: The Layered Architecture Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        .info-card {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .content-section {
+            display: none;
+            border-left: 3px solid #6366f1; /* Tailwind indigo-500 */
+        }
+        .active {
+            display: block;
+        }
+        .star-rating .filled {
+            color: #f59e0b; /* Tailwind amber-500 */
+        }
+        .layer {
+            border: 2px solid #6366f1;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            background-color: #eef2ff;
+            color: #4338ca;
+        }
+        .layer-arrow {
+            font-size: 2rem;
+            color: #6366f1;
+            line-height: 1;
+            margin: -0.5rem 0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        .tag-green {
+            background-color: #dcfce7; /* green-100 */
+            color: #166534; /* green-800 */
+        }
+        .tag-red {
+            background-color: #fee2e2; /* red-100 */
+            color: #991b1b; /* red-800 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Title -->
+        <header class="text-center mb-12">
+            <a href="../architectural_styles.html" class="inline-flex items-center text-indigo-600 mb-4 hover:text-indigo-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Architecture Styles
+            </a>
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-700">The Layered Architecture Style</h1>
+            <p class="text-lg text-slate-600 mt-2">An Interactive Guide to the N-Tiered Pattern</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Navigation -->
+            <nav class="lg:col-span-3">
+                <ul class="sticky top-8 space-y-2">
+                    <li><a href="#goal" class="nav-link block p-3 rounded-lg font-semibold bg-white shadow-sm text-indigo-600 hover:bg-indigo-100">Goal</a></li>
+                    <li><a href="#description" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Description</a></li>
+                    <li><a href="#properties" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Properties</a></li>
+                    <li><a href="#core-concept" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Core Concept</a></li>
+                    <li><a href="#details" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Details</a></li>
+                    <li><a href="#scorecard" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Scorecard</a></li>
+                    <li><a href="#deploy" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Deploy</a></li>
+                    <li><a href="#teams" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Teams</a></li>
+                    <li><a href="#usage" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Usage Guide</a></li>
+                    <li><a href="#usecase" class="nav-link block p-3 rounded-lg font-semibold text-slate-700 hover:bg-indigo-100">Usecase Example</a></li>
+                </ul>
+            </nav>
+
+            <!-- Content -->
+            <main class="lg:col-span-9 space-y-16">
+                
+                <section id="goal" class="content-section active bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Goal</h2>
+                    <p class="text-lg text-slate-700">
+                        To organize software components into logical, horizontal layers, where each layer performs a specific role. This promotes a clear <strong class="text-indigo-600">separation of concerns</strong>, making the system easier to develop, test, and maintain, especially for smaller applications.
+                    </p>
+                </section>
+
+                <section id="description" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Description</h2>
+                    <p class="text-slate-700 mb-4">
+                        Also known as the <strong>N-Tier Architecture</strong>, this is one of the most common and traditional architecture styles. It's the de facto standard for many legacy applications due to its simplicity and familiarity. When developers "just start coding" without a predefined architecture, they often naturally create a layered one.
+                    </p>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg">
+                        <p><strong class="font-semibold">Antipattern Alert:</strong> This style can fall into antipatterns like 'Architecture by Implication' if not designed intentionally.</p>
+                    </div>
+                </section>
+
+                <section id="properties" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Properties</h2>
+                    <ul class="list-disc list-inside space-y-3 text-slate-700">
+                        <li><strong>Technically Partitioned:</strong> Components are grouped by their technical role (e.g., UI, business logic) rather than by business domain.</li>
+                        <li><strong>Horizontal Layers:</strong> The architecture is structured into distinct horizontal layers, stacked on top of each other.</li>
+                        <li><strong>Separation of Concerns:</strong> Each layer has a specific role and responsibility, abstracting away the details of other layers.</li>
+                        <li><strong>Monolithic Nature:</strong> Typically results in a monolithic deployment, where the entire application is a single unit.</li>
+                    </ul>
+                </section>
+                
+                <section id="core-concept" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Core Concept: Layers of Isolation</h2>
+                    <p class="text-slate-700 mb-6">The fundamental principle is that each layer is a self-contained unit with a specific responsibility. Communication generally flows downwards through the layers for a request.</p>
+                    <div class="flex flex-col md:flex-row justify-around items-center space-y-8 md:space-y-0 md:space-x-8">
+                        <!-- Standard Layers Diagram -->
+                        <div class="text-center w-full md:w-1/2">
+                            <h3 class="font-semibold text-lg mb-2">Standard 4-Layer Structure</h3>
+                            <div class="layer">Presentation Layer</div>
+                            <div class="layer-arrow">&darr;</div>
+                            <div class="layer">Business Layer</div>
+                            <div class="layer-arrow">&darr;</div>
+                            <div class="layer">Persistence Layer</div>
+                            <div class="layer-arrow">&darr;</div>
+                            <div class="layer">Database Layer</div>
+                        </div>
+                        <!-- Open vs Closed Layers -->
+                        <div class="w-full md:w-1/2">
+                             <h3 class="font-semibold text-lg mb-4 text-center">Open vs. Closed Layers</h3>
+                             <div class="bg-slate-100 p-4 rounded-lg">
+                                <h4 class="font-bold text-indigo-700">Closed Layer</h4>
+                                <p class="text-sm text-slate-600 mb-2">A request MUST pass through the layer immediately below it. It cannot be skipped. This enforces isolation.</p>
+                                <h4 class="font-bold text-indigo-700 mt-4">Open Layer</h4>
+                                <p class="text-sm text-slate-600">A request can bypass this layer and go to the next one down. This can improve performance but increases coupling.</p>
+                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="details" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">In-Depth Details</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Physical Topology</h3>
+                            <p class="text-slate-700">Layers can be deployed together as a monolith or separated into different physical tiers (e.g., separate web server and application server).</p>
+                        </div>
+                         <div>
+                            <h3 class="font-semibold text-xl text-slate-800">The "Architecture Sinkhole" Antipattern</h3>
+                            <p class="text-slate-700">Occurs when a request passes through multiple layers without any logic being applied, leading to unnecessary overhead. If this happens frequently (e.g., >80% of requests), this architecture style may be a poor fit.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Team Topology</h3>
+                            <p class="text-slate-700">This style works well with various team structures (Stream-aligned, Enabling, Platform) because of its clear technical separation. For example, a UI team can focus solely on the Presentation layer.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-xl text-slate-800">Governance</h3>
+                            <p class="text-slate-700">Easy to govern. Fitness function tools like ArchUnit can enforce rules about which layers can communicate with others, ensuring the architecture's integrity is maintained.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="scorecard" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-6">Architecture Scorecard</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Characteristic</th>
+                                    <th class="p-3 font-semibold text-center">Rating</th>
+                                    <th class="p-3 font-semibold">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Overall</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Overall Cost</td>
+                                    <td class="p-3 text-center text-2xl font-bold text-green-600">$</td>
+                                    <td class="p-3">Low cost, especially for smaller applications.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Structural</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Simplicity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★★★★</span></td>
+                                    <td class="p-3">Primary strength. Easy to understand and implement.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Modularity</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Low. Changes often ripple through multiple layers.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Engineering</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Testability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★★</span><span class="text-slate-300">★★★</span></td>
+                                    <td class="p-3">Can mock/stub layers, but full regression is needed for small changes.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Deployability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Low. High-risk, all-or-nothing monolithic deployments.</td>
+                                </tr>
+                                <tr class="border-b"><td class="p-3 font-bold text-indigo-600" colspan="3">Operational</td></tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Scalability</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Poor. The entire monolith must be scaled, not individual parts.</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-3">Fault Tolerance</td>
+                                    <td class="p-3 star-rating text-center text-lg"><span class="filled">★</span><span class="text-slate-300">★★★★</span></td>
+                                    <td class="p-3">Low. An error in one part can bring down the entire application.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="deploy" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Deployment & Topology</h2>
+                    <p class="text-slate-700 mb-6">
+                        Layered architectures are typically deployed as a monolith. However, there are several physical deployment variants depending on how the layers are grouped into deployment units.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        <!-- Variant 1 -->
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Variant 1: Single App Tier</h3>
+                            <div class="border border-slate-400 rounded p-2 mb-2 bg-white">
+                                <div>Presentation</div>
+                                <div>Business</div>
+                                <div>Persistence</div>
+                            </div>
+                            <div class="border border-slate-400 rounded p-2 bg-white font-semibold">Database</div>
+                        </div>
+                        <!-- Variant 2 -->
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Variant 2: Two App Tiers</h3>
+                            <div class="border border-slate-400 rounded p-2 mb-2 bg-white">Presentation</div>
+                            <div class="border border-slate-400 rounded p-2 mb-2 bg-white">
+                                <div>Business</div>
+                                <div>Persistence</div>
+                            </div>
+                            <div class="border border-slate-400 rounded p-2 bg-white font-semibold">Database</div>
+                        </div>
+                        <!-- Variant 3 -->
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Variant 3: Single Unit</h3>
+                            <div class="border border-slate-400 rounded p-2 bg-white">
+                                <div>Presentation</div>
+                                <div>Business</div>
+                                <div>Persistence</div>
+                                <div>Database</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg">
+                        <p><strong class="font-semibold">Cloud Considerations:</strong> While layers can be deployed to the cloud, the monolithic nature limits options. Communication latency between on-premise and cloud-hosted layers can be a significant issue.</p>
+                    </div>
+                </section>
+
+                <section id="teams" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Team Topology</h2>
+                    <p class="text-slate-700 mb-6">
+                        A key advantage of the layered style is its independence from team structure. Its technical partitioning allows different types of teams to work effectively.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-lg text-indigo-700">Stream-Aligned Teams</h3>
+                            <p class="text-slate-600">Works well for small systems where a team owns the entire end-to-end flow through all layers.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-lg text-indigo-700">Enabling Teams</h3>
+                            <p class="text-slate-600">Specialist teams (e.g., UI/UX, security) can focus on a specific layer without disrupting others, thanks to the high degree of technical modularity.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-lg text-indigo-700">Complicated-Subsystem Teams</h3>
+                            <p class="text-slate-600">A team requiring specific access, like a data analytics team, can interface directly with the Persistence layer without impacting application flow.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-lg text-indigo-700">Platform Teams</h3>
+                            <p class="text-slate-600">Can provide tooling and support for the architecture, but face challenges as the monolith grows and becomes difficult to manage.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="usage" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-6">Usage Guide</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-xl text-green-800 mb-2">When to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-green-700">
+                                <li>Small, simple applications or websites.</li>
+                                <li>Projects with tight budget and time constraints.</li>
+                                <li>As a starting point before evolving to a more complex architecture.</li>
+                                <li>Proof-of-concept projects and internal tools.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h3 class="font-bold text-xl text-red-800 mb-2">When Not to Use It</h3>
+                            <ul class="list-disc list-inside space-y-2 text-red-700">
+                                <li>Large, complex enterprise applications.</li>
+                                <li>Systems that require high agility and frequent deployments.</li>
+                                <li>Applications needing high scalability and elasticity.</li>
+                                <li>Systems where fault tolerance is critical.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="usecase" class="content-section bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-4">Usecase Example: TCP/IP Model</h2>
+                    <p class="text-slate-700 mb-6">The networking protocol that powers the internet is a classic example of a layered architecture. Each layer handles a specific aspect of network communication, relying on the services of the layer below it.</p>
+                     <div class="space-y-2">
+                        <div class="layer"><strong>Application Layer</strong> (HTTP, FTP, SMTP)</div>
+                        <div class="layer"><strong>Transport Layer</strong> (TCP, UDP)</div>
+                        <div class="layer"><strong>Network Layer</strong> (IP Routing)</div>
+                        <div class="layer"><strong>Data Link Layer</strong> (Ethernet, Wi-Fi)</div>
+                        <div class="layer"><strong>Physical Layer</strong> (Cables, Fiber)</div>
+                    </div>
+                </section>
+                
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                links.forEach(link => {
+                    if (link.getAttribute('href') === `#${targetId}`) {
+                        link.classList.add('bg-white', 'shadow-sm', 'text-indigo-600');
+                        link.classList.remove('text-slate-700');
+                    } else {
+                        link.classList.remove('bg-white', 'shadow-sm', 'text-indigo-600');
+                        link.classList.add('text-slate-700');
+                    }
+                });
+            }
+
+            function showSection(targetId) {
+                 sections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                     // Scroll to the top of the main content area for better visibility on mobile
+                    document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Set initial state
+            updateActiveLink('goal');
+            showSection('goal');
+        });
+    </script>
+
+</body>
+</html>

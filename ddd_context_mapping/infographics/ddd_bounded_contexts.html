@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Bounded Context</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .tab-btn.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .content-card {
+            display: none;
+        }
+        .content-card.active {
+            display: block;
+        }
+        .context-shape {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .context-shape:hover {
+            transform: translateY(-5px);
+            filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+        }
+        .context-shape.selected {
+            stroke-width: 4px;
+            stroke: #2563eb;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            animation: slide-in 0.3s ease-out;
+        }
+        @keyframes slide-in {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Untangling DDD Concepts</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Bounded Contexts</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex justify-center border-b border-slate-200 mb-8">
+            <button class="tab-btn active py-4 px-6 text-slate-600" onclick="showTab('definition')">What is it?</button>
+            <button class="tab-btn py-4 px-6 text-slate-600" onclick="showTab('importance')">Why is it Important?</button>
+            <button class="tab-btn py-4 px-6 text-slate-600" onclick="showTab('scenario')">Example Scenario</button>
+            <button class="tab-btn py-4 px-6 text-slate-600" onclick="showTab('interactive')">Interactive Demo</button>
+        </nav>
+
+        <main>
+            <!-- Content: What is a Bounded Context? -->
+            <section id="definition" class="content-card active">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold mb-4 text-blue-600">What is a Bounded Context?</h2>
+                    <p class="text-lg mb-4">A Bounded Context is a central pattern in Domain-Driven Design. More than just a technical container, it is fundamentally a <strong class="text-blue-700">linguistic boundary</strong>. It's an explicit line drawn around a specific domain model, and inside that line, all terms and concepts of the model have a single, unified meaning.</p>
+                    <blockquote class="border-l-4 border-blue-200 pl-4 py-2 my-6">
+                        <p class="text-slate-700 italic">"A BOUNDED CONTEXT delimits the applicability of a particular model so that team members have a clear and shared understanding of what has to be consistent... In other CONTEXTS, other models apply, with differences in terminology, in concepts and rules, and in dialects of the UBIQUITOUS LANGUAGE."</p>
+                        <cite class="text-slate-500 mt-2 block">- Domain-Driven Design by Eric Evans</cite>
+                    </blockquote>
+                    <div class="my-8 flex justify-center">
+                        <svg width="100%" height="250" viewBox="0 0 500 250">
+                            <!-- Bounded Context Boundary -->
+                            <path d="M 100,125 C 100,50 400,50 400,125 C 400,200 100,200 100,125 Z" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/>
+                            
+                            <!-- Inside Context -->
+                            <text x="250" y="100" font-family="Inter, sans-serif" font-size="16" font-weight="600" text-anchor="middle" fill="#1e40af">INSIDE: Booking Context</text>
+                            <text x="250" y="130" font-family="Inter, sans-serif" font-size="14" text-anchor="middle" fill="#1d4ed8">✓ Unified Model</text>
+                            <text x="250" y="150" font-family="Inter, sans-serif" font-size="14" text-anchor="middle" fill="#1d4ed8">✓ Consistent Language</text>
+                    
+                            <!-- Outside Context -->
+                            <text x="70" y="40" font-family="Inter, sans-serif" font-size="14" text-anchor="middle" fill="#64748b">Other Models</text>
+                            <path d="M 95,55 C 120,70 150,80 175,85" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                    
+                            <text x="430" y="220" font-family="Inter, sans-serif" font-size="14" text-anchor="middle" fill="#64748b">Translation Required</text>
+                            <path d="M 370,180 C 390,190 410,200 420,210" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                        </svg>
+                    </div>
+                    <p class="mb-4">Think of it like a cell membrane in biology. The membrane defines what is inside the cell versus outside, and it determines what can pass through. A Bounded Context does the same for your software model:</p>
+                    <ul class="list-disc list-inside space-y-2 text-slate-700">
+                        <li><strong class="text-slate-800">It is a language boundary:</strong> It ensures the team's <a href="#" class="text-blue-600 hover:underline font-semibold">Ubiquitous Language</a> has a precise and unambiguous meaning.</li>
+                        <li>It defines the explicit scope of a model.</li>
+                        <li>It sets the boundaries for a team's work, usage in specific application parts, and even physical manifestations like codebases.</li>
+                        <li>It ensures the model remains pure, consistent, and potent within its applicable area.</li>
+                        <li>It prevents confusion when shifting attention to other parts of the system where different models and languages apply.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Content: Why is it Important? -->
+            <section id="importance" class="content-card">
+                 <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold mb-4 text-amber-600">Why is it Important? The Danger of a "Unified" Model</h2>
+                    <p class="text-lg mb-4">On any large project, multiple models are always in play. Ignoring this reality leads to buggy, unreliable, and confusing software. When code based on distinct, conflicting models is combined, chaos ensues.</p>
+                    
+                    <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg my-6">
+                        <h3 class="text-xl font-semibold text-amber-800 mb-2">A Cautionary Tale: The 'Charge' Object</h3>
+                        <p class="text-slate-700">Imagine two teams working on a new system:</p>
+                        <ul class="list-decimal list-inside space-y-2 mt-4">
+                            <li><strong>Team A (Bill-Payment):</strong> Creates a `Charge` object for paying vendors. Their model includes attributes like "percent deductible" for tax purposes.</li>
+                            <li><strong>Team B (Customer-Invoicing):</strong> Discovers the existing `Charge` object and decides to reuse it for invoicing customers. They add an "expense code" and use the "posted amount" attribute, which they wanted to call "amount due."</li>
+                        </ul>
+                        <div class="my-8 flex justify-center">
+                            <svg width="100%" height="250" viewBox="0 0 800 250">
+                                <!-- Team A -->
+                                <g>
+                                    <rect x="10" y="100" width="150" height="50" rx="10" fill="#fefce8" stroke="#fde047"></rect>
+                                    <text x="85" y="127" text-anchor="middle" font-weight="600" fill="#854d0e">Team A (Billing)</text>
+                                </g>
+                                
+                                <!-- Team B -->
+                                 <g>
+                                    <rect x="640" y="100" width="150" height="50" rx="10" fill="#fef2f2" stroke="#fca5a5"></rect>
+                                    <text x="715" y="127" text-anchor="middle" font-weight="600" fill="#991b1b">Team B (Invoicing)</text>
+                                </g>
+                        
+                                <!-- Charge Object -->
+                                <g>
+                                    <rect x="330" y="75" width="140" height="100" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"></rect>
+                                    <text x="400" y="105" text-anchor="middle" font-weight="bold" font-size="18" fill="#334155">Charge</text>
+                                    <text x="400" y="135" text-anchor="middle" font-style="italic" fill="#64748b">(False Cognate)</text>
+                                </g>
+                        
+                                <!-- Arrows and conflicting properties -->
+                                <line x1="160" y1="125" x2="330" y2="125" stroke="#854d0e" stroke-width="2" marker-end="url(#arrowhead-a)"></line>
+                                <text x="245" y="110" fill="#854d0e" text-anchor="middle" font-size="12">needs `percent_deductible`</text>
+                        
+                                <line x1="470" y1="125" x2="640" y2="125" stroke="#991b1b" stroke-width="2" marker-end="url(#arrowhead-b)"></line>
+                                <text x="555" y="165" fill="#991b1b" text-anchor="middle" font-size="12">adds `expense_code`</text>
+                                
+                                <defs>
+                                    <marker id="arrowhead-a" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#854d0e"></polygon>
+                                    </marker>
+                                     <marker id="arrowhead-b" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#991b1b"></polygon>
+                                    </marker>
+                                </defs>
+                            </svg>
+                        </div>
+                        <p class="mt-4 font-semibold text-red-600">The Result: Unpredictable Failure</p>
+                        <p class="text-slate-700 mt-2">Mysterious, nonsensical `Charge` records started appearing in the bill-payment module. The tax report function began to crash because the new `Charge` objects from invoicing didn't have a "percent deductible" value, a field required by the bill-payment module's logic. The two teams had different models for what a "Charge" was, but they didn't realize it.</p>
+                    </div>
+
+                    <p class="mb-4">This story illustrates two key problems that Bounded Contexts solve:</p>
+                    <ul class="list-disc list-inside space-y-2 text-slate-700">
+                        <li><strong>Duplicate Concepts:</strong> Two different model elements that represent the same concept, leading to synchronization issues and divergent rules.</li>
+                        <li><strong>False Cognates (More Dangerous):</strong> Using the same term or object (`Charge`) for two different concepts. This leads to teams stepping on each other's code, database contradictions, and confused communication. It's like the Spanish word "embarazada," which looks like "embarrassed" but actually means "pregnant."</li>
+                    </ul>
+                     <p class="mt-6 text-lg">By explicitly defining Bounded Contexts, you force these hidden model differences out into the open, allowing you to manage them consciously instead of being surprised by them in production.</p>
+                </div>
+            </section>
+
+            <!-- Content: Example Scenario -->
+            <section id="scenario" class="content-card">
+                 <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold mb-4 text-emerald-600">Example Scenario: A Booking Application</h2>
+                    <p class="text-lg mb-4">Let's define the Bounded Context for a new cargo booking application. To do this, we must look at the project as it is, not as we wish it were.</p>
+                    <div class="my-8 p-4 bg-slate-50 border rounded-lg">
+                        <svg width="100%" height="400" viewBox="0 0 900 400">
+                            <!-- Booking Bounded Context -->
+                            <g>
+                                <rect x="50" y="75" width="400" height="250" rx="20" fill="#f0fdf4" stroke="#4ade80" stroke-width="2"></rect>
+                                <text x="250" y="105" font-size="18" font-weight="bold" text-anchor="middle" fill="#166534">Booking Bounded Context (Inside)</text>
+                                
+                                <!-- Core Model Team -->
+                                <rect x="80" y="145" width="150" height="80" rx="10" fill="#dcfce7"></rect>
+                                <text x="155" y="175" text-anchor="middle" fill="#15803d">Core Model</text>
+                                <text x="155" y="195" text-anchor="middle" fill="#15803d">Team</text>
+                    
+                                <!-- Application Team -->
+                                <rect x="270" y="145" width="150" height="80" rx="10" fill="#dcfce7"></rect>
+                                <text x="345" y="175" text-anchor="middle" fill="#15803d">Application</text>
+                                <text x="345" y="195" text-anchor="middle" fill="#15803d">Team</text>
+                            </g>
+                            
+                            <!-- Legacy System -->
+                            <g>
+                                <rect x="650" y="50" width="200" height="80" rx="10" fill="#fee2e2" stroke="#f87171"></rect>
+                                <text x="750" y="80" text-anchor="middle" font-weight="600" fill="#991b1b">Legacy System</text>
+                                <text x="750" y="100" text-anchor="middle" font-weight="600" class="text-red-700" fill="#b91c1c">(Outside)</text>
+                            </g>
+                    
+                            <!-- Voyage Scheduling Team -->
+                            <g>
+                                 <rect x="650" y="270" width="200" height="80" rx="10" fill="#fef9c3" stroke="#facc15" stroke-dasharray="5,5"></rect>
+                                 <text x="750" y="300" text-anchor="middle" font-weight="600" fill="#854d0e">Scheduling Team</text>
+                                 <text x="750" y="320" text-anchor="middle" font-weight="600" class="text-yellow-700" fill="#a16207">(Risk: Separate Context)</text>
+                            </g>
+                            
+                            <!-- Connections -->
+                            <line x1="450" y1="90" x2="650" y2="90" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead-grey)"></line>
+                            <text x="550" y="70" text-anchor="middle" font-size="12" fill="#475569">Translation</text>
+                            
+                            <line x1="450" y1="310" x2="650" y2="310" stroke="#ca8a04" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowhead-yellow)"></line>
+                            <text x="550" y="295" text-anchor="middle" font-size="12" fill="#854d0e">Informal Sharing</text>
+                            
+                            <defs>
+                                <marker id="arrowhead-grey" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"></polygon>
+                                </marker>
+                                <marker id="arrowhead-yellow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#ca8a04"></polygon>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-6 mt-6">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xl">1</div>
+                            <div>
+                                <h3 class="text-xl font-semibold">The Core Model Team</h3>
+                                <p class="text-slate-700 mt-1">This team works on the core booking model objects and their persistence. Because they control the database schema and it's driven by their model, the model objects and the database are <strong class="text-emerald-700">INSIDE</strong> the Bounded Context.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xl">2</div>
+                            <div>
+                                <h3 class="text-xl font-semibold">The Application Team</h3>
+                                <p class="text-slate-700 mt-1">This team builds the application that displays and manipulates the model objects. As a primary consumer of the model, their application is also <strong class="text-emerald-700">INSIDE</strong> the Bounded Context.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-xl">3</div>
+                            <div>
+                                <h3 class="text-xl font-semibold">The Legacy Cargo-Tracking System</h3>
+                                <p class="text-slate-700 mt-1">Completed bookings must be sent to a legacy system. A decision was made that the new model would depart from the legacy one. Therefore, the legacy system is <strong class="text-red-700">OUTSIDE</strong> the boundary. A translation mechanism must exist at the boundary.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center font-bold text-xl">4</div>
+                            <div>
+                                <h3 class="text-xl font-semibold">The Voyage Scheduling Team</h3>
+                                <p class="text-slate-700 mt-1">Another team is building a scheduling model. They occasionally share objects with the booking team, but not systematically. This is a <strong class="text-yellow-700">RISK</strong>. They are working in a separate, undefined Bounded Context. Their informal sharing will cause problems until the relationship between their models is explicitly defined.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="mt-8 text-lg">By defining the Bounded Context, the teams working inside it gain clarity, and the teams outside gain freedom. Most importantly, it reveals the dangerous, informal sharing with the scheduling team, highlighting an urgent need to define that relationship properly.</p>
+                </div>
+            </section>
+
+            <!-- Content: Interactive Demo -->
+            <section id="interactive" class="content-card">
+                 <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold mb-2 text-indigo-600">Interactive Demo: The Meaning of "Product"</h2>
+                    <p class="text-lg mb-6 text-slate-600">A single term can have vastly different models and meanings in different Bounded Contexts. Click on a context below to see how the concept of a "Product" changes across a company.</p>
+
+                    <div class="relative w-full max-w-4xl mx-auto h-[450px] bg-slate-50 rounded-lg p-4 border">
+                        <!-- Diagram -->
+                        <svg id="context-diagram" viewBox="0 0 800 400" class="w-full h-full">
+                            <!-- Connections -->
+                            <line x1="250" y1="200" x2="400" y2="100" stroke="#94a3b8" stroke-width="2" />
+                            <line x1="250" y1="200" x2="400" y2="300" stroke="#94a3b8" stroke-width="2" />
+                            <line x1="550" y1="100" x2="550" y2="300" stroke="#94a3b8" stroke-width="2" />
+
+                            <!-- Contexts -->
+                            <g class="context-shape" onclick="showContextInfo('sales')">
+                                <ellipse cx="150" cy="200" rx="100" ry="60" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+                                <text x="150" y="205" font-size="20" font-weight="600" text-anchor="middle" fill="#0c4a6e">Sales</text>
+                            </g>
+                             <g class="context-shape" onclick="showContextInfo('catalog')">
+                                <ellipse cx="475" cy="100" rx="100" ry="60" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+                                <text x="475" y="105" font-size="20" font-weight="600" text-anchor="middle" fill="#166534">Catalog</text>
+                            </g>
+                             <g class="context-shape" onclick="showContextInfo('support')">
+                                <ellipse cx="475" cy="300" rx="100" ry="60" fill="#fffbeb" stroke="#fcd34d" stroke-width="2"/>
+                                <text x="475" y="305" font-size="20" font-weight="600" text-anchor="middle" fill="#854d0e">Support</text>
+                            </g>
+                             <g class="context-shape" onclick="showContextInfo('shipping')">
+                                <ellipse cx="700" cy="200" rx="100" ry="60" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+                                <text x="700" y="205" font-size="20" font-weight="600" text-anchor="middle" fill="#991b1b">Shipping</text>
+                            </g>
+                        </svg>
+                    </div>
+                     <p id="initial-message" class="text-center mt-4 text-slate-500 font-medium">Click a Bounded Context to learn more.</p>
+                </div>
+            </section>
+        </main>
+
+    </div>
+    
+    <!-- Modal -->
+    <div id="contextModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+            <p id="modal-description" class="mb-4"></p>
+            <div class="bg-slate-100 p-4 rounded-md">
+                <h4 class="font-semibold mb-2">Key Attributes in this Context:</h4>
+                <ul id="modal-attributes" class="list-disc list-inside text-slate-700 space-y-1"></ul>
+            </div>
+            <button onclick="closeModal()" class="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors">Close</button>
+        </div>
+    </div>
+
+
+    <script>
+        // Tab switching logic
+        const tabs = ['definition', 'importance', 'scenario', 'interactive'];
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const contentCards = document.querySelectorAll('.content-card');
+
+        function showTab(tabId) {
+            contentCards.forEach(card => {
+                card.classList.remove('active');
+                if (card.id === tabId) {
+                    card.classList.add('active');
+                }
+            });
+
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(`'${tabId}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // Interactive Diagram Logic
+        const contextData = {
+            sales: {
+                title: 'Sales Context',
+                color: 'text-sky-700',
+                description: 'In the Sales context, a "Product" is an item in the sales pipeline. It\'s about potential and future revenue. Its identity is often tied to a specific deal or quote.',
+                attributes: [
+                    '<code>deal_id</code>: The sales deal it\'s part of.',
+                    '<code>quoted_price</code>: The price offered to the potential customer.',
+                    '<code>feature_list</code>: A marketing-driven list of features for the sales pitch.'
+                ]
+            },
+            catalog: {
+                title: 'Catalog Context',
+                color: 'text-green-700',
+                description: 'In the Catalog context, a "Product" is the master definition. It\'s the source of truth for what we sell, including all its specifications and pricing rules.',
+                attributes: [
+                    '<code>SKU</code>: The unique stock-keeping unit.',
+                    '<code>master_price</code>: The official list price.',
+                    '<code>description</code>: The official, detailed product description.',
+                    '<code>inventory_count</code>: The number of units available.'
+                ]
+            },
+            support: {
+                title: 'Support Context',
+                color: 'text-amber-700',
+                description: 'In the Support context, a "Product" is something a customer owns and may have issues with. The focus is on the customer\'s specific instance of that product.',
+                attributes: [
+                    '<code>customer_id</code>: The owner of this product instance.',
+                    '<code>purchase_date</code>: When the customer bought it.',
+                    '<code>warranty_status</code>: The current warranty information.',
+                    '<code>open_tickets</code>: A list of support tickets related to it.'
+                ]
+            },
+            shipping: {
+                title: 'Shipping Context',
+                color: 'text-red-700',
+                description: 'In the Shipping context, a "Product" is a physical item that must be packaged and transported. The model only cares about properties relevant to logistics.',
+                attributes: [
+                    '<code>weight_kg</code>: The physical weight for calculating shipping costs.',
+                    '<code>dimensions_cm</code>: The size for packaging and vehicle space.',
+                    '<code>requires_refrigeration</code>: A boolean for special handling needs.',
+                    '<code>destination_address</code>: Where the item needs to be sent.'
+                ]
+            }
+        };
+
+        const modal = document.getElementById('contextModal');
+        const diagramShapes = document.querySelectorAll('.context-shape');
+        const initialMessage = document.getElementById('initial-message');
+
+        function showContextInfo(contextId) {
+            const data = contextData[contextId];
+            if (!data) return;
+
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-title').className = `text-2xl font-bold mb-4 ${data.color}`;
+            document.getElementById('modal-description').textContent = data.description;
+            
+            const attributesList = document.getElementById('modal-attributes');
+            attributesList.innerHTML = '';
+            data.attributes.forEach(attr => {
+                const li = document.createElement('li');
+                li.innerHTML = attr;
+                attributesList.appendChild(li);
+            });
+
+            modal.style.display = 'flex';
+            
+            // Highlight selected shape
+            diagramShapes.forEach(shape => shape.classList.remove('selected'));
+            const selectedShape = document.querySelector(`g[onclick="showContextInfo('${contextId}')"]`);
+            if(selectedShape) {
+                selectedShape.classList.add('selected');
+            }
+            initialMessage.style.display = 'none';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            diagramShapes.forEach(shape => shape.classList.remove('selected'));
+            initialMessage.style.display = 'block';
+        }
+
+        // Close modal on Escape key press
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+    </script>
+
+</body>
+</html>

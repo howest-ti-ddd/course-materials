@@ -1,0 +1,25 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-2 text-center text-indigo-300">Architectural Style: Modular Monolith</h2>
+            <p class="text-lg mb-6 text-gray-400">A single deployment unit, organized by business domains.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="diagram-bg p-6 rounded-xl shadow-lg flex flex-col justify-center">
+                    <svg viewBox="0 0 200 150" class="w-full h-auto max-w-sm mx-auto">
+                        <rect x="1" y="1" width="198" height="148" rx="10" fill="#111827" stroke="#4B5563" stroke-width="2"/>
+                        <text x="100" y="20" font-size="12" fill="white" text-anchor="middle">Single Deployment Unit</text>
+                        <rect x="15" y="35" width="50" height="40" rx="5" fill="#10B981"/><text x="40" y="60" fill="black" font-size="10" text-anchor="middle">Orders</text>
+                        <rect x="75" y="35" width="50" height="40" rx="5" fill="#10B981"/><text x="100" y="60" fill="black" font-size="10" text-anchor="middle">Inventory</text>
+                        <rect x="135" y="35" width="50" height="40" rx="5" fill="#10B981"/><text x="160" y="60" fill="black" font-size="10" text-anchor="middle">Shipping</text>
+                        <rect x="15" y="85" width="50" height="40" rx="5" fill="#10B981"/><text x="40" y="110" fill="black" font-size="10" text-anchor="middle">Payments</text>
+                        <rect x="75" y="85" width="50" height="40" rx="5" fill="#10B981"/><text x="100" y="110" fill="black" font-size="10" text-anchor="middle">Users</text>
+                        <rect x="135" y="85" width="50" height="40" rx="5" fill="#10B981"/><text x="160" y="110" fill="black" font-size="10" text-anchor="middle">Notify</text>
+                    </svg>
+                </div>
+                <div class="space-y-4 text-lg text-gray-300">
+                    <p>It's a <strong class="text-white">monolith</strong> because it's deployed all at once.</p>
+                    <p>It's <strong class="text-white">modular</strong> because the code is internally organized into well-defined, loosely-coupled business domains.</p>
+                    <p>Think "microservices-style thinking, monolith-style deployment."</p>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,24 @@
+<div class="slide active">
+        <div class="slide-content wide">
+            <h2 class="text-5xl font-bold mb-8 text-center text-indigo-300">Event-Driven: Trade-offs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-green-400">When to Use</h3>
+                    <ul class="list-disc list-inside space-y-3 text-xl text-gray-300">
+                        <li>For highly scalable and resilient systems.</li>
+                        <li>When you need to decouple different parts of a large system.</li>
+                        <li>For parallel, long-running workflows (e.g., video processing).</li>
+                        <li>When you want to easily add new functionality without changing existing services.</li>
+                    </ul>
+                </div>
+                <div class="card p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-red-400">When Not to Use</h3>
+                     <ul class="list-disc list-inside space-y-3 text-xl text-gray-300">
+                        <li>Simple request-response interactions.</li>
+                        <li>When you need atomic transactions across multiple services.</li>
+                        <li>Debugging can be complex due to the asynchronous flow.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>

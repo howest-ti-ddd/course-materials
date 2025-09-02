@@ -1,0 +1,31 @@
+<div class="slide active">
+        <div class="slide-content text-center">
+            <h2 class="text-4xl font-bold mb-8 text-indigo-300">Protect Your Architecture!</h2>
+            <p class="text-xl text-gray-400 mb-10">Prevent architectural drift with automated <strong class="text-white">Fitness Functions</strong>.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-yellow-400">What are they?</h3>
+                    <p class="mt-2 text-gray-300">Tests that run with your CI/CD pipeline to verify architectural rules.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-green-400">Why use them?</h3>
+                    <p class="mt-2 text-gray-300">To provide a safety net, allowing the system to evolve without violating key principles.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold text-blue-400">Example Rule</h3>
+                    <p class="mt-2 text-gray-300">"The 'Orders' module should NOT directly depend on the 'Shipping' module."</p>
+                </div>
+            </div>
+            <div class="mt-8 bg-gray-900 rounded-lg p-4 border border-gray-700 font-mono text-sm text-left max-w-4xl mx-auto">
+                <pre><code class="language-java text-gray-300"><span class="text-purple-400">layeredArchitecture()</span>
+    .<span class="text-yellow-400">layer</span>("Controller").<span class="text-yellow-400">definedBy</span>("..controller..")
+    .<span class="text-yellow-400">layer</span>("Service").<span class="text-yellow-400">definedBy</span>("..service..")
+    .<span class="text-yellow-400">layer</span>("Persistence").<span class="text-yellow-400">definedBy</span>("..persistence..")
+ 
+    .<span class="text-yellow-400">whereLayer</span>("Controller").<span class="text-red-400">mayNotBeAccessedByAnyLayer</span>()
+    .<span class="text-yellow-400">whereLayer</span>("Service").<span class="text-red-400">mayOnlyBeAccessedByLayers</span>("Controller")
+    .<span class="text-yellow-400">whereLayer</span>("Persistence").<span class="text-red-400">mayOnlyBeAccessedByLayers</span>("Service");</code></pre>
+                <p class="text-xs text-gray-500 mt-2 text-center">An ArchUnit fitness function for a Layered Architecture.</p>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,80 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-6 text-center text-indigo-300">AC: Testability</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <svg viewBox="0 0 300 200" class="w-full h-auto">
+                        <text x="150" y="20" fill="#D1D5DB" text-anchor="middle" font-weight="bold">Testing Complexity Spectrum</text>
+                        
+                        <!-- Testable Section -->
+                        <g transform="translate(30,0)">
+                            <text x="50" y="45" fill="#34D399" text-anchor="middle" font-weight="bold">Easy to Test</text>
+                            
+                            <!-- Small, isolated components -->
+                            <rect x="20" y="60" width="25" height="25" rx="3" fill="#34D399"/>
+                            <rect x="55" y="60" width="25" height="25" rx="3" fill="#34D399"/>
+                            <rect x="20" y="95" width="25" height="25" rx="3" fill="#34D399"/>
+                            <rect x="55" y="95" width="25" height="25" rx="3" fill="#34D399"/>
+                            
+                            <!-- Check marks -->
+                            <path d="M23 72 L30 80 L42 65" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M58 72 L65 80 L77 65" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M23 107 L30 115 L42 100" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M58 107 L65 115 L77 100" stroke="white" stroke-width="2" fill="none"/>
+                            
+                            <!-- Labels -->
+                            <text x="50" y="140" fill="#6EE7B7" text-anchor="middle" font-size="10">Small, Isolated</text>
+                            <text x="50" y="155" fill="#6EE7B7" text-anchor="middle" font-size="10">Clear Dependencies</text>
+                        </g>
+                        
+                        <!-- Not Testable Section -->
+                        <g transform="translate(170,0)">
+                            <text x="50" y="45" fill="#F87171" text-anchor="middle" font-weight="bold">Hard to Test</text>
+                            
+                            <!-- Large, entangled component -->
+                            <rect x="10" y="60" width="80" height="60" rx="5" fill="#F87171"/>
+                            
+                            <!-- Messy connections -->
+                            <path d="M20 70 L80 100" stroke="white" stroke-width="1" stroke-dasharray="2"/>
+                            <path d="M20 100 L80 70" stroke="white" stroke-width="1" stroke-dasharray="2"/>
+                            <path d="M30 60 L70 120" stroke="white" stroke-width="1" stroke-dasharray="2"/>
+                            <path d="M30 120 L70 60" stroke="white" stroke-width="1" stroke-dasharray="2"/>
+                            <path d="M50 60 L50 120" stroke="white" stroke-width="1" stroke-dasharray="2"/>
+                            <path d="M10 90 L90 90" stroke="white" stroke-width="1" stroke-dasharray="2"/>
+                            
+                            <!-- X mark -->
+                            <path d="M35 80 L65 100" stroke="white" stroke-width="2"/>
+                            <path d="M35 100 L65 80" stroke="white" stroke-width="2"/>
+                            
+                            <!-- Labels -->
+                            <text x="50" y="140" fill="#FCA5A5" text-anchor="middle" font-size="10">Large, Entangled</text>
+                            <text x="50" y="155" fill="#FCA5A5" text-anchor="middle" font-size="10">Hidden Dependencies</text>
+                        </g>
+                        
+                        <!-- Testing Effort Indicator -->
+                        <g transform="translate(0,170)">
+                            <text x="50" y="15" fill="#34D399" text-anchor="start" font-size="10">Quick, Reliable Tests</text>
+                            <text x="250" y="15" fill="#F87171" text-anchor="end" font-size="10">Slow, Flaky Tests</text>
+                            <rect x="50" y="20" width="200" height="8" rx="4" fill="#374151"/>
+                            <linearGradient id="testingEffort" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#34D399"/>
+                                <stop offset="100%" style="stop-color:#F87171"/>
+                            </linearGradient>
+                            <rect x="50" y="20" width="200" height="8" rx="4" fill="url(#testingEffort)"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-xl text-gray-300"><strong class="text-white">What:</strong> The ease with which software can be tested to ensure correctness.</p>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-green-400">Impact (Done Right)</h3>
+                        <p class="text-gray-300">High confidence in releases, fast feedback loops, higher quality, automated regression.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-red-400">Impact (Done Wrong)</h3>
+                        <p class="text-gray-300">Long, expensive manual testing. Brittle tests. Low confidence in deployments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

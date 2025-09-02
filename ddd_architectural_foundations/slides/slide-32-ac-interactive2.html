@@ -1,0 +1,38 @@
+<div class="slide active">
+    <div class="slide-content text-center">
+        <div class="bg-gradient-to-br from-indigo-900/30 to-teal-900/30 rounded-2xl p-12 border border-indigo-500/30 backdrop-blur-sm">
+            <h2 class="text-4xl font-bold mb-8 text-teal-300 animate-pulse">Which characteristic is MOST important for this scenario?</h2>
+            <div class="p-4 mb-6 bg-gray-800/50 rounded-lg border border-gray-700">
+                <p class="text-xl text-white">"We're building a banking system that must never lose transaction data, even during a system crash."</p>
+            </div>
+            <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="card p-2 rounded-xl hover:p-5 transition-all duration-300 cursor-pointer incorrect-answer">
+                    <span class="text-2xl font-bold text-indigo-400">Performance</span>
+                    <div class="answer-reveal bg-indigo-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! While speed matters, it's not the primary concern when data integrity is at stake.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl hover:p-5 transition-all duration-300 cursor-pointer correct-answer">
+                    <span class="text-2xl font-bold text-red-400">Reliability</span>
+                    <div class="answer-reveal bg-red-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-green-300">Correct! ✓</p>
+                        <p class="text-gray-300 mt-2">Banking systems must prioritize reliability to ensure data integrity and accurate transaction processing in all circumstances.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl hover:p-5 transition-all duration-300 cursor-pointer incorrect-answer">
+                    <span class="text-2xl font-bold text-green-400">Deployability</span>
+                    <div class="answer-reveal bg-green-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! While important, how quickly we can deploy new versions isn't the top concern for data integrity.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl hover:p-5 transition-all duration-300 cursor-pointer incorrect-answer">
+                    <span class="text-2xl font-bold text-yellow-400">Elasticity</span>
+                    <div class="answer-reveal bg-yellow-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! The ability to scale resources up and down is valuable but not the primary concern for data integrity.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xl text-gray-300 mt-8 italic">Hover over your answer to see if it's correct!</p>
+        </div>
+    </div>
+</div>

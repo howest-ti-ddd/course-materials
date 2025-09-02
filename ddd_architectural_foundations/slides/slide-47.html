@@ -1,0 +1,69 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-2 text-center text-indigo-300">Architectural Style: Pipeline (Pipes & Filters)</h2>
+            <p class="text-lg mb-6 text-gray-400">A series of self-contained, stateless processing steps (filters) connected by channels (pipes).</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="diagram-bg p-6 rounded-xl shadow-lg flex flex-col justify-center">
+                    <svg viewBox="0 0 400 300" class="w-full h-auto">
+                        <defs>
+                            <marker id="arrow-pipe" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto" fill="#818CF8">
+                                <polygon points="0 0, 10 3.5, 0 7" />
+                            </marker>
+                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <text x="200" y="25" fill="#D1D5DB" text-anchor="middle" font-weight="bold">Example: ETL Data Pipeline</text>
+
+                        <!-- Data Source -->
+                        <g>
+                            <ellipse cx="60" cy="70" rx="40" ry="20" fill="#059669"/>
+                            <text x="60" y="75" fill="white" text-anchor="middle" font-size="12">Raw Data</text>
+                            <text x="60" y="50" fill="#6EE7B7" text-anchor="middle" font-size="10">Source</text>
+                        </g>
+
+                        <!-- Filter 1: Extract -->
+                        <g>
+                            <rect x="140" y="50" width="120" height="40" rx="20" fill="#4F46E5"/>
+                            <text x="200" y="75" fill="white" text-anchor="middle" font-weight="bold">Extract</text>
+                        </g>
+                        <path d="M100 70 H 140" stroke="#818CF8" stroke-width="3" marker-end="url(#arrow-pipe)" />
+
+                        <!-- Filter 2: Transform -->
+                        <g>
+                            <rect x="140" y="130" width="120" height="40" rx="20" fill="#4F46E5"/>
+                            <text x="200" y="155" fill="white" text-anchor="middle" font-weight="bold">Transform</text>
+                        </g>
+                        <path d="M200 90 V 130" stroke="#818CF8" stroke-width="3" marker-end="url(#arrow-pipe)" />
+
+                        <!-- Filter 3: Enrich -->
+                        <g>
+                            <rect x="140" y="210" width="120" height="40" rx="20" fill="#4F46E5"/>
+                            <text x="200" y="235" fill="white" text-anchor="middle" font-weight="bold">Enrich</text>
+                        </g>
+                        <path d="M200 170 V 210" stroke="#818CF8" stroke-width="3" marker-end="url(#arrow-pipe)" />
+
+                        <!-- Data Sink -->
+                        <g>
+                            <rect x="300" y="130" width="90" height="40" rx="5" fill="#DC2626" filter="url(#glow)"/>
+                            <text x="345" y="155" fill="white" text-anchor="middle" font-size="12">Data Warehouse</text>
+                            <text x="345" y="120" fill="#FCA5A5" text-anchor="middle" font-size="10">Sink</text>
+                        </g>
+                        <path d="M260 150 H 300" stroke="#818CF8" stroke-width="3" marker-end="url(#arrow-pipe)" />
+                        <path d="M260 230 C 280 230, 290 170, 300 170" stroke="#818CF8" stroke-width="3" fill="none" marker-end="url(#arrow-pipe)" />
+                        <path d="M260 70 C 280 70, 290 130, 300 130" stroke="#818CF8" stroke-width="3" fill="none" marker-end="url(#arrow-pipe)" />
+                    </svg>
+                </div>
+                <div class="space-y-3 text-lg text-gray-300">
+                    <p><strong class="text-white">Filters</strong> perform one specific, independent task.</p>
+                    <p><strong class="text-white">Pipes</strong> move data between filters in one direction.</p>
+                    <p>Famous example: Unix command-line tools (`cat file.txt | grep "error" | wc -l`).</p>
+                </div>
+            </div>
+        </div>
+    </div>

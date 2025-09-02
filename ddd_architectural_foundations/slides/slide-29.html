@@ -1,0 +1,50 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-6 text-center text-indigo-300">AC: Elasticity</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <svg viewBox="0 0 350 200" class="w-full h-auto">
+                        <text x="150" y="20" fill="#D1D5DB" text-anchor="middle" font-weight="bold">Matching Resources to Demand</text>
+                        
+                        <!-- Labels for axes -->
+                        <text x="30" y="40" fill="#9CA3AF" text-anchor="middle" font-size="10">High</text>
+                        <text x="30" y="160" fill="#9CA3AF" text-anchor="middle" font-size="10">Low</text>
+                        <text x="60" y="175" fill="#9CA3AF" text-anchor="middle" font-size="10">Time</text>
+                        
+                        <!-- Axes -->
+                        <path d="M50 170 L50 30 L250 30" stroke="#4B5563" stroke-width="2" fill="none"/>
+                        
+                        <!-- Demand Curve -->
+                        <path d="M60 160 C 80 160, 100 50, 150 50 C 200 50, 220 160, 240 160" 
+                              stroke="#FBBF24" stroke-width="3" fill="none" stroke-dasharray="4"/>
+                        
+                        <!-- Resource Curve -->
+                        <path d="M60 160 C 80 160, 105 60, 150 60 C 195 60, 220 160, 240 160" 
+                              stroke="#34D399" stroke-width="3" fill="none"/>
+                        
+                        <!-- Legend - Repositioned and simplified -->
+                        <line x1="270" y1="60" x2="290" y2="60" stroke="#FBBF24" stroke-width="3" stroke-dasharray="4"/>
+                        <text x="295" y="64" fill="#FCD34D" font-size="12" font-weight="bold">Demand</text>
+                        
+                        <line x1="270" y1="85" x2="290" y2="85" stroke="#34D399" stroke-width="3"/>
+                        <text x="295" y="89" fill="#6EE7B7" font-size="12" font-weight="bold">Resources</text>
+                        
+                        <!-- Annotation -->
+                        <line x1="150" y1="50" x2="150" y2="60" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="2"/>
+                        <text x="150" y="90" fill="#9CA3AF" font-size="10" text-anchor="middle">Elasticity Gap</text>
+                    </svg>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-xl text-gray-300"><strong class="text-white">What:</strong> The ability to <strong class="text-yellow-400">automatically</strong> add resources for demand and <strong class="text-yellow-400">remove</strong> them when demand subsides.</p>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-green-400">Impact (Done Right)</h3>
+                        <p class="text-gray-300">Optimal performance at the lowest possible cost. Pay-for-what-you-use.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-red-400">Impact (Done Wrong)</h3>
+                        <p class="text-gray-300">Wasting money on over-provisioned resources, or crashing due to under-provisioning.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

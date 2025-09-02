@@ -1,0 +1,38 @@
+<div class="slide active">
+    <div class="slide-content text-center">
+        <div class="bg-gradient-to-br from-indigo-900/30 to-teal-900/30 rounded-2xl p-12 border border-indigo-500/30 backdrop-blur-sm">
+            <h2 class="text-4xl font-bold mb-8 text-teal-300 animate-pulse">Which architecture fits this scenario?</h2>
+            <div class="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                <p class="text-xl text-white">You're building a photo editing application that needs to allow third-party developers to add custom filters and effects.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer hover:p-5 incorrect-answer">
+                    <span class="text-2xl font-bold text-indigo-400">Layered Architecture</span>
+                    <div class="answer-reveal bg-indigo-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! Layered architectures don't specifically support plugin extensibility.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer hover:p-5 incorrect-answer">
+                    <span class="text-2xl font-bold text-red-400">Event-Driven Architecture</span>
+                    <div class="answer-reveal bg-red-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! While events could be useful, this isn't primarily about communication between components.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer hover:p-5 correct-answer">
+                    <span class="text-2xl font-bold text-green-400">Microkernel Architecture</span>
+                    <div class="answer-reveal bg-green-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-green-300">Correct! ✓</p>
+                        <p class="text-gray-300 mt-2">Microkernel (Plugin) architecture is perfect for applications that need third-party extensibility with a stable core.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer hover:p-5 incorrect-answer">
+                    <span class="text-2xl font-bold text-yellow-400">Pipeline Architecture</span>
+                    <div class="answer-reveal bg-yellow-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! Pipeline works for sequential processing but doesn't provide the flexibility needed for plugins.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xl text-gray-300 mt-8 italic">Hover over your answer to see if it's correct!</p>
+        </div>
+    </div>
+</div>

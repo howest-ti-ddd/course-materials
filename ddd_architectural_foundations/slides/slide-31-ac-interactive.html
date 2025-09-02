@@ -1,0 +1,35 @@
+<div class="slide active">
+    <div class="slide-content text-center">
+        <div class="bg-gradient-to-br from-indigo-900/30 to-teal-900/30 rounded-2xl p-12 border border-indigo-500/30 backdrop-blur-sm">
+            <h2 class="text-4xl font-bold mb-8 text-teal-300 animate-pulse">Which pair of characteristics typically conflict?</h2>
+            <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer incorrect-answer">
+                    <span class="text-2xl font-bold text-indigo-400">Performance + Simplicity</span>
+                    <div class="answer-reveal bg-indigo-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! These often align - simpler systems typically have fewer bottlenecks.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer correct-answer">
+                    <span class="text-2xl font-bold text-red-400">Security + Performance</span>
+                    <div class="answer-reveal bg-red-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-green-300">Correct! ✓</p>
+                        <p class="text-gray-300 mt-2">Security measures (encryption, authentication, validation) add processing overhead that reduces performance.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer incorrect-answer">
+                    <span class="text-2xl font-bold text-green-400">Testability + Maintainability</span>
+                    <div class="answer-reveal bg-green-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! These actually reinforce each other. Well-tested code is typically more maintainable.</p>
+                    </div>
+                </div>
+                <div class="card p-2 rounded-xl transition-all duration-300 cursor-pointer incorrect-answer">
+                    <span class="text-2xl font-bold text-yellow-400">Deployability + Fault Tolerance</span>
+                    <div class="answer-reveal bg-yellow-900/50 p-3 mt-3 rounded-lg hidden">
+                        <p class="text-red-300">Incorrect! Good deployment practices like canary releases actually enhance fault tolerance.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xl text-gray-300 mt-8 italic">Hover over your answer to see if it's correct!</p>
+        </div>
+    </div>
+</div>

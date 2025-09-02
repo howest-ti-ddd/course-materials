@@ -1,0 +1,55 @@
+<div class="slide active">
+        <div class="slide-content">
+            <h2 class="text-4xl font-bold mb-6 text-center text-indigo-300">AC: Fault Tolerance</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="diagram-bg p-6 rounded-xl shadow-lg">
+                    <svg viewBox="0 0 300 200" class="w-full h-auto">
+                        <text x="150" y="20" fill="#D1D5DB" text-anchor="middle" font-weight="bold">Surviving Failure</text>
+                        
+                        <!-- Monolith Section -->
+                        <g transform="translate(20,0)">
+                            <text x="50" y="45" fill="#F87171" text-anchor="middle" font-weight="bold">Monolith</text>
+                            <!-- Monolith box -->
+                            <rect x="20" y="60" width="60" height="40" rx="5" fill="#F87171"/>
+                            <!-- X mark for failure -->
+                            <line x1="20" y1="60" x2="80" y2="100" stroke="white" stroke-width="3"/>
+                            <line x1="80" y1="60" x2="20" y2="100" stroke="white" stroke-width="3"/>
+                            <!-- Label -->
+                            <text x="50" y="130" fill="#FCA5A5" text-anchor="middle">Domino Effect</text>
+                        </g>
+                        
+                        <!-- Distributed Section -->
+                        <g transform="translate(160,0)">
+                            <text x="50" y="45" fill="#34D399" text-anchor="middle" font-weight="bold">Distributed</text>
+                            <!-- Nodes -->
+                            <circle cx="50" cy="60" r="12" fill="#34D399"/>
+                            <circle cx="25" cy="95" r="12" fill="#34D399"/>
+                            <circle cx="75" cy="95" r="12" fill="#DC2626"/>
+                            
+                            <!-- Connections -->
+                            <line x1="50" y1="72" x2="31" y2="84" stroke="#34D399" stroke-width="2"/>
+                            <line x1="50" y1="72" x2="69" y2="84" stroke="#6B7280" stroke-width="2" stroke-dasharray="2"/>
+                            
+                            <!-- X mark on failed node -->
+                            <line x1="68" y1="88" x2="82" y2="102" stroke="white" stroke-width="2"/>
+                            <line x1="82" y1="88" x2="68" y2="102" stroke="white" stroke-width="2"/>
+                            
+                            <!-- Label -->
+                            <text x="50" y="130" fill="#6EE7B7" text-anchor="middle">Failure Contained</text>
+                        </g>
+                    </svg>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-xl text-gray-300"><strong class="text-white">What:</strong> The ability of a system to continue operating even when a component fails.</p>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-green-400">Impact (Done Right)</h3>
+                        <p class="text-gray-300">High uptime and reliability. Failures are contained and don't cause catastrophic outages.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg">
+                        <h3 class="font-semibold text-red-400">Impact (Done Wrong)</h3>
+                        <p class="text-gray-300">A single, non-critical failure brings down the entire application.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
