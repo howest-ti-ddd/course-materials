@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Recap: Strategic Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* slate-900 */
+            color: #D1D5DB; /* gray-300 */
+            overflow: hidden;
+        }
+
+        #presentation-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .slide {
+            display: flex;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            position: absolute;
+            transform: scale(0.95) translateX(50px);
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+        
+        .slide.exit {
+            transform: scale(0.95) translateX(-50px);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .legend-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .context-box {
+            border: 2px solid;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .arrow {
+            position: absolute;
+            stroke: #67E8F9; /* cyan-300 */
+            stroke-width: 2.5;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        .arrow-label {
+            position: absolute;
+            background-color: #1E293B;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #E5E7EB;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #818CF8;
+            background: linear-gradient(90deg, #A78BFA 0%, #F472B6 100%);
+            width: 0%;
+            transition: width 0.4s ease-out;
+            z-index: 100;
+            box-shadow: 0 0 10px #A78BFA;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .quiz-option:not([disabled]):hover {
+            transform: translateY(-2px);
+            background-color: rgba(71, 85, 105, 0.8);
+        }
+        .quiz-option.correct {
+            background-color: #10B981 !important; /* Emerald 500 */
+            border-color: #34D399;
+            color: white;
+        }
+        .quiz-option.incorrect {
+            background-color: #EF4444 !important; /* Red 500 */
+            border-color: #F87171;
+            color: white;
+            opacity: 0.7;
+        }
+        .quiz-option[disabled] {
+            cursor: not-allowed;
+        }
+        .feedback {
+            transition: opacity 0.3s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+    <div id="progress-bar"></div>
+    <div id="presentation-wrapper" class="w-full h-screen flex flex-col items-center justify-center p-4">
+        <div id="presentation-container" class="relative w-full h-full flex items-center justify-center">
+             <!-- Slides will be injected here -->
+        </div>
+    </div>
+
+    <div id="navigation" class="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center bg-slate-800/50 backdrop-blur-sm border border-slate-700 shadow-lg rounded-full px-4 py-2 z-50">
+        <button id="prev-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <span id="slide-counter" class="mx-4 text-gray-300 font-medium w-16 text-center">1 / 10</span>
+        <button id="next-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- SVG Definitions for Arrows -->
+    <svg width="0" height="0">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#67E8F9" />
+        </marker>
+      </defs>
+    </svg>
+
+<script>
+    // Recap slides content
+    const slidesData = [
+        { type: 'title', title: 'Recap Strategic DDD', subtitle: 'Domain, Bounded Context & Context Mapping', author: '' },
+        {
+            type: 'standard',
+            title: 'What We\'ll Sync On',
+            subtitle: 'Fast refresh to get aligned',
+            points: [
+                'Key concepts: Domain, Subdomain, Bounded Context, Ubiquitous Language',
+                'Context Maps: flows and relationship patterns',
+                'Some quick knowledge checks',
+                'Then: straight into the mini-labs'
+            ]
+        },
+        { type: 'legend', title: 'Context Map Relationships: The Legend' },
+        { type: 'context_map_simple', title: 'Basic Context Map: U → D' },
+        // Quiz 1 (warm-up)
+        {
+            type: 'quiz',
+            title: 'Warm-up',
+            question: 'What is the primary challenge when multiple teams work on a single, large codebase without clear boundaries?',
+            options: [
+                { text: 'Code duplication.', correct: false, feedback: 'Duplication hurts, but the core pain is model conflicts and integration risk.' },
+                { text: 'Difficulty in deploying the software.', correct: false, feedback: 'A symptom, not the root cause.' },
+                { text: 'Integration chaos and model corruption.', correct: true, feedback: 'Correct. Conflicting models cause chaos and corruption.' },
+                { text: 'When to drink coffee.', correct: false, feedback: 'Tempting, but not the main issue.' }
+            ]
+        },
+        // Quiz 2 (why DDD)
+        {
+            type: 'quiz',
+            title: 'Knowledge Check',
+            question: 'Domain-Driven Design was created primarily to address what kind of problem?',
+            options: [
+                { text: 'Slow database performance.', correct: false, feedback: 'DDD is not a perf tuning approach.' },
+                { text: 'The complexity and communication gap between business experts and developers.', correct: true, feedback: 'Exactly. It tackles complexity via shared models and language.' },
+                { text: 'A lack of standardized UI frameworks.', correct: false, feedback: 'UI is separate from DDD\'s intent.' }
+            ]
+        },
+        // Quiz 3 (core domain)
+        {
+            type: 'quiz',
+            title: 'Knowledge Check',
+            question: 'For an online university, which of the following is most likely the Core Domain?',
+            options: [
+                { text: 'Student enrollment and billing system.', correct: false, feedback: 'Likely Supporting.' },
+                { text: 'A video streaming service for lectures.', correct: false, feedback: 'Generic—buy/integrate.' },
+                { text: 'A proprietary interactive learning and assessment platform.', correct: true, feedback: 'Correct. This is the differentiator.' }
+            ]
+        },
+        // Quiz 4 (bounded context)
+        {
+            type: 'quiz',
+            title: 'Knowledge Check',
+            question: 'What is the primary strategic benefit of defining a Bounded Context?',
+            options: [
+                { text: 'It makes database schemas easier to design.', correct: false, feedback: 'Possible side-effect, not the goal.' },
+                { text: 'It protects the integrity of a model and its language.', correct: true, feedback: 'Yes. It\'s a safety membrane for your model.' },
+                { text: 'It forces teams to use the same coding style.', correct: false, feedback: 'Tactical, not strategic.' }
+            ]
+        },
+        // New Quiz - Partnership
+        {
+            type: 'quiz',
+            title: 'Context Mapping',
+            question: 'When would the Partnership pattern be most appropriate between two teams?',
+            options: [
+                { text: 'When there\'s a clear supplier-customer relationship.', correct: false, feedback: 'A supplier-customer relationship would be better served by the Customer-Supplier pattern, which acknowledges the asymmetry in the relationship.' },
+                { text: 'When two teams must succeed or fail together and need close coordination.', correct: true, feedback: 'Correct! Partnership is ideal when teams have interdependent goals and must synchronize development and planning closely.' },
+                { text: 'When teams decide integration isn\'t worth the effort.', correct: false, feedback: 'This describes the Separate Ways pattern, where teams explicitly choose not to integrate.' },
+                { text: 'When a downstream team needs to protect itself from a legacy system.', correct: false, feedback: 'This situation calls for an Anticorruption Layer (ACL), which provides isolation from problematic upstream systems.' }
+            ]
+        },
+        // New Quiz - Shared Kernel
+        {
+            type: 'quiz',
+            title: 'Context Mapping',
+            question: 'What is the primary risk of using a Shared Kernel between two bounded contexts?',
+            options: [
+                { text: 'It requires a formal translation layer that adds complexity.', correct: false, feedback: 'A Shared Kernel actually eliminates the need for translation layers between the contexts that share it.' },
+                { text: 'It creates high coupling between teams, requiring coordination for changes.', correct: true, feedback: 'Correct! A Shared Kernel tightly couples the teams that share it, as any change requires agreement from all stakeholders. This is why it should be kept as small as possible.' },
+                { text: 'It forces teams to use different terms for the same concept.', correct: false, feedback: 'The opposite is true - a Shared Kernel standardizes terminology for the shared subset of the model across teams.' },
+                { text: 'It prevents teams from developing models that fit their specific needs.', correct: false, feedback: 'While this is a concern, the main issue is the coordination overhead. Each team can still develop specific models outside the shared kernel.' }
+            ]
+        },
+        // New Quiz - ACL
+        {
+            type: 'quiz',
+            title: 'Context Mapping',
+            question: 'When would an Anticorruption Layer (ACL) be the most valuable integration pattern?',
+            options: [
+                { text: 'When integrating with a well-designed, modern upstream service.', correct: false, feedback: 'A well-designed upstream service might not require the isolation that an ACL provides - simpler patterns could suffice.' },
+                { text: 'When two teams are working closely together on new features.', correct: false, feedback: 'Closely collaborating teams would benefit more from a Partnership or Shared Kernel, which facilitate collaboration rather than isolation.' },
+                { text: 'When connecting to a problematic legacy system that cannot be changed.', correct: true, feedback: 'Correct! The ACL is designed to protect your bounded context from being corrupted by poorly designed or legacy systems that you need to integrate with but can\'t change.' },
+                { text: 'When multiple downstream systems need to access your context.', correct: false, feedback: 'When providing services to multiple downstream contexts, an Open Host Service with a Published Language would be more appropriate.' }
+            ]
+        },
+        // New Quiz - Conformist vs ACL
+        {
+            type: 'quiz',
+            title: 'Context Mapping',
+            question: 'What is the key difference between the Conformist pattern and using an Anticorruption Layer?',
+            options: [
+                { text: 'The Conformist pattern is used for downstream systems, while ACL is for upstream systems.', correct: false, feedback: 'Both patterns address how a downstream team relates to an upstream system. The difference lies in how they handle the model translation.' },
+                { text: 'The Conformist pattern accepts the upstream model as-is, while an ACL translates between models.', correct: true, feedback: 'Correct! A Conformist adopts the upstream model without translation (simpler but compromises your model), while an ACL isolates your model by translating to/from the upstream model (more work but preserves your model).' },
+                { text: 'The Conformist pattern is always preferred when the upstream system is unchangeable.', correct: false, feedback: 'Just because an upstream system is unchangeable doesn\'t mean Conformist is preferred. If the upstream model is poorly designed, an ACL might be necessary despite the extra work.' },
+                { text: 'The Conformist pattern requires the upstream team\'s cooperation, while an ACL doesn\'t.', correct: false, feedback: 'Neither pattern requires cooperation from the upstream team - that\'s what makes them useful when dealing with systems or teams you can\'t influence.' }
+            ]
+        },
+        // New Quiz - OHS & PL
+        {
+            type: 'quiz',
+            title: 'Context Mapping',
+            question: 'What combination of patterns works best when your context needs to serve multiple downstream consumers?',
+            options: [
+                { text: 'Customer-Supplier relationships with each consumer.', correct: false, feedback: 'While possible, establishing individual Customer-Supplier relationships with many consumers doesn\'t scale well and leads to high coordination costs.' },
+                { text: 'Open Host Service with a Published Language.', correct: true, feedback: 'Correct! OHS provides a well-defined, stable API that multiple consumers can use, while PL ensures they all understand the communication protocol. This combination scales to many consumers.' },
+                { text: 'Shared Kernel with all consumers.', correct: false, feedback: 'A Shared Kernel would create tight coupling with all consumers, making it extremely difficult to evolve your system as each change would need agreement from all parties.' },
+                { text: 'A Partnership with the most important consumer.', correct: false, feedback: 'While you might form a Partnership with one critical consumer, this approach doesn\'t address the needs of multiple consumers effectively.' }
+            ]
+        },
+        // Final slide: removing lab slide and replacing with a conclusion
+        {
+            type: 'standard',
+            title: 'Ready to Apply Your Knowledge',
+            subtitle: 'Key takeaways for effective context mapping',
+            points: [
+                'Context maps reflect both <span class="font-bold text-indigo-400">team organization</span> and <span class="font-bold text-indigo-400">technical architecture</span>.',
+                'Choose relationship patterns that match both your <span class="font-bold text-amber-300">technical needs</span> and <span class="font-bold text-amber-300">organizational realities</span>.',
+                'Start mapping what <span class="font-bold text-emerald-400">IS</span>, not what you wish existed. Make the implicit explicit.',
+                'Context maps evolve as your understanding and system mature. Revisit them regularly.'
+            ]
+        }
+    ];
+
+    const presentationContainer = document.getElementById('presentation-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const slideCounter = document.getElementById('slide-counter');
+    const progressBar = document.getElementById('progress-bar');
+    let currentSlide = 0;
+    let slides = [];
+
+    function createSlide(slideData, index) {
+        const slideEl = document.createElement('div');
+        slideEl.className = `slide p-8 flex-col items-center justify-center text-slate-800`;
+        slideEl.style.maxWidth = '1200px';
+        slideEl.style.maxHeight = '750px';
+        slideEl.style.aspectRatio = '16/10';
+
+        switch (slideData.type) {
+            case 'section_title':
+                slideEl.innerHTML = `
+                    <div class="text-center w-full">
+                         <p class="text-2xl font-bold text-indigo-400 mb-4 tracking-widest">${slideData.section}</p>
+                         <h2 class="text-6xl font-black tracking-tight text-gray-200">${slideData.title}</h2>
+                         <div class="w-24 h-1 bg-gradient-to-r from-purple-400 to-cyan-400 mx-auto mt-6 rounded-full"></div>
+                    </div>
+                `;
+                break;
+            case 'title':
+                slideEl.innerHTML = `
+                    <div class="text-center">
+                        <h1 class="text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 leading-tight pb-2">${slideData.title}</h1>
+                        <p class="mt-6 text-4xl font-semibold text-slate-300 leading-relaxed pb-2">${slideData.subtitle}</p>
+                        ${slideData.author ? `<p class="mt-12 text-lg text-slate-400">${slideData.author}</p>` : ''}
+                    </div>
+                `;
+                break;
+            case 'standard':
+                let pointsHtml = slideData.points.map(point => `<li class="mb-4 text-2xl text-slate-300 leading-relaxed">${point}</li>`).join('');
+                slideEl.innerHTML = `
+                    <div class="w-full px-12">
+                        <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
+                        ${slideData.subtitle ? `<p class="text-2xl text-slate-400 mb-10">${slideData.subtitle}</p>` : ''}
+                        <ul class="list-disc pl-8 space-y-4 marker:text-indigo-400">
+                            ${pointsHtml}
+                        </ul>
+                    </div>
+                `;
+                break;
+            case 'context_map_simple':
+                slideEl.innerHTML = `
+                    <h2 class="text-4xl font-bold mb-8 text-center text-gray-200">${slideData.title}</h2>
+                    <div id="simple-map-container" class="relative w-full max-w-4xl h-96">
+                        <!-- Contexts -->
+                        <div id="sales" class="context-box border-sky-500 text-sky-300 absolute" style="top: 20%; left: 10%;">Sales</div>
+                        <div id="shipping" class="context-box border-amber-500 text-amber-300 absolute" style="top: 50%; left: 40%;">Shipping</div>
+                        <div id="support" class="context-box border-teal-500 text-teal-300 absolute" style="top: 20%; left: 70%;">Support</div>
+                    </div>
+                    <div class="mt-6 text-center text-slate-400">
+                        <strong>Upstream (U):</strong> The context that influences or provides a service. <br>
+                        <strong>Downstream (D):</strong> The context that is influenced or consumes a service.
+                    </div>
+                `;
+                break;
+            case 'legend':
+                slideEl.innerHTML = `
+                    <h2 class="text-4xl font-bold mb-6 text-center text-gray-200">${slideData.title}</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 p-8">
+                        <div class="legend-item"><div class="legend-icon bg-green-500">P</div><strong class="text-gray-200">Partnership</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-teal-500">SK</div><strong class="text-gray-200">Shared Kernel</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-sky-500">C/S</div><strong class="text-gray-200">Customer-Supplier</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-yellow-500">CF</div><strong class="text-gray-200">Conformist</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-orange-500">ACL</div><strong class="text-gray-200">Anticorruption Layer</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-blue-500">OHS</div><strong class="text-gray-200">Open Host Service</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-violet-500">PL</div><strong class="text-gray-200">Published Language</strong></div>
+                        <div class="legend-item"><div class="legend-icon bg-slate-500">SW</div><strong class="text-gray-200">Separate Ways</strong></div>
+                    </div>
+                `;
+                break;
+            case 'quiz':
+                let optionsHtml = slideData.options.map((opt, i) => `
+                    <button class="quiz-option w-full text-left p-4 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-lg" data-correct="${opt.correct}" data-feedback="${opt.feedback}">
+                        <span class="font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${opt.text}
+                    </button>
+                `).join('');
+                slideEl.innerHTML = `
+                    <div class="w-full max-w-4xl text-center">
+                         <h2 class="text-4xl font-bold mb-4 text-gray-200">${slideData.title}</h2>
+                         <p class="text-2xl text-slate-300 mb-8">${slideData.question}</p>
+                         <div class="quiz-options-container space-y-4 mb-6">
+                            ${optionsHtml}
+                         </div>
+                         <div class="feedback-container h-24 text-lg p-4 rounded-lg opacity-0"></div>
+                    </div>
+                `;
+                break;
+            case 'lab_assignment':
+                let capabilitiesHtml = slideData.capabilities.map(cap => `<li>${cap}</li>`).join('');
+                let labTasksHtml = slideData.tasks.map(task => `<li class="flex items-start text-lg mb-3"><svg class="w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg><span>${task}</span></li>`).join('');
+
+                slideEl.innerHTML = `
+                    <div class="w-full px-8">
+                        <h2 class="text-5xl font-extrabold mb-8 text-center text-gray-200">${slideData.title}</h2>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="glass-card p-6 rounded-lg border-l-4 border-indigo-500">
+                                <h3 class="text-3xl font-bold text-indigo-300 mb-4">${slideData.scenarioTitle}</h3>
+                                <p class="text-lg text-slate-300 mb-4">${slideData.scenarioText}</p>
+                                <strong class="block mb-2 text-indigo-300">Potential capabilities:</strong>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-400 text-sm">
+                                    ${capabilitiesHtml}
+                                </ul>
+                            </div>
+                            <div class="glass-card p-6 rounded-lg border-l-4 border-cyan-500">
+                                 <h3 class="text-3xl font-bold text-cyan-300 mb-4">${slideData.taskTitle}</h3>
+                                 <ul class="space-y-3 text-slate-300">
+                                    ${labTasksHtml}
+                                 </ul>
+                                 <hr class="border-slate-700 my-4">
+                                 <h3 class="text-3xl font-bold text-gray-200 mb-2">${slideData.deliverableTitle}</h3>
+                                 <p class="text-lg text-slate-300">${slideData.deliverable}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                break;
+        }
+
+        return slideEl;
+    }
+    
+    function drawSimpleMap() {
+        const container = document.getElementById('simple-map-container');
+        if (!container) return;
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'absolute inset-0 w-full h-full');
+        container.appendChild(svg);
+        
+        setTimeout(() => {
+            const existingSvg = container.querySelector('svg');
+            if (existingSvg) existingSvg.innerHTML = '';
+             
+             const from1 = document.getElementById('sales');
+             const to1 = document.getElementById('shipping');
+             const from2 = document.getElementById('shipping');
+             const to2 = document.getElementById('support');
+             
+             if(from1 && to1) {
+                const p1 = createArrowPath(from1, to1);
+                existingSvg.appendChild(p1.arrow);
+                container.appendChild(p1.label);
+             }
+             if(from2 && to2) {
+                const p2 = createArrowPath(from2, to2);
+                existingSvg.appendChild(p2.arrow);
+                container.appendChild(p2.label);
+             }
+        }, 50); // a slight delay to ensure DOM is ready
+    }
+    
+    function createArrowPath(fromEl, toEl) {
+        const container = fromEl.parentElement;
+        const fromRect = fromEl.getBoundingClientRect();
+        const toRect = toEl.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        const fromCenterX = (fromRect.left - containerRect.left) + fromRect.width / 2;
+        const fromCenterY = (fromRect.top - containerRect.top) + fromRect.height / 2;
+        const toCenterX = (toRect.left - containerRect.left) + toRect.width / 2;
+        const toCenterY = (toRect.top - containerRect.top) + toRect.height / 2;
+
+        let startX = fromCenterX, startY = fromCenterY, endX = toCenterX, endY = toCenterY;
+
+        // Calculate intersection point
+        const dx = toCenterX - fromCenterX;
+        const dy = toCenterY - fromCenterY;
+        const angle = Math.atan2(dy, dx);
+        
+        startX = fromCenterX + (fromRect.width / 2) * Math.cos(angle);
+        startY = fromCenterY + (fromRect.height / 2) * Math.sin(angle);
+        
+        // This is a simplification; a true intersection with a rect is more complex
+        // For simplicity, let's connect from edge to edge based on general direction
+        if (dx > Math.abs(dy)) { // more horizontal
+            startX = fromRect.right - containerRect.left;
+            endX = toRect.left - containerRect.left;
+            startY = fromCenterY; endY = toCenterY;
+        } else { // more vertical
+            startX = fromCenterX; endX = toCenterX;
+            if (dy > 0) {
+                 startY = fromRect.bottom - containerRect.top;
+                 endY = toRect.top - containerRect.top;
+            } else {
+                 startY = fromRect.top - containerRect.top;
+                 endY = toRect.bottom - containerRect.top;
+            }
+        }
+
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', 'arrow');
+        path.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
+        
+        const label = document.createElement('div');
+        label.className = 'arrow-label';
+        label.innerHTML = 'U <span class="text-cyan-300">→</span> D';
+        label.style.left = `${(startX + endX) / 2 - 20}px`;
+        label.style.top = `${(startY + endY) / 2 - 12}px`;
+
+        return {arrow: path, label};
+    }
+
+    function handleQuizInteraction(e) {
+        const option = e.target.closest('.quiz-option');
+        if (!option) return;
+
+        const container = option.closest('.quiz-options-container');
+        const options = container.querySelectorAll('.quiz-option');
+        const feedbackContainer = container.nextElementSibling;
+        
+        if (option.disabled) return;
+
+        options.forEach(opt => {
+            opt.disabled = true;
+            if (opt.dataset.correct === 'true') {
+                opt.classList.add('correct');
+            }
+        });
+        
+        if (option.dataset.correct !== 'true') {
+            option.classList.add('incorrect');
+        }
+
+        feedbackContainer.innerHTML = option.dataset.feedback;
+        feedbackContainer.style.opacity = '1';
+
+        if(option.dataset.correct === 'true') {
+            feedbackContainer.classList.add('bg-emerald-900/50', 'text-emerald-300');
+        } else {
+            feedbackContainer.classList.add('bg-red-900/50', 'text-red-300');
+        }
+        
+        // Removed the auto-transition to next slide
+    }
+
+    function renderSlides() {
+        presentationContainer.innerHTML = '';
+        slides = slidesData.map((slideData, index) => {
+            const slide = createSlide(slideData, index);
+            if (slideData.type === 'quiz') {
+                const optionsContainer = slide.querySelector('.quiz-options-container');
+                optionsContainer.addEventListener('click', handleQuizInteraction);
+            }
+            presentationContainer.appendChild(slide);
+            return slide;
+        });
+    }
+
+    let previousSlide = 0;
+    function showSlide(index) {
+        slides[previousSlide]?.classList.remove('active');
+        slides[previousSlide]?.classList.add('exit');
+        
+        slides[index]?.classList.add('active');
+        slides[index]?.classList.remove('exit');
+
+        previousSlide = index;
+        currentSlide = index;
+
+        slideCounter.textContent = `${index + 1} / ${slidesData.length}`;
+        progressBar.style.width = `${((index + 1) / slidesData.length) * 100}%`;
+        updateNavButtons();
+        
+        if (slidesData[index].type === 'context_map_simple') {
+            drawSimpleMap();
+        }
+    }
+
+    function updateNavButtons() {
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slidesData.length - 1;
+    }
+    
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            showSlide(currentSlide - 1);
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < slidesData.length - 1) {
+            showSlide(currentSlide + 1);
+        }
+    });
+    
+    // Remote Control Logic
+    function initRemoteControl() {
+        // Listen for keyboard remote events
+        document.addEventListener('keydown', (e) => {
+            // Standard keyboard navigation is already handled
+            
+            // Add support for additional remote control codes
+            // Common remote control codes: PageDown/PageUp for many remotes
+            if (e.key === 'PageDown') {
+                e.preventDefault();
+                nextBtn.click();
+            } else if (e.key === 'PageUp') {
+                e.preventDefault();
+                prevBtn.click();
+            }
+        });
+        
+        // Check if the browser supports the Presentation API (for dedicated presentation remotes)
+        if (window.PresentationRequest) {
+            console.log('Presentation API supported - remote control ready');
+        }
+        
+        // Listen for custom remote control events
+        window.addEventListener('remotecontrol', function(e) {
+            if (e.detail && e.detail.action === 'next') {
+                nextBtn.click();
+            } else if (e.detail && e.detail.action === 'prev') {
+                prevBtn.click();
+            }
+        });
+        
+        console.log('Remote control initialized');
+    }
+    
+    // Sample function to trigger from remote control
+    window.triggerRemoteAction = function(action) {
+        const event = new CustomEvent('remotecontrol', { 
+            detail: { action: action } 
+        });
+        window.dispatchEvent(event);
+    };
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            // Do not advance if a quiz is unanswered
+            const currentSlideData = slidesData[currentSlide];
+            const currentSlideEl = slides[currentSlide];
+            if(currentSlideData.type === 'quiz') {
+                const firstOption = currentSlideEl.querySelector('.quiz-option');
+                if(!firstOption || !firstOption.disabled) {
+                    return;
+                }
+            }
+            nextBtn.click();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevBtn.click();
+        }
+    });
+
+    // Initial render
+    renderSlides();
+    showSlide(0);
+    initRemoteControl();
+</script>
+</body>
+</html>

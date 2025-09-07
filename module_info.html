@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Information - DDD & Architectural Styles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            /* slate-900 */
+            color: #D1D5DB;
+            /* gray-300 */
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #module-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        /* Enhanced styling for cards */
+        .card-accent-blue {
+            border-left: 4px solid #3B82F6;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -4px rgba(59, 130, 246, 0.1);
+        }
+
+        .card-accent-indigo {
+            border-left: 4px solid #6366F1;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -4px rgba(99, 102, 241, 0.1);
+        }
+
+        .card-accent-purple {
+            border-left: 4px solid #A855F7;
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.1), 0 4px 6px -4px rgba(168, 85, 247, 0.1);
+        }
+
+        /* Subtle gradient background for enhanced visual depth */
+        .subtle-gradient {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-900 text-gray-300">
+    <div id="module-wrapper" class="min-h-screen py-12 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+        .ai-policy-content {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Preliminary Knowledge</h1>
+    <ul>
+        <li>All concepts of S4</li>
+    </ul>
+
+    <h2>Course Goal</h2>
+    <p>Equip students (building on all S4 concepts) to <strong>use Domain-Driven Design to make sound architectural and
+            collaborative design choices</strong>&mdash;delivered in a <strong>conference-style format.</strong></p>
+    <p><strong>Lesson lengths vary (&asymp;1&ndash;3 hours) depending on topic complexity and lab depth.</strong></p>
+    <p>By the end, students can:</p>
+    <ul>
+        <li>Analyze a real domain, define <strong>Bounded Contexts</strong>, and draw <strong>Context Maps</strong> with
+            clear relationships.</li>
+        <li>Compare and <strong>justify architectural styles</strong> (modular monolith, microservices, micro-kernel,
+            pipelines, EDA) across trade-offs like scalability, elasticity, deployability, cost, and maintainability.</li>
+        <li>Explain when <strong>Event Sourcing</strong> fits (and when it doesn&rsquo;t) and reason about its impact on
+            design and operations.</li>
+        <li>Demonstrate <strong>in-depth mastery of Domain Events</strong>: discovery, naming, versioning, ordering,
+            idempotency, and domain vs. integration events.</li>
+        <li>Design <strong>Aggregate interactions</strong>: transactional boundaries, invariants, consistency rules, and
+            coordination via process managers/sagas.</li>
+        <li>Facilitate and participate in <strong>Event Storming</strong> (Big Picture, Process, Design) to move from
+            sticky notes to actionable models.</li>
+        <li>Practice <strong>Mob Programming</strong> to turn collaborative models into clean, testable code and
+            strengthen shared understanding.</li>
+    </ul>
+    <p><strong>Depth over volume:</strong> students prepare, actively engage, and consolidate understanding through
+        practice and reflection.</p>
+
+    <h2>Hint</h2>
+    <p>At first glance, the amount of course material may seem small.</p>
+    <p>That&rsquo;s intentional: we aim for depth over volume.</p>
+    <p>Plan time to truly grasp the concepts&mdash;understanding comes from practice and reflection, not passive
+        reading.</p>
+    <p>Come to class ready to engage: ask questions</p>
+
+    <h2>Lessons</h2>
+
+    <h3>Week 1 &mdash; DDD and Architectural Styles</h3>
+    <div class="card">
+        <p>This lesson examines how Domain-Driven Design (DDD) relates to common architectural styles and their
+            characteristics.</p>
+        <ul>
+            <li><strong>Type</strong>
+                <ul>
+                    <li>Conceptual lecture with a short lab.</li>
+                </ul>
+            </li>
+            <li><strong>Mandatory preparation</strong>
+                <ul>
+                    <li>None required.</li>
+                </ul>
+            </li>
+            <li><strong>Evaluation</strong>
+                <ul>
+                    <li>Lab graded as continuous assessment.</li>
+                    <li>This lesson contributes to the final exam.</li>
+                </ul>
+            </li>
+            <li><strong>Lesson plan</strong>
+                <ul>
+                    <li>Lecture: DDD and architectural styles</li>
+                    <li>Lab
+                        <ul>
+                            <li>group assignment</li>
+                            <li>Assign architectural characteristics to different architectural styles</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Lesson material</strong>
+                <ul>
+                    <li>Presentation slides</li>
+                    <li>Lab deliverables</li>
+                    <li>Mandatory supplementary material</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h3>Week 2 &mdash; Bounded Contexts &amp; Context Maps</h3>
+    <div class="card">
+        <p>Focus on Bounded Contexts and Context Maps within DDD.</p>
+        <ul>
+            <li><strong>Type</strong>
+                <ul>
+                    <li>Conceptual lecture with a lab.</li>
+                </ul>
+            </li>
+            <li><strong>Mandatory preparation</strong>
+                <ul>
+                    <li>Watch and/or read the supplementary material of this lesson</li>
+                </ul>
+            </li>
+            <li><strong>Evaluation</strong>
+                <ul>
+                    <li>Lab graded as continuous assessment.</li>
+                    <li>This lesson contributes to the final exam.</li>
+                </ul>
+            </li>
+            <li><strong>Lesson plan</strong>
+                <ul>
+                    <li>Lecture: Bounded Contexts and Context Maps</li>
+                    <li>Lab
+                        <ul>
+                            <li>Group assignment</li>
+                            <li>Create a Context Map for a given domain scenario</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Lesson material</strong>
+                <ul>
+                    <li>Presentation slides</li>
+                    <li>Lab deliverables</li>
+                    <li>Mandatory supplementary material</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h3>Week 6 &mdash; Part 1: Event Sourcing</h3>
+    <div class="card">
+        <p>Introduction to the Event Sourcing pattern and its role in DDD.</p>
+        <ul>
+            <li><strong>Type</strong>
+                <ul>
+                    <li>Guest lecture by an industry expert.</li>
+                    <li>Mandatory attendance</li>
+                </ul>
+            </li>
+            <li><strong>Preparation</strong>
+                <ul>
+                    <li>Watch the Event Sourcing video.</li>
+                </ul>
+            </li>
+            <li><strong>Evaluation</strong>
+                <ul>
+                    <li>This lesson contributes to the final exam.</li>
+                </ul>
+            </li>
+            <li><strong>Lesson plan</strong>
+                <ul>
+                    <li>Guest lecture: Event Sourcing</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h3><span class="highlight">Week 6 &mdash; Part 2: Final Exam</span></h3>
+    <div class="card">
+        <p>Final assessment session.</p>
+        <ul>
+            <li><strong>Date</strong>
+                <ul>
+                    <li>TODO</li>
+                </ul>
+            </li>
+            <li><strong>Type</strong>
+                <ul>
+                    <li>Leho Quiz</li>
+                </ul>
+            </li>
+            <li><strong>Duration</strong>
+                <ul>
+                    <li>120 minutes</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h2>Self study</h2>
+    <p>The lessons are only one part of this module. In addition, there are complementary self-study materials that
+        will be assessed during the final exam.</p>
+    <p>Of course, you are welcome to ask questions about these topics during the lessons.</p>
+
+    <h2>Evaluation</h2>
+    <p>This evaluation of this module is based on:</p>
+    <ul>
+        <li><strong>continuous assessment through lab work (30%)</strong></li>
+        <li><strong>a final exam (70%)</strong></li>
+    </ul>
+
+    <h3>Continuous assessment (30%)</h3>
+    <p>The lab work is graded based on the following criteria:</p>
+    <ul>
+        <li>Completeness</li>
+        <li>Correctness</li>
+        <li>Contribution</li>
+    </ul>
+
+    <p>All lessons that contribute to continuous assessment are marked in the lesson plan.</p>
+    <p>However, lab work is not graded per lesson, but as a whole at the end of the module.</p>
+    <p>The weighting of continuous assessment points for each lesson may vary and will be determined by the instructor
+        at the end of the module.</p>
+
+    <h3>Final exam (70%)</h3>
+    <p>The final exam covers all theoretical aspects of the module.</p>
+    <p>The format of the exam is a combination of multiple-choice questions, short answer questions, and other quiz
+        types to assess understanding of key concepts.</p>
+
+    <p>All the lessons that will be included in the final exam are marked in the lesson plan.</p>
+    <p>However, the grade of the final exam will be determined by the instructor at the end of the module.</p>
+
+    <h3>Resit (100%)</h3>
+    <p>In case of a resit, the student will retake the final exam and a new lab assignment(s) will be provided.</p>
+    <p>The ratio of continuous assessment and final exam will remain the same.</p>
+    <p>The resit counts for the entire module grade.</p>
+
+    <h2>Permitted use of AI</h2>
+    <div class="ai-policy">
+        <div class="ai-policy-icon">
+            <img src="https://leho-howest.instructure.com/courses/28709/files/5215838/preview" alt="AI Policy Icon"
+                width="95" height="97">
+        </div>
+        <div class="ai-policy-content">
+            <strong>AI-bewerkingen en verfijningen bovenop het eigen werk.</strong><br>
+            Studenten gebruiken AI om werk te verbeteren of versterken, niet voor nieuwe inhoud.<br>
+            Origineel werk zonder AI is ingediend als bijlage.
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -164,6 +164,7 @@
     </svg>
 
 <script>
+    // Single slides deck - removed recap content and switching logic
     const slidesData = [
         // NEW SLIDE 1: Warm-up Quiz
         {
@@ -181,8 +182,7 @@
         {
             type: 'title',
             title: 'DDD Strategic Design',
-            subtitle: 'Domain, Bounded Contexts & Context Mapping',
-            author: 'A Conference-Style Lecture for Final-Year Software Engineering Students'
+            subtitle: 'Domain, Bounded Contexts & Context Mapping'
         },
         // SLIDE 3: Hook (was 2)
         {
@@ -1036,8 +1036,8 @@
             case 'title':
                 slideEl.innerHTML = `
                     <div class="text-center">
-                        <h1 class="text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400">${slideData.title}</h1>
-                        <p class="mt-4 text-4xl font-semibold text-slate-300">${slideData.subtitle}</p>
+                        <h1 class="text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 leading-tight pb-2">${slideData.title}</h1>
+                        <p class="mt-6 text-4xl font-semibold text-slate-300 leading-relaxed pb-2">${slideData.subtitle}</p>
                         ${slideData.author ? `<p class="mt-12 text-lg text-slate-400">${slideData.author}</p>` : ''}
                     </div>
                 `;
@@ -1128,7 +1128,7 @@
                         </div>
 
                         <div class="flex-grow text-center mx-8">
-                           <svg class="w-24 h-24 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                           <svg class="w-24 h-24 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                            <p class="text-sm text-slate-400 -mt-4">Complexity Grows</p>
                         </div>
 
@@ -1383,10 +1383,6 @@
         } else {
             feedbackContainer.classList.add('bg-red-900/50', 'text-red-300');
         }
-        
-        setTimeout(() => {
-            nextBtn.click();
-        }, 3000);
     }
 
     function renderSlides() {
@@ -1458,10 +1454,61 @@
         }
     });
 
+    // Remote Control Logic
+    function initRemoteControl() {
+        // Listen for keyboard remote events
+        document.addEventListener('keydown', (e) => {
+            // Standard keyboard navigation is already handled
+            
+            // Add support for additional remote control codes
+            // Common remote control codes: PageDown/PageUp for many remotes
+            if (e.key === 'PageDown') {
+                e.preventDefault();
+                nextBtn.click();
+            } else if (e.key === 'PageUp') {
+                e.preventDefault();
+                prevBtn.click();
+            }
+        });
+        
+        // Check if the browser supports the Presentation API (for dedicated presentation remotes)
+        if (window.PresentationRequest) {
+            console.log('Presentation API supported - remote control ready');
+        }
+        
+        // Listen for custom remote control events
+        window.addEventListener('remotecontrol', function(e) {
+            if (e.detail && e.detail.action === 'next') {
+                nextBtn.click();
+            } else if (e.detail && e.detail.action === 'prev') {
+                prevBtn.click();
+            }
+        });
+        
+        console.log('Remote control initialized');
+    }
+    
+    // Sample function to trigger from remote control
+    window.triggerRemoteAction = function(action) {
+        const event = new CustomEvent('remotecontrol', { 
+            detail: { action: action } 
+        });
+        window.dispatchEvent(event);
+    };
+    
+    // Initialize remote control after slides are rendered
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            // ...existing code...
+        } else if (e.key === 'ArrowLeft') {
+            // ...existing code...
+        }
+    });
+
     // Initial render
     renderSlides();
     showSlide(0);
-
+    initRemoteControl();
 </script>
 </body>
 </html>

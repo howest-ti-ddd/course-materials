@@ -1,51 +1,51 @@
 <div class="slide active">
     <div class="slide-content">
-        <h2 class="text-4xl font-bold mb-6 text-indigo-300">Architectural Characteristics: Key Trade-offs</h2>
-        <p class="text-xl text-gray-400 mb-6 text-center">These characteristics often conflict with each other - you can't maximize them all!</p>
+        <h2 class="text-4xl font-bold mb-4 text-indigo-300">Architectural Characteristics: Key Trade-offs</h2>
+        <p class="text-lg text-gray-400 mb-4 text-center">These characteristics often conflict with each other - you can't maximize them all!</p>
         
-        <div class="diagram-bg p-6 rounded-xl shadow-lg">
-            <svg viewBox="0 0 800 400" class="w-full h-auto">
+        <div class="diagram-bg p-4 rounded-xl shadow-lg">
+            <svg viewBox="0 0 800 350" class="w-full h-auto">
                 <!-- Header Row -->
-                <text x="400" y="30" font-weight="bold" fill="#D1D5DB" text-anchor="middle">Common Trade-offs Between "-ilities"</text>
+                <text x="400" y="25" font-weight="bold" fill="#D1D5DB" text-anchor="middle">Common Trade-offs Between "-ilities"</text>
                 
                 <!-- Versus Labels - Made wider with more spacing -->
-                <text x="400" y="70" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
-                <text x="400" y="150" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
-                <text x="400" y="230" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
-                <text x="400" y="310" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
+                <text x="400" y="65" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
+                <text x="400" y="135" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
+                <text x="400" y="205" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
+                <text x="400" y="275" fill="#FCD34D" font-size="16" text-anchor="middle" font-weight="bold">VERSUS</text>
                 
                 <!-- Trade-off Groups - Boxes moved further apart -->
                 <!-- Performance vs Security -->
-                <rect x="80" y="50" width="220" height="40" rx="5" fill="#10B981" />
-                <text x="190" y="75" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Performance</text>
-                <rect x="500" y="50" width="220" height="40" rx="5" fill="#F87171" />
-                <text x="610" y="75" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Security</text>
-                <text x="400" y="105" fill="#D1D5DB" font-size="12" text-anchor="middle">Security checks add overhead that slows down processing</text>
+                <rect x="80" y="45" width="220" height="40" rx="5" fill="#10B981" />
+                <text x="190" y="70" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Performance</text>
+                <rect x="500" y="45" width="220" height="40" rx="5" fill="#F87171" />
+                <text x="610" y="70" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Security</text>
+                <text x="400" y="100" fill="#D1D5DB" font-size="12" text-anchor="middle">Security checks add overhead that slows down processing</text>
                 
                 <!-- Simplicity vs Scalability -->
-                <rect x="80" y="130" width="220" height="40" rx="5" fill="#10B981" />
-                <text x="190" y="155" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Simplicity</text>
-                <rect x="500" y="130" width="220" height="40" rx="5" fill="#F87171" />
-                <text x="610" y="155" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Scalability</text>
-                <text x="400" y="185" fill="#D1D5DB" font-size="12" text-anchor="middle">Highly scalable systems are inherently more complex</text>
+                <rect x="80" y="115" width="220" height="40" rx="5" fill="#10B981" />
+                <text x="190" y="140" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Simplicity</text>
+                <rect x="500" y="115" width="220" height="40" rx="5" fill="#F87171" />
+                <text x="610" y="140" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Scalability</text>
+                <text x="400" y="170" fill="#D1D5DB" font-size="12" text-anchor="middle">Highly scalable systems are inherently more complex</text>
                 
                 <!-- Deployability vs Reliability -->
-                <rect x="80" y="210" width="220" height="40" rx="5" fill="#10B981" />
-                <text x="190" y="235" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Deployability</text>
-                <rect x="500" y="210" width="220" height="40" rx="5" fill="#F87171" />
-                <text x="610" y="235" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Reliability</text>
-                <text x="400" y="265" fill="#D1D5DB" font-size="12" text-anchor="middle">Frequent deployments can introduce more failures</text>
+                <rect x="80" y="185" width="220" height="40" rx="5" fill="#10B981" />
+                <text x="190" y="210" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Deployability</text>
+                <rect x="500" y="185" width="220" height="40" rx="5" fill="#F87171" />
+                <text x="610" y="210" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Reliability</text>
+                <text x="400" y="240" fill="#D1D5DB" font-size="12" text-anchor="middle">Frequent deployments can introduce more failures</text>
                 
                 <!-- Cost Efficiency vs Elasticity -->
-                <rect x="80" y="290" width="220" height="40" rx="5" fill="#10B981" />
-                <text x="190" y="315" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Cost Efficiency</text>
-                <rect x="500" y="290" width="220" height="40" rx="5" fill="#F87171" />
-                <text x="610" y="315" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Elasticity</text>
-                <text x="400" y="345" fill="#D1D5DB" font-size="12" text-anchor="middle">Maintaining excess capacity for peak loads costs money</text>
+                <rect x="80" y="255" width="220" height="40" rx="5" fill="#10B981" />
+                <text x="190" y="280" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Cost Efficiency</text>
+                <rect x="500" y="255" width="220" height="40" rx="5" fill="#F87171" />
+                <text x="610" y="280" fill="black" text-anchor="middle" font-weight="bold" font-size="14">Elasticity</text>
+                <text x="400" y="310" fill="#D1D5DB" font-size="12" text-anchor="middle">Maintaining excess capacity for peak loads costs money</text>
             </svg>
         </div>
         
-        <div class="mt-6 text-center">
+        <div class="mt-4 text-center">
             <p class="text-lg text-gray-300">These tensions shape your architectural decisions. <strong class="text-yellow-400">Prioritize</strong> based on your specific business needs.</p>
         </div>
     </div>
