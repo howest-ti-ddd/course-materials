@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplicity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 95vw;
+            width: 95%;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .characteristic {
+            font-size: 120px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            background: linear-gradient(45deg, #0694a2, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        .diagram {
+            margin: 10px 0;
+            max-width: 100%;
+            height: auto;
+            width: 90%;
+        }
+        .footer {
+            margin-top: 10px;
+        }
+        
+        /* Print styles that maintain identical layout while ensuring text visibility */
+        @media print {
+            html, body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                width: 100% !important;
+                height: 100vh !important;
+                zoom: 100% !important;
+            }
+            
+            .characteristic {
+                background: none;
+                -webkit-text-fill-color: #0694a2;
+                text-fill-color: #0694a2;
+                color: #0694a2;
+                font-size: 120px !important;
+                font-weight: 700 !important;
+                margin: 0 0 10px 0 !important;
+                letter-spacing: -1px !important;
+                transform: none !important;
+                scale: 1 !important;
+                -webkit-text-size-adjust: 100% !important;
+                text-size-adjust: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="characteristic">Simplicity</h1>
+        
+        <svg class="diagram" width="800" height="400" viewBox="0 0 500 250">
+            
+            <!-- Before - Complex Architecture (Left Side) -->
+            <text x="125" y="55" font-size="14" text-anchor="middle" fill="#333" font-weight="bold">Complex</text>
+            
+            <!-- COMPLETELY REDESIGNED Complex system -->
+            <g transform="translate(50, 80)">
+                <!-- Background area representing complexity -->
+                <rect x="-10" y="-10" width="160" height="160" rx="5" fill="#f0fdfa" stroke="#0694a2" stroke-width="1" stroke-dasharray="3,2"/>
+                
+                <!-- Components arranged in a more structured grid pattern -->
+                <rect x="10" y="10" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                <rect x="60" y="10" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                <rect x="110" y="10" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                
+                <rect x="10" y="60" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                <rect x="60" y="60" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                <rect x="110" y="60" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                
+                <rect x="10" y="110" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                <rect x="60" y="110" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                <rect x="110" y="110" width="25" height="25" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="1"/>
+                
+                <!-- Cleaner but still complex connection pattern -->
+                <!-- Horizontal connections -->
+                <line x1="35" y1="22.5" x2="60" y2="22.5" stroke="#0694a2" stroke-width="1"/>
+                <line x1="85" y1="22.5" x2="110" y2="22.5" stroke="#0694a2" stroke-width="1"/>
+                <line x1="35" y1="72.5" x2="60" y2="72.5" stroke="#0694a2" stroke-width="1"/>
+                <line x1="85" y1="72.5" x2="110" y2="72.5" stroke="#0694a2" stroke-width="1"/>
+                <line x1="35" y1="122.5" x2="60" y2="122.5" stroke="#0694a2" stroke-width="1"/>
+                <line x1="85" y1="122.5" x2="110" y2="122.5" stroke="#0694a2" stroke-width="1"/>
+                
+                <!-- Vertical connections -->
+                <line x1="22.5" y1="35" x2="22.5" y2="60" stroke="#0694a2" stroke-width="1"/>
+                <line x1="72.5" y1="35" x2="72.5" y2="60" stroke="#0694a2" stroke-width="1"/>
+                <line x1="122.5" y1="35" x2="122.5" y2="60" stroke="#0694a2" stroke-width="1"/>
+                <line x1="22.5" y1="85" x2="22.5" y2="110" stroke="#0694a2" stroke-width="1"/>
+                <line x1="72.5" y1="85" x2="72.5" y2="110" stroke="#0694a2" stroke-width="1"/>
+                <line x1="122.5" y1="85" x2="122.5" y2="110" stroke="#0694a2" stroke-width="1"/>
+                
+            </g>
+            
+            <!-- After - Simple Architecture (Right Side) -->
+            <text x="375" y="55" font-size="14" text-anchor="middle" fill="#333" font-weight="bold">Simple</text>
+            
+            <!-- Simple layered architecture WITH SIMPLIFIED TEXT -->
+            <g transform="translate(325, 80)">
+                <!-- Clean Components with simpler text -->
+                <rect x="0" y="0" width="100" height="40" rx="3" fill="#0694a2" fill-opacity="0.2" stroke="#0694a2" stroke-width="2"/>
+                <text x="50" y="25" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">UI</text>
+                
+                <rect x="0" y="60" width="100" height="40" rx="3" fill="#0694a2" fill-opacity="0.3" stroke="#0694a2" stroke-width="2"/>
+                <text x="50" y="85" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Logic</text>
+                
+                <rect x="0" y="120" width="100" height="40" rx="3" fill="#0694a2" fill-opacity="0.4" stroke="#0694a2" stroke-width="2"/>
+                <text x="50" y="145" font-size="12" text-anchor="middle" fill="#333" font-weight="bold">Data</text>
+                
+                <!-- Clean Connections -->
+                <line x1="50" y1="40" x2="50" y2="60" stroke="#0694a2" stroke-width="2"/>
+                <line x1="50" y1="100" x2="50" y2="120" stroke="#0694a2" stroke-width="2"/>
+            </g>
+            
+            
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+                </marker>
+            </defs>
+        </svg>
+        
+    </div>
+</body>
+</html>
