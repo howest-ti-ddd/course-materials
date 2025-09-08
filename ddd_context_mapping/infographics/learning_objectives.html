@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Context Mapping - Learning Objectives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* slate-900 */
+            color: #D1D5DB; /* gray-300 */
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #lab-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        /* Enhanced styling for cards */
+        .card-accent-indigo {
+            border-left: 4px solid #6366F1;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .card-accent-cyan {
+            border-left: 4px solid #22D3EE;
+            box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.1), 0 4px 6px -4px rgba(34, 211, 238, 0.1);
+        }
+
+        .card-accent-purple {
+            border-left: 4px solid #A855F7;
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.1), 0 4px 6px -4px rgba(168, 85, 247, 0.1);
+        }
+        
+        .card-accent-amber {
+            border-left: 4px solid #F59E0B;
+            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.1), 0 4px 6px -4px rgba(245, 158, 11, 0.1);
+        }
+        
+        /* Animated list markers */
+        .animated-list-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .animated-list-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .task-icon {
+            transition: all 0.2s ease;
+        }
+        
+        .animated-list-item:hover .task-icon {
+            color: #22D3EE;
+            transform: scale(1.2);
+        }
+        
+        /* Subtle gradient background for enhanced visual depth */
+        .subtle-gradient {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+    <div id="lab-wrapper" class="min-h-screen py-12 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 mb-4 animate-[pulse_4s_ease-in-out_infinite] leading-tight py-2">
+                    Learning Objectives
+                </h1>
+                <p class="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">
+                    <span class="text-cyan-300 font-medium">Lesson: DDD Context Mapping</span>
+                </p>
+                <div class="mt-6 w-24 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Introduction -->
+            <div class="mb-10 text-center">
+                <p class="text-lg text-slate-300 max-w-4xl mx-auto">
+                    While reviewing the course materials, focus on mastering these key learning objectives.
+                </p>
+            </div>
+
+            <!-- Section 1: Bounded Context Fundamentals -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-indigo transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-indigo-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                        </svg>
+                        Bounded Context Fundamentals
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- First bullet point -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-indigo-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                </svg>
+                                Define and identify Bounded Contexts
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Explain the primary purpose of Bounded Contexts as linguistic and conceptual boundaries
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Detect implicit Bounded Context boundaries through terminology conflicts
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Second bullet point -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-indigo-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+                                </svg>
+                                Distinguish between Problem and Solution space
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Differentiate between Subdomains (problem space) and Bounded Contexts (solution space)
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Explain the optimal relationship between Core Subdomains and Bounded Contexts
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Context Mapping Patterns -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-cyan transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-cyan-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                        </svg>
+                        Context Mapping Patterns
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Defensive patterns -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-cyan-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                                </svg>
+                                Apply defensive integration patterns
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Evaluate when Conformist patterns are appropriate despite model limitations
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <!-- Service-oriented patterns -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-cyan-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
+                                </svg>
+                                Design service-oriented integration patterns
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Analyze when Separate Ways is the strategically sound decision
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Strategic Domain-Driven Design -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-purple transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-purple-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                        Strategic Domain-Driven Design
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Context Mapping -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+                                </svg>
+                                Create and analyze Context Maps
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Visualize socio-technical relationships between teams and bounded contexts
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Identify improvement opportunities through context map analysis
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Subdomains -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                </svg>
+                                Classify and prioritize Subdomains
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Distinguish between Core, Supporting, and Generic Subdomains
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Allocate resources appropriately based on subdomain classification
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Model Integrity -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                                </svg>
+                                Preserve model integrity
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Identify and resolve linguistic ambiguities and False Cognates
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Organizational Alignment -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-amber transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-amber-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                        </svg>
+                        Organizational Alignment
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Conway's Law -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-amber-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                                </svg>
+                                Apply Conway's Law strategically
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-amber-400">•</span>
+                                    Explain how communication structures constrain system designs
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-amber-400">•</span>
+                                    Design team structures that facilitate desired architectural outcomes
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
