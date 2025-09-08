@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD & Architectural Styles - Learning Objectives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* slate-900 */
+            color: #D1D5DB; /* gray-300 */
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #lab-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        /* Enhanced styling for cards */
+        .card-accent-indigo {
+            border-left: 4px solid #6366F1;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .card-accent-cyan {
+            border-left: 4px solid #22D3EE;
+            box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.1), 0 4px 6px -4px rgba(34, 211, 238, 0.1);
+        }
+
+        .card-accent-purple {
+            border-left: 4px solid #A855F7;
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.1), 0 4px 6px -4px rgba(168, 85, 247, 0.1);
+        }
+        
+        .card-accent-amber {
+            border-left: 4px solid #F59E0B;
+            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.1), 0 4px 6px -4px rgba(245, 158, 11, 0.1);
+        }
+        
+        /* Animated list markers */
+        .animated-list-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .animated-list-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .task-icon {
+            transition: all 0.2s ease;
+        }
+        
+        .animated-list-item:hover .task-icon {
+            color: #22D3EE;
+            transform: scale(1.2);
+        }
+        
+        /* Subtle gradient background for enhanced visual depth */
+        .subtle-gradient {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+    <div id="lab-wrapper" class="min-h-screen py-12 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 mb-4 animate-[pulse_4s_ease-in-out_infinite] leading-tight py-2">
+                    Learning Objectives
+                </h1>
+                <p class="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">
+                    <span class="text-cyan-300 font-medium">Lesson: DDD & Architectural Styles</span>
+                </p>
+                <div class="mt-6 w-24 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Introduction -->
+            <div class="mb-10 text-center">
+                <p class="text-lg text-slate-300 max-w-4xl mx-auto">
+                    While reviewing the course materials, focus on mastering these key learning objectives.
+                </p>
+            </div>
+
+            <!-- Section 1: Architectural Fundamentals -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-indigo transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-indigo-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        Architectural Fundamentals
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- First bullet point -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-indigo-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                                </svg>
+                                Differentiate between architectural styles and patterns
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Explain how styles represent high-level system structures while patterns offer reusable solutions to specific problems
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Provide concrete examples of both styles and patterns in software architecture
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Second bullet point -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-indigo-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+                                </svg>
+                                Evaluate competing architectural characteristics
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-indigo-400">•</span>
+                                    Analyze critical trade-offs between characteristics like performance, scalability, consistency, and auditability
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Architectural Styles -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-cyan transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-cyan-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                        </svg>
+                        Architectural Styles
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Compare monolithic approaches -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-cyan-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122" />
+                                </svg>
+                                Compare monolithic architectural approaches
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Analyze layered architecture, modular monoliths, and microkernel (plugin) designs
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Evaluate when to use closed vs. open layers in layered architectures
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Apply distributed approaches -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-cyan-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                                </svg>
+                                Apply distributed architectural approaches
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Differentiate between microservices, service-based architecture
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Implement event-driven approaches -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-cyan-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                                </svg>
+                                Implement event-driven architectural approaches
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Compare broker vs. mediator topologies in event-driven systems
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-cyan-400">•</span>
+                                    Explain distributed transaction patterns (like Saga) for maintaining consistency
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Organizational and Domain Concerns -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-purple transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-purple-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                        </svg>
+                        Organizational and Domain Concerns
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Conway's Law -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM3 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                                </svg>
+                                Apply Conway's Law to architectural decisions
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Analyze how team structure influences system architecture
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Propose organizational changes to support desired architectural outcomes
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Domain-driven partitioning -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-purple-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Implement domain-driven partitioning
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Compare domain-based vs. technical partitioning strategies
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-purple-400">•</span>
+                                    Design systems organized around business capabilities rather than technical functions
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Architectural Decision Making -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-amber transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-amber-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                        </svg>
+                        Architectural Decision Making
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Selecting appropriate styles -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-amber-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Select appropriate architectural styles for specific contexts
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-amber-400">•</span>
+                                    Evaluate factors including team size, expertise, business requirements
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-amber-400">•</span>
+                                    Justify architectural choices based on specific advantages and risk mitigations
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Planning evolution -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-amber-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                                </svg>
+                                Plan architectural evolution
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-amber-400">•</span>
+                                    Evaluate when and how to transition from monolithic to distributed architectures
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
