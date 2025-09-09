@@ -104,6 +104,12 @@
             box-shadow: 0 0 10px #A78BFA;
         }
 
+        /* Make <strong> text more visible (not white) */
+        #presentation-container strong {
+            color: #A78BFA; /* violet-400, or pick another visible accent */
+            font-weight: bold;
+        }
+
         /* Quiz Styles */
         .quiz-option {
             transition: all 0.2s ease-in-out;
@@ -216,7 +222,6 @@
             points: [
                 'Give you the strategic DDD tools to carve a complex problem space into clear <span class="font-bold text-indigo-400">Bounded Contexts</span>.',
                 'Equip you to map relationships between contexts using a <span class="font-bold text-indigo-400">Context Map</span>.',
-                'Enable your teams to integrate systems <span class="font-bold text-indigo-400">safely</span> and <span class="font-bold text-indigo-400">deliberately</span>.'
             ]
         },
         // SLIDE 4: Learning Objectives
@@ -505,7 +510,7 @@
             title: 'Bounded Contexts: The "What"',
             subtitle: 'The boundary where a model is true.',
             points: [
-                'A <span class="font-bold">linguistic boundary</span> within which a particular domain model is consistent and self-contained.',
+                '<span class="font-bold text-cyan-300 text-3xl">A <u>linguistic boundary</u> within which a particular domain model is consistent and self-contained.</span>',
                 'Inside the boundary, every term from the Ubiquitous Language has a precise, unambiguous meaning.',
                 'It is a <span class="font-bold text-cyan-300">safety membrane</span> for your model.'
             ],
@@ -567,9 +572,9 @@
             title: 'Smells & Fixes: Is Your Model Splintering?',
             headers: ['Smell (Red Flag)', 'Indicates...', 'Proposed Fix'],
             rows: [
-                ['<strong class="text-red-400">False Cognates</strong><br><em class="text-sm text-slate-400">Same word, different meaning (e.g., "Customer")</em>', 'Two contexts are being mixed accidentally.', 'Explicitly separate the contexts. Introduce an <span class="font-mono text-orange-300">Anticorruption Layer</span> if they must communicate.'],
-                ['<strong class="text-red-400">Duplicate Concepts</strong><br><em class="text-sm text-slate-400">Two classes doing the same thing.</em>', 'A single context is fracturing internally.', 'Strengthen <span class="font-mono text-cyan-300">Continuous Integration</span>. Refactor to unify the concepts. Hold language refinement sessions.'],
-                ['<strong class="text-red-400">Casual Code Sharing</strong><br><em class="text-sm text-slate-400">"Let\'s just reuse this utility class from their service."</em>', 'Implicit, untracked dependencies between contexts.', 'STOP. Make the dependency explicit via a defined relationship (e.g., Shared Kernel, API).']
+                ['<strong class="text-red-400 text-xl">False Cognates</strong><br><em class="text-sm text-slate-400">Same word, different meaning (e.g., "Customer")</em>', '<span class="text-amber-300 font-semibold">Two contexts are being mixed accidentally.</span>', '<span class="font-bold text-cyan-300">Explicitly separate the contexts.</span> Introduce an <span class="font-mono text-orange-300">Anticorruption Layer</span> if they must communicate.'],
+                ['<strong class="text-red-400 text-xl">Duplicate Concepts</strong><br><em class="text-sm text-slate-400">Two classes doing the same thing.</em>', '<span class="text-amber-300 font-semibold">A single context is fracturing internally.</span>', '<span class="font-bold text-cyan-300">Strengthen Continuous Integration.</span> Refactor to unify the concepts. Hold language refinement sessions.'],
+                ['<strong class="text-red-400 text-xl">Casual Code Sharing</strong><br><em class="text-sm text-slate-400">"Let\'s just reuse this utility class from their service."</em>', '<span class="text-amber-300 font-semibold">Implicit, untracked dependencies between contexts.</span>', '<span class="font-bold text-cyan-300">STOP.</span> Make the dependency explicit via a defined relationship (e.g., Shared Kernel, API).']
             ]
         },
         // SLIDE 22: Mini Example
@@ -656,15 +661,10 @@
             title: 'Partnership: Visualization',
             subtitle: 'A two-way, tightly coupled relationship.',
             points: [],
-            graphic: `<div class="w-full h-64 relative">
-                <div class="context-box border-green-500 text-green-300 absolute" style="top: 35%; left: 5%;">Team A Context</div>
-                <div class="context-box border-green-500 text-green-300 absolute" style="top: 35%; right: 5%;">Team B Context</div>
-                <svg class="w-full h-full absolute inset-0">
-                    <path d="M 200 128 H 430" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="5,5"/>
-                    <path d="M 210 118 L 420 118" class="arrow" marker-end="none" marker-start="url(#arrowhead)"/>
-                    <path d="M 210 138 L 420 138" class="arrow"/>
-                </svg>
-                <div class="arrow-label" style="top: 45%; left: 45%;">Co-dependent</div>
+            graphic: `<div class="w-full h-64 flex items-center justify-center">
+                <div class="context-box border-green-500 text-green-300 mr-8">Team A Context</div>
+                <div class="text-4xl text-green-400 mx-4">↔</div>
+                <div class="context-box border-green-500 text-green-300 ml-8">Team B Context</div>
             </div>`
         },
         {
@@ -698,19 +698,31 @@
             ]
         },
         {
-            type: 'graphic_right',
-            title: 'Shared Kernel: Visualization',
-            subtitle: 'An overlapping subset of two models.',
-            points: [],
-            graphic: `<div class="w-full h-80 relative flex justify-center items-center">
-                <div class="w-64 h-64 rounded-full border-2 border-sky-500 flex justify-center items-center text-sky-300 font-bold text-xl absolute" style="left: 20%; clip-path: polygon(0 0, 75% 0, 75% 100%, 0 100%);">Invoicing</div>
-                <div class="w-64 h-64 rounded-full border-2 border-emerald-500 flex justify-center items-center text-emerald-300 font-bold text-xl absolute" style="right: 20%; clip-path: polygon(25% 0, 100% 0, 100% 100%, 25% 100%);">Payments</div>
-                <div class="absolute w-32 h-64 bg-teal-500/30 backdrop-blur-sm text-center flex flex-col justify-center items-center text-teal-200">
-                    <span class="font-bold text-lg">Shared Kernel</span>
-                    <span class="text-sm font-mono mt-2">(Money, Currency)</span>
-                </div>
+    type: 'graphic_right',
+    title: 'Shared Kernel: Visualization',
+    subtitle: 'An overlapping subset of two models.',
+    points: [],
+    graphic: `<div class="w-full h-80 relative flex items-center justify-center">
+                <!-- Left circle (no inner text) -->
+                <div class="absolute w-64 h-64 rounded-full bg-sky-700/30 border-2 border-sky-500" style="left: 28%; transform: translateX(-50%);"></div>
+                <!-- Right circle (no inner text) -->
+                <div class="absolute w-64 h-64 rounded-full bg-emerald-700/30 border-2 border-emerald-500" style="left: 72%; transform: translateX(-50%);"></div>
+
+
+
+
+                <!-- subtle curved arrows to indicate collaboration -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <marker id="sk-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <polygon points="0 0, 6 3, 0 6" fill="#38bdf8" />
+                        </marker>
+                    </defs>
+                    <path d="M30 60 C40 55, 60 55, 70 60" stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#sk-arrow)" opacity="0.7"/>
+                    <path d="M70 40 C60 45, 40 45, 30 40" stroke="#60a5fa" stroke-width="1.5" fill="none" marker-end="url(#sk-arrow)" opacity="0.7"/>
+                </svg>
             </div>`
-        },
+},
         {
             type: 'quiz',
             title: 'Knowledge Check: Shared Kernel',
@@ -791,9 +803,13 @@
             points: [],
             graphic: `<div class="w-full h-80 relative flex flex-col justify-center items-center gap-8">
                 <div class="context-box border-slate-500 text-slate-300">Upstream (e.g., Legacy System)</div>
-                <svg class="w-12 h-12 text-slate-500"><path d="M 12 5 V 19 M 5 12 H 19" class="arrow" /></svg>
+                <svg class="w-28 h-28 text-slate-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Vertical shaft with arrowhead (uses .arrow marker) -->
+                    <path d="M12 20 L12 6" class="arrow" />
+                    <!-- arrowhead lines (no marker) for visual emphasis -->
+                    <path d="M6 12 L12 6 L18 12" stroke="#67E8F9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
                 <div class="context-box border-yellow-500 text-yellow-300">Downstream (Your App)<div class="text-sm mt-2 text-slate-400">(Adopts Upstream Model)</div></div>
-                <div class="arrow-label" style="top: 45%; left: 55%;">Conforms To</div>
             </div>`
         },
          {
@@ -881,12 +897,7 @@
                 <div class="context-box border-gray-500 text-gray-300 absolute" style="top: 5%; right: 5%;">HR App</div>
                 <div class="context-box border-gray-500 text-gray-300 absolute" style="top: 35%; right: 5%;">IT Portal</div>
                 <div class="context-box border-gray-500 text-gray-300 absolute" style="top: 65%; right: 5%;">Mobile App</div>
-                <svg class="w-full h-full absolute inset-0">
-                    <path d="M 200 128 L 480 50" class="arrow"/>
-                    <path d="M 200 128 L 480 128" class="arrow"/>
-                    <path d="M 200 128 L 480 206" class="arrow"/>
-                </svg>
-                 <div class="arrow-label" style="top: 25%; left: 50%;">Published Language (API)</div>
+                 <div class="arrow-label" style="top: 25%; left: 5%;">Published Language (API)</div>
             </div>`
         },
         {
@@ -962,38 +973,6 @@
                 </div>
             `
         },
-        // SECTION 5
-        {
-            type: 'section_title',
-            section: 'PART V',
-            title: 'Application & Lab'
-        },
-        // SLIDE 58: Combined Lab Slide
-        {
-            type: 'lab_assignment',
-            title: 'Mini-Lab Assignment (12-15 minutes)',
-            scenarioTitle: 'Scenario: "Campus Ticketing"',
-            scenarioText: 'You are designing a new "Campus Ticketing" platform. It sells tickets for various university events (concerts, sports, guest lectures). Consider the different business capabilities involved.',
-            capabilities: [
-                'Ticketing (buying, reserving)',
-                'Payments (credit card, student accounts)',
-                'Identity & Access (students, faculty, public)',
-                'Reporting (sales, attendance)',
-                'Email/Notifications',
-                'Integration with a 3rd-party, legacy Accounting system',
-                'A mobile app for viewing tickets'
-            ],
-            taskTitle: 'Your Task (Teams of 3-4)',
-            tasks: [
-                '<strong>Classify Subdomains:</strong> First, identify the <strong>Core</strong>, <strong>Supporting</strong>, and <strong>Generic</strong> subdomains from the scenario.',
-                '<strong>Define Contexts:</strong> Based on your subdomains, identify and name 5-7 Bounded Contexts.',
-                '<strong>Draw Flows:</strong> Draw Upstream/Downstream arrows between contexts.',
-                '<strong>Label Relationships:</strong> Label each integration with a relationship pattern.',
-                '<strong>Mark a Contract:</strong> Choose the Accounting integration and decide: <strong>ACL</strong> or <strong>Conformist</strong>? Justify your choice.'
-            ],
-            deliverableTitle: 'Deliverable',
-            deliverable: 'One image of your board with a legend. Be prepared to explain your choices.'
-        },
         // SLIDE 59: Key Takeaways (replaces Q&A and Debrief)
         {
             type: 'standard',
@@ -1063,10 +1042,10 @@
             case 'objectives':
                 let objectivesHtml = slideData.objectives.map(obj => `
                     <li class="flex items-start">
-                        <svg class="h-8 w-8 text-emerald-400 mr-4 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="h-8 w-8 text-emerald-400 mr-4 mt-1 flex-shrink-0" fill="none" viewBox="00 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         <span class="text-xl text-slate-300">${obj}</span>
                     </li>
-                `).join('');
+                               `).join('');
                  slideEl.innerHTML = `
                     <div class="w-full px-12">
                         <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
