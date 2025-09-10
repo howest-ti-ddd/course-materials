@@ -49,7 +49,7 @@
                         <text class="node-text" x="500" y="270">One-way Data Processing</text>
                     </g>
 
-                     <g filter="url(#shadow)">
+                    <g filter="url(#shadow)">
                         <rect x="610" y="240" width="180" height="50" rx="10" fill="#1d4ed8"/>
                         <text class="node-text" x="700" y="270">General Business App</text>
                     </g>
@@ -60,12 +60,20 @@
                         <text class="node-text" x="300" y="398">(DDD)</text>
                     </g>
 
+                    <!-- Distributed path decision for microservices readiness -->
+                    <g filter="url(#shadow)">
+                        <rect x="610" y="360" width="180" height="50" rx="10" fill="#0f766e"/>
+                        <text class="node-text" x="700" y="380">Need Fine-Grained</text>
+                        <text class="node-text" x="700" y="396">Services?</text>
+                    </g>
+
                     <!-- Results -->
                     <g filter="url(#shadow)"><rect fill="#c026d3" x="0" y="520" width="150" height="50" rx="10"/><text class="node-text" font-weight="bold" x="75" y="550">Microkernel</text></g>
                     <g filter="url(#shadow)"><rect fill="#16a34a" x="160" y="520" width="150" height="50" rx="10"/><text class="node-text" font-weight="bold" x="235" y="550">Modular Monolith</text></g>
                     <g filter="url(#shadow)"><rect fill="#7f1d1d" x="320" y="520" width="150" height="50" rx="10"/><text class="node-text" font-weight="bold" x="395" y="550">Layered Architecture</text></g>
                     <g filter="url(#shadow)"><rect fill="#15803d" x="480" y="520" width="150" height="50" rx="10"/><text class="node-text" font-weight="bold" x="555" y="550">Pipeline</text></g>
                     <g filter="url(#shadow)"><rect fill="#3b82f6" x="640" y="520" width="150" height="50" rx="10"/><text class="node-text" font-weight="bold" x="715" y="550">Service-Based</text></g>
+                    <g filter="url(#shadow)"><rect fill="#0ea5e9" x="640" y="450" width="150" height="50" rx="10"/><text class="node-text" font-weight="bold" x="715" y="480">Microservices</text></g>
 
                     <!-- Lines and Labels -->
                     <path class="line-style" stroke="#1e40af" d="M350 60 Q 275 90 200 120"/>
@@ -90,7 +98,15 @@
                     <text class="label-text" x="365" y="440">No</text>
                     
                     <path class="line-style" stroke="#15803d" d="M500 290 V 520"/>
-                    <path class="line-style" stroke="#3b82f6" d="M700 290 V 520"/>
+                    <!-- Distributed branch now goes to decision node first -->
+                    <path class="line-style" stroke="#3b82f6" d="M700 290 V 360"/>
+
+                    <!-- From distributed decision: Yes -> Microservices, No -> Service-Based -->
+                    <path class="line-style" stroke="#3b82f6" d="M700 410 Q 735 430 715 450"/>
+                    <text class="label-text" x="740" y="430">Yes (fine-grained)</text>
+
+                    <path class="line-style" stroke="#3b82f6" d="M700 410 Q 685 465 715 520"/>
+                    <text class="label-text" x="665" y="465">No (coarse-grained)</text>
                 </svg>
             </div>
         </div>
