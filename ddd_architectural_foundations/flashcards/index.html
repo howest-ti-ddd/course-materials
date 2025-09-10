@@ -19,7 +19,7 @@
     /* Let the entire card grow to fit content */
     .card-face { overflow: visible; }
     /* Make inner container fill the card minus the accent strip (6px) so back face covers fully */
-    .card-inner { height: calc(100% - 6px); }
+    .card-inner { height: calc(100% - 6px); position: relative; }
     .card-back { transform: rotateY(180deg); }
     .btn { @apply px-4 py-2 rounded-lg border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-200 transition; }
     .accent-text { color: #A78BFA; }
