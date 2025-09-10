@@ -1,4 +1,5 @@
 const slides = [
+  'slide-00-interactive.html', // New interactive question slide
   'slide-01.html',
   'slide-02.html',
   'slide-03.html',
