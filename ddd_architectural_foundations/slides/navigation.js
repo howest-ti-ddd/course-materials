@@ -121,6 +121,24 @@ document.addEventListener('keydown', (e) => {
          if (currentSlide < totalSlides) loadSlide(currentSlide + 1);
     } else if (e.key === 'ArrowLeft') {
         if (currentSlide > 1) loadSlide(currentSlide - 1);
+    } else if (e.key === 'f' || e.key === 'F') {
+        // Toggle fullscreen (with vendor fallbacks)
+        const el = document.documentElement;
+        const isDomFs = document.fullscreenElement ||
+                        document.webkitFullscreenElement ||
+                        document.mozFullScreenElement ||
+                        document.msFullscreenElement;
+        if (!isDomFs) {
+            if (el.requestFullscreen) el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+            else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
+            else if (el.msRequestFullscreen) el.msRequestFullscreen();
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+        }
     }
 });
 

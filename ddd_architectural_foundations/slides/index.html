@@ -8,7 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .hide-cursor {
+        /* Hide cursor everywhere when active (overrides element-specific cursors) */
+        .hide-cursor,
+        .hide-cursor * {
             cursor: none !important;
         }
     </style>
@@ -24,15 +26,111 @@
     <script src="navigation.js"></script>
     <script src="remote-control.js"></script>
     <script>
-        function toggleCursorOnFullscreen() {
+        // Auto-hide mouse cursor in fullscreen (DOM or F11) after short inactivity
+        (function () {
             const body = document.body;
-            if (document.fullscreenElement) {
-                body.classList.add('hide-cursor');
-            } else {
+            const HIDE_DELAY_MS = 2000; // short interval before hiding
+            let hideTimer = null;
+            let listenersAttached = false;
+
+            function hasDomFullscreen() {
+                return !!(document.fullscreenElement ||
+                          document.webkitFullscreenElement ||
+                          document.mozFullScreenElement ||
+                          document.msFullscreenElement);
+            }
+
+            function isBrowserFullscreen() {
+                // Heuristic for F11-style fullscreen where DOM fullscreen API is not used
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                const sw = window.screen.width;
+                const sh = window.screen.height;
+                const saw = window.screen.availWidth || sw;
+                const sah = window.screen.availHeight || sh;
+                // Tolerate a small discrepancy for OS/toolbars and devicePixelRatio rounding
+                const delta = 5;
+                const widthFullscreen = (Math.abs(w - sw) <= delta) || (Math.abs(w - saw) <= delta);
+                const heightFullscreen = (Math.abs(h - sh) <= delta) || (Math.abs(h - sah) <= delta);
+                return widthFullscreen && heightFullscreen;
+            }
+
+            function isFullscreenActive() {
+                return hasDomFullscreen() || isBrowserFullscreen();
+            }
+
+            function hideCursor() {
+                if (isFullscreenActive()) {
+                    body.classList.add('hide-cursor');
+                }
+            }
+
+            function showCursor() {
                 body.classList.remove('hide-cursor');
             }
-        }
-        document.addEventListener('fullscreenchange', toggleCursorOnFullscreen);
+
+            function scheduleHide() {
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(hideCursor, HIDE_DELAY_MS);
+            }
+
+            function onUserActivity() {
+                // Any user activity in fullscreen shows cursor briefly, then hides again
+                if (!isFullscreenActive()) return;
+                showCursor();
+                scheduleHide();
+            }
+
+            function attachActivityListeners() {
+                if (listenersAttached) return;
+                listenersAttached = true;
+                window.addEventListener('mousemove', onUserActivity);
+                window.addEventListener('mousedown', onUserActivity);
+                window.addEventListener('keydown', onUserActivity);
+                window.addEventListener('touchstart', onUserActivity, { passive: true });
+                window.addEventListener('pointermove', onUserActivity);
+            }
+
+            function detachActivityListeners() {
+                if (!listenersAttached) return;
+                listenersAttached = false;
+                window.removeEventListener('mousemove', onUserActivity);
+                window.removeEventListener('mousedown', onUserActivity);
+                window.removeEventListener('keydown', onUserActivity);
+                window.removeEventListener('touchstart', onUserActivity);
+                window.removeEventListener('pointermove', onUserActivity);
+            }
+
+            function onFullscreenMaybeChange() {
+                clearTimeout(hideTimer);
+                if (isFullscreenActive()) {
+                    // Entered fullscreen: show cursor, then auto-hide after delay
+                    showCursor();
+                    attachActivityListeners();
+                    scheduleHide();
+                } else {
+                    // Exited fullscreen: ensure cursor visible and cleanup
+                    showCursor();
+                    detachActivityListeners();
+                }
+            }
+
+            // DOM fullscreen events (cross-browser)
+            document.addEventListener('fullscreenchange', onFullscreenMaybeChange);
+            document.addEventListener('webkitfullscreenchange', onFullscreenMaybeChange);
+            document.addEventListener('mozfullscreenchange', onFullscreenMaybeChange);
+            document.addEventListener('MSFullscreenChange', onFullscreenMaybeChange);
+
+            // F11 fullscreen detection via resize
+            window.addEventListener('resize', onFullscreenMaybeChange);
+
+            // Initialize state
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', onFullscreenMaybeChange);
+            } else {
+                onFullscreenMaybeChange();
+            }
+        })();
     </script>
 </body>
 </html>
