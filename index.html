@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,7 +88,7 @@ const slidesData = [
         type: 'standard',
         title: 'Preliminary Knowledge',
         points: [
-            '<div class="flex items-center gap-6"><img src="https://img.icons8.com/color/96/graduation-cap.png" alt="Knowledge" class="w-20 h-20"/><span>All concepts of S4 are assumed known.</span></div>'
+            '<div class="flex items-center gap-6"><img src="https://img.icons8.com/color/96/graduation-cap.png" alt="Knowledge" class="w-16 h-16"/><span>All concepts of S4</span></div>'
         ]
     },
     // Course Goal (icon + bullet points)
@@ -97,11 +98,26 @@ const slidesData = [
         points: [
             `<div class="flex flex-col md:flex-row items-center gap-8">
                 <img src="https://img.icons8.com/color/192/goal.png" alt="Goal" class="w-40 h-40"/>
-                <ul class="list-disc pl-8 text-2xl text-slate-300 space-y-4">
+                <ul class="list-disc pl-8 text-xl text-slate-300 space-y-2">
                     <li>Equip students (building on all S4 concepts) to use Domain-Driven Design to make sound architectural and collaborative design choices—delivered in a conference-style format.</li>
                     <li>Lesson lengths vary (≈1–3 hours) depending on topic complexity and lab depth.</li>
                 </ul>
             </div>`
+        ]
+    },
+    // Learning Outcomes
+    {
+        type: 'objectives',
+        hero: '<img src="https://img.icons8.com/color/96/goal.png" alt="Outcomes" class="w-16 h-16"/>',
+        title: 'By The End, Students Can',
+        subtitle: 'Depth over volume through practice and reflection',
+        objectives: [
+            'Analyze a real domain, define Bounded Contexts, and draw Context Maps with clear relationships.',
+            'Compare and justify architectural styles (modular monolith, microservices, micro-kernel, pipelines, EDA) across trade-offs like scalability, elasticity, deployability, cost, and maintainability.',
+            'Explain when Event Sourcing fits (and when it doesn’t) and reason about its impact on design and operations.',
+            'Demonstrate in-depth mastery of Domain Events: discovery, domain vs. integration events, sagas.',
+            'Facilitate and participate in Event Storming (Big Picture, Process, Design) to move from sticky notes to actionable models.',
+            'Practice Mob Programming to turn collaborative models into clean, testable code and strengthen shared understanding.'
         ]
     },
     // Hint: Depth over Volume
@@ -111,33 +127,360 @@ const slidesData = [
         content: `
             <div class="glass-card p-6 rounded-2xl shadow-lg text-center max-w-2xl mx-auto flex flex-col items-center">
                 <img src="https://img.icons8.com/color/96/depth.png" alt="Depth" class="w-20 h-20 mb-4"/>
-                <p class="text-xl mb-4">At first glance, the amount of course material may seem small.</p>
+                <p class="text-xl mb-2">At first glance, the amount of course material may seem small.</p>
                 <p class="text-emerald-300 font-bold text-2xl mb-2">That’s intentional: we aim for depth over volume.</p>
                 <p class="text-slate-300">Plan time to truly grasp the concepts—understanding comes from practice and reflection, not passive reading.</p>
-                <p class="mt-4 text-amber-300 font-semibold">Come to class ready to engage: ask questions!</p>
+                <p class="mt-4 text-amber-300 font-semibold">Come to class ready to engage: ask questions</p>
             </div>
         `
     },
-    // Lessons Overview
+    // Week 1
     {
-        type: 'standard',
-        title: 'Lessons Overview',
-        points: [
-            '<div class="flex items-center gap-4"><svg class="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2" /></svg><span><strong>Week 1 — DDD and Architectural Styles:</strong> Conceptual lecture + short lab. Assign architectural characteristics to styles. No continuous assessment.</span></div>',
-            '<div class="flex items-center gap-4"><svg class="w-8 h-8 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2" /></svg><span><strong>Week 2 — Bounded Contexts & Context Maps:</strong> Conceptual lecture + lab. Create a Context Map for a domain scenario. Preparation required.</span></div>',
-            '<div class="flex items-center gap-4"><svg class="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2" /></svg><span><strong>Week 6 — Part 1: Event Sourcing:</strong> Guest lecture. Mandatory attendance. Preparation: watch Event Sourcing video.</span></div>',
-            '<div class="flex items-center gap-4"><svg class="w-8 h-8 text-pink-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span><strong class="text-pink-400 text-2xl">Week 6 — Part 2: FINAL EXAM</strong><br><span class="text-pink-200 font-bold">This is the main assessment for the module.<br>Leho Quiz. 120 minutes. <u>Be prepared!</u></span></span></div>'
-        ],
-        graphic: `<div class="flex justify-center mt-8"><img src="https://img.icons8.com/color/96/timeline-week.png" alt="Timeline" class="w-24 h-24"/></div>`
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/flow-chart.png" alt="Week 1" class="w-16 h-16"/>',
+        title: 'Week 1 — DDD & Architectural Styles',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Relate DDD to common architectural styles',
+                    'Identify style characteristics and trade‑offs',
+                    'Assign characteristics to styles in groups'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Conceptual lecture with a short lab.',
+                badges: [
+                    { label: 'Lab', bg: 'bg-emerald-500/20', text: 'text-emerald-300', border: 'border-emerald-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'None required.',
+                badges: [
+                    { label: 'No Prep', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Contributes to final exam. No CA.',
+                badges: [
+                    { label: 'Exam', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' },
+                    { label: 'No CA', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            }
+        ]
     },
-    // Evaluation (better icons)
+    // Week 2
     {
-        type: 'standard',
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/map.png" alt="Week 2" class="w-16 h-16"/>',
+        title: 'Week 2 — Bounded Contexts & Context Maps',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Identify bounded contexts in a domain',
+                    'Draw a context map with relationships',
+                    'Explain mapping patterns and implications'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Conceptual lecture with a lab.',
+                badges: [
+                    { label: 'Lab', bg: 'bg-emerald-500/20', text: 'text-emerald-300', border: 'border-emerald-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'Watch/read the supplementary material.',
+                badges: [
+                    { label: 'Prep', bg: 'bg-cyan-500/20', text: 'text-cyan-300', border: 'border-cyan-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Contributes to final exam. No CA.',
+                badges: [
+                    { label: 'Exam', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' },
+                    { label: 'No CA', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            }
+        ]
+    },
+    // Week 3
+    {
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/brainstorm-skill.png" alt="Week 3" class="w-16 h-16"/>',
+        title: 'Week 3 — Event Storming',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Facilitate Big Picture/Process Event Storming',
+                    'Discover domain events, commands, and policies',
+                    'Produce an actionable model and next steps'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path d="M9.5 9a2.5 2.5 0 115 0c0 1.5-1 2-2 2.5-.8.4-1 1-1 1.5" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Lecture + lab + Leho quiz.',
+                badges: [
+                    { label: 'Lab', bg: 'bg-emerald-500/20', text: 'text-emerald-300', border: 'border-emerald-500/30' },
+                    { label: 'Quiz', bg: 'bg-fuchsia-500/20', text: 'text-fuchsia-300', border: 'border-fuchsia-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'Watch/read the supplementary material.',
+                badges: [
+                    { label: 'Prep', bg: 'bg-cyan-500/20', text: 'text-cyan-300', border: 'border-cyan-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Includes continuous assessment (graded group lab).',
+                badges: [
+                    { label: 'CA', bg: 'bg-amber-500/20', text: 'text-amber-300', border: 'border-amber-500/30' }
+                ]
+            }
+        ]
+    },
+    // Week 4
+    {
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/puzzle.png" alt="Week 4" class="w-16 h-16"/>',
+        title: 'Week 4 — Aggregates Beyond Borders',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Define aggregate boundaries and invariants',
+                    'Coordinate aggregates across contexts (sagas)',
+                    'Apply building blocks effectively'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Interactive, conference-style lecture. No lab.',
+                badges: [
+                    { label: 'No Lab', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'No preparation.',
+                badges: [
+                    { label: 'No Prep', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Contributes to final exam. No CA.',
+                badges: [
+                    { label: 'Exam', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' },
+                    { label: 'No CA', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            }
+        ]
+    },
+    // Week 5
+    {
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/collaboration.png" alt="Week 5" class="w-16 h-16"/>',
+        title: 'Week 5 — Mob Programming',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Practice mob roles and collaboration patterns',
+                    'Write clean, testable code as a team',
+                    'Strengthen shared understanding and flow'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Conceptual lecture with a lab.',
+                badges: [
+                    { label: 'Lab', bg: 'bg-emerald-500/20', text: 'text-emerald-300', border: 'border-emerald-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'Watch/read the supplementary material.',
+                badges: [
+                    { label: 'Prep', bg: 'bg-cyan-500/20', text: 'text-cyan-300', border: 'border-cyan-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Includes continuous assessment (graded lab).',
+                badges: [
+                    { label: 'CA', bg: 'bg-amber-500/20', text: 'text-amber-300', border: 'border-amber-500/30' }
+                ]
+            }
+        ]
+    },
+    // Week 6 — Part 1
+    {
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/time-machine.png" alt="Week 6 Part 1" class="w-16 h-16"/>',
+        title: 'Week 6 — Part 1: Event Sourcing',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Explain Event Sourcing mechanics',
+                    'Decide when ES fits (trade‑offs)',
+                    'Reason about operational impact (storage/replay)'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Guest lecture by an industry expert. No lab.',
+                badges: [
+                    { label: 'No Lab', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'Watch the Event Sourcing video.',
+                badges: [
+                    { label: 'Prep', bg: 'bg-cyan-500/20', text: 'text-cyan-300', border: 'border-cyan-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Contributes to final exam. No CA.',
+                badges: [
+                    { label: 'Exam', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' },
+                    { label: 'No CA', bg: 'bg-slate-500/20', text: 'text-slate-300', border: 'border-slate-500/30' }
+                ]
+            }
+        ]
+    },
+    // Week 6 — Part 2
+    {
+        type: 'cards',
+        hero: '<svg class="w-16 h-16 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="7" y="2" width="10" height="6" rx="2" stroke-width="2"/><path d="M7 6h10v14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6z" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        title: 'Week 6 — Part 2: Final Exam',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/goal.png" alt="Goals" class="w-6 h-6"/>',
+                title: 'Goals',
+                full: true,
+                items: [
+                    'Demonstrate mastery across topics',
+                    'Manage time effectively',
+                    'Apply lessons and self‑study knowledge'
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
+                title: 'Type',
+                subtitle: 'Leho Quiz. Duration: 180 minutes. Date: TODO.',
+                badges: [
+                    { label: 'Exam', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' },
+                    { label: 'Leho', bg: 'bg-fuchsia-500/20', text: 'text-fuchsia-300', border: 'border-fuchsia-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v12m6-6H6" stroke-width="2" stroke-linecap="round"/></svg>',
+                title: 'Preparation',
+                subtitle: 'Review course materials and self‑study.',
+                badges: [
+                    { label: 'Prep', bg: 'bg-cyan-500/20', text: 'text-cyan-300', border: 'border-cyan-500/30' }
+                ]
+            },
+            {
+                icon: '<svg class="w-6 h-6 text-pink-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+                title: 'Evaluation',
+                subtitle: 'Final exam session.',
+                badges: [
+                    { label: 'Exam', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' }
+                ]
+            }
+        ]
+    },
+    // Selfstudie
+    {
+        type: 'cards',
+        hero: '<img src="https://img.icons8.com/color/96/open-book--v1.png" alt="Selfstudie" class="w-16 h-16"/>',
+        title: 'Selfstudie',
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/open-book--v1.png" alt="Selfstudy" class="w-6 h-6"/>',
+                title: 'Complementary Self‑Study',
+                subtitle: 'Assessed in the final exam.'
+            },
+            {
+                icon: '<img src="https://img.icons8.com/color/96/ask-question.png" alt="Questions" class="w-6 h-6"/>',
+                title: 'Ask Questions',
+                subtitle: 'Bring self‑study topics to class.'
+            },
+            {
+                icon: '<img src="https://img.icons8.com/color/96/ok.png" alt="Counts" class="w-6 h-6"/>',
+                title: 'Everything Counts',
+                subtitle: 'All self‑study contributes to the exam.'
+            }
+        ]
+    },
+    // Evaluation (cards)
+    {
+        type: 'cards',
+        hero: '<svg class="w-16 h-16 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7h18" stroke-width="2"/><path d="M5 11h10M5 15h14" stroke-width="2" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="2"/></svg>',
         title: 'Evaluation',
-        points: [
-            '<div class="flex items-center gap-4"><img src="https://img.icons8.com/color/96/checklist.png" alt="Checklist" class="w-12 h-12"/><span><strong>Continuous assessment (30%):</strong> Lab work graded on completeness, correctness, and contribution. Not graded per lesson, but as a whole at the end of the module.</span></div>',
-            '<div class="flex items-center gap-4"><img src="https://img.icons8.com/color/96/test-passed.png" alt="Exam" class="w-12 h-12"/><span><strong>Final exam (70%):</strong> Covers all theoretical aspects. Multiple-choice, short answer, and other quiz types.</span></div>',
-            '<div class="flex items-center gap-4"><img src="https://img.icons8.com/color/96/restart--v1.png" alt="Resit" class="w-12 h-12"/><span><strong>Resit (100%):</strong> New final exam and lab assignment(s). Same ratio as regular evaluation.</span></div>'
+        cards: [
+            {
+                icon: '<img src="https://img.icons8.com/color/96/checklist.png" alt="CA" class="w-6 h-6"/>',
+                title: 'Continuous Assessment',
+                subtitle: 'Completeness, correctness, contribution; weighted as a whole.',
+                badge: { label: '30%', bg: 'bg-amber-500/20', text: 'text-amber-300', border: 'border-amber-500/30' }
+            },
+            {
+                icon: '<img src="https://img.icons8.com/color/96/test-passed.png" alt="Exam" class="w-6 h-6"/>',
+                title: 'Final Exam',
+                subtitle: 'Multiple-choice + short answers + quiz types.',
+                badge: { label: '70%', bg: 'bg-indigo-500/20', text: 'text-indigo-300', border: 'border-indigo-500/30' }
+            },
+            {
+                icon: '<img src="https://img.icons8.com/color/96/restart--v1.png" alt="Resit" class="w-6 h-6"/>',
+                title: 'Resit',
+                subtitle: '100% retake of final exam; includes CA-marked lessons.',
+                badge: { label: '100%', bg: 'bg-pink-500/20', text: 'text-pink-300', border: 'border-pink-500/30' }
+            }
         ]
     },
     // Permitted use of AI
@@ -160,9 +503,28 @@ const progressBar = document.getElementById('progress-bar');
 let currentSlide = 0;
 let slides = [];
 
+// Accent key domain terms inside objectives
+function accentKeywords(text) {
+    const terms = [
+        'Bounded Contexts',
+        'Context Maps',
+        'architectural styles',
+        'Event Sourcing',
+        'Domain Events',
+        'Event Storming',
+        'Mob Programming',
+    ];
+    let result = text;
+    terms.forEach(term => {
+        const re = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        result = result.replace(re, `<span class=\"text-emerald-300 font-semibold\">${term}</span>`);
+    });
+    return result;
+}
+
 function createSlide(slideData, index) {
     const slideEl = document.createElement('div');
-    slideEl.className = `slide p-8 flex-col items-center justify-center text-slate-800`;
+    slideEl.className = `slide p-6 flex-col items-center justify-center text-slate-800`;
     slideEl.style.maxWidth = '1200px';
     slideEl.style.maxHeight = '750px';
     slideEl.style.aspectRatio = '16/10';
@@ -170,44 +532,101 @@ function createSlide(slideData, index) {
         case 'title':
             slideEl.innerHTML = `
                 <div class="text-center">
-                    <h1 class="text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 leading-tight pb-2">${slideData.title}</h1>
-                    <p class="mt-6 text-4xl font-semibold text-slate-300 leading-relaxed pb-2">${slideData.subtitle}</p>
+                    <h1 class="text-6xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 leading-tight pb-1">${slideData.title}</h1>
+                    <p class="mt-4 text-3xl font-semibold text-slate-300 leading-relaxed">${slideData.subtitle}</p>
                 </div>
             `;
             break;
         case 'standard':
             // Render each point as a flex row (icon + text), not as a bulletpoint
-            let pointsHtml = slideData.points.map(point => `<div class=\"flex items-center gap-6 mb-6 text-2xl text-slate-300 leading-relaxed\">${point}</div>`).join('');
-            slideEl.innerHTML = `
-                <div class=\"w-full px-12\">
-                    <h2 class=\"text-5xl font-extrabold mb-4 text-gray-200\">${slideData.title}</h2>
-                    ${slideData.subtitle ? `<p class=\"text-2xl text-slate-400 mb-10\">${slideData.subtitle}</p>` : ''}
-                    ${pointsHtml}
-                    ${slideData.graphic ? slideData.graphic : ''}
-                </div>
-            `;
+            {
+                let pointsHtml = slideData.points.map(point => `<div class=\"flex items-center gap-5 mb-3 text-xl text-slate-300 leading-snug\">${point}</div>`).join('');
+                slideEl.innerHTML = `
+                    <div class=\"w-full px-8\">
+                        ${slideData.hero ? `<div class=\"flex justify-center mb-2\">${slideData.hero}</div>` : ''}
+                        <h2 class=\"text-4xl font-extrabold mb-3 text-gray-200 text-center\">${slideData.title}</h2>
+                        ${slideData.subtitle ? `<p class=\"text-xl text-slate-400 mb-6 text-center\">${slideData.subtitle}</p>` : ''}
+                        ${pointsHtml}
+                        ${slideData.graphic ? slideData.graphic : ''}
+                    </div>
+                `;
+            }
+            break;
+        case 'two-col':
+            {
+                // Render points in a responsive 2-column grid
+                const pointsGrid = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">${
+                    slideData.points.map(point => `<div class="flex items-start gap-3 text-[15px] md:text-base text-slate-300 leading-snug">${point}</div>`).join('')
+                }</div>`;
+                slideEl.innerHTML = `
+                    <div class="w-full px-8">
+                        ${slideData.hero ? `<div class=\"flex justify-center mb-2\">${slideData.hero}</div>` : ''}
+                        <h2 class="text-4xl font-extrabold mb-3 text-gray-200 text-center">${slideData.title}</h2>
+                        ${slideData.subtitle ? `<p class="text-xl text-slate-400 mb-6 text-center">${slideData.subtitle}</p>` : ''}
+                        ${pointsGrid}
+                        ${slideData.graphic ? slideData.graphic : ''}
+                    </div>
+                `;
+            }
             break;
         case 'objectives':
             let objectivesHtml = slideData.objectives.map(obj => `
                 <li class="flex items-start">
-                    <svg class="h-8 w-8 text-emerald-400 mr-4 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span class="text-xl text-slate-300">${obj}</span>
+                    <svg class="h-6 w-6 text-emerald-400 mr-3 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span class="text-lg text-slate-300">${accentKeywords(obj)}</span>
                 </li>
             `).join('');
             slideEl.innerHTML = `
-                <div class="w-full px-12">
-                    <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
-                    <p class="text-2xl text-slate-400 mb-10">${slideData.subtitle}</p>
-                    <ul class="space-y-5">
+                <div class="w-full px-8">
+                    ${slideData.hero ? `<div class=\"flex justify-center mb-2\">${slideData.hero}</div>` : ''}
+                    <h2 class="text-4xl font-extrabold mb-3 text-gray-200 text-center">${slideData.title}</h2>
+                    <p class="text-xl text-slate-400 mb-6 text-center">${slideData.subtitle}</p>
+                    <ul class="grid md:grid-cols-2 gap-x-8 gap-y-3">
                         ${objectivesHtml}
                     </ul>
                     ${slideData.graphic ? slideData.graphic : ''}
                 </div>
             `;
             break;
+        case 'cards':
+            {
+                const cards = (slideData.cards || []).map(card => {
+                    const badges = Array.isArray(card.badges) && card.badges.length > 0
+                        ? card.badges.map(b => `<span class=\"ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${b.bg} ${b.text} ${b.border}\">${b.label}</span>`).join('')
+                        : (card.badge ? `<span class=\"ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${card.badge.bg} ${card.badge.text} ${card.badge.border}\">${card.badge.label}</span>` : '');
+                    const content = Array.isArray(card.items) && card.items.length > 0
+                        ? `<ul class=\"mt-2 space-y-1\">${card.items.map(i => `<li class=\"flex items-start text-sm text-slate-300\"><svg class=\"h-4 w-4 text-emerald-400 mt-0.5 mr-2\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4\"></path></svg><span>${i}</span></li>`).join('')}</ul>`
+                        : (card.subtitle ? `<div class=\"text-slate-400 text-sm mt-1\">${card.subtitle}</div>` : '');
+                    const spanClass = card.full ? 'md:col-span-3 md:mx-auto md:max-w-2xl text-center' : '';
+                    const flexJustify = card.full ? 'justify-center' : '';
+                    const headerJustify = card.full ? 'justify-center' : 'justify-between';
+                    return `
+                    <div class=\"glass-card p-5 rounded-xl border border-white/10 shadow-lg ${spanClass}\">
+                        <div class=\"flex items-start gap-3 ${flexJustify}\">
+                            ${card.icon ? `<div class=\"w-10 h-10 rounded-full flex items-center justify-center bg-slate-700/50\">${card.icon}</div>` : ''}
+                            <div class=\"flex-1 ${card.full ? 'text-center' : ''}\">
+                                <div class=\"flex items-center ${headerJustify}\">
+                                    <div class=\"text-gray-100 font-bold text-xl\">${card.title}</div>
+                                    <div class=\"flex items-center\">${badges}</div>
+                                </div>
+                                ${content}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+                slideEl.innerHTML = `
+                    <div class=\"w-full px-8\">
+                        ${slideData.hero ? `<div class=\"flex justify-center mb-2\">${slideData.hero}</div>` : ''}
+                        <h2 class=\"text-4xl font-extrabold mb-4 text-gray-200 text-center\">${slideData.title}</h2>
+                        <div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">${cards}</div>
+                        ${slideData.graphic ? slideData.graphic : ''}
+                    </div>
+                `;
+            }
+            break;
         case 'hook':
             slideEl.innerHTML = `
-                <h2 class="text-4xl font-bold mb-8 text-center text-gray-200">${slideData.title}</h2>
+                <h2 class="text-3xl font-bold mb-6 text-center text-gray-200">${slideData.title}</h2>
                 ${slideData.content}
             `;
             break;
@@ -251,10 +670,10 @@ nextBtn.addEventListener('click', () => {
     }
 });
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ') {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
         nextBtn.click();
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
         prevBtn.click();
     }
