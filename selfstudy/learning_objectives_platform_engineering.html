@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Engineering & DDD - Learning Objectives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* slate-900 */
+            color: #D1D5DB; /* gray-300 */
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #lab-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        /* New color accents for this topic */
+        .card-accent-teal {
+            border-left: 4px solid #14B8A6; /* teal-500 */
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.1), 0 4px 6px -4px rgba(20, 184, 166, 0.1);
+        }
+        
+        .card-accent-emerald {
+            border-left: 4px solid #10B981; /* emerald-500 */
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -4px rgba(16, 185, 129, 0.1);
+        }
+
+        .card-accent-sky {
+            border-left: 4px solid #0EA5E9; /* sky-500 */
+            box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.1), 0 4px 6px -4px rgba(14, 165, 233, 0.1);
+        }
+
+        /* Animated list markers */
+        .animated-list-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .animated-list-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .task-icon {
+            transition: all 0.2s ease;
+        }
+        
+        .animated-list-item:hover .task-icon {
+            color: #22D3EE;
+            transform: scale(1.2);
+        }
+        
+        /* Subtle gradient background for enhanced visual depth */
+        .subtle-gradient {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+    <div id="lab-wrapper" class="min-h-screen py-12 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400 mb-4 animate-[pulse_4s_ease-in-out_infinite] leading-tight py-2">
+                    Learning Objectives
+                </h1>
+                <p class="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">
+                    <span class="text-teal-300 font-medium">Lesson: Platform Engineering is Domain-Driven Design</span>
+                </p>
+                <div class="mt-6 w-24 h-1 bg-gradient-to-r from-emerald-500 to-sky-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Introduction -->
+            <div class="mb-10 text-center">
+                <p class="text-lg text-slate-300 max-w-4xl mx-auto">
+                    Explore how to build effective developer platforms by applying core DDD principles, based on Gregor Hohpe's insights.
+                </p>
+            </div>
+
+            <!-- Section 1: The Platform as a Domain -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-teal transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-teal-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                        </svg>
+                        The Platform as a Domain
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- First bullet point -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-teal-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                                Reframe Platform Engineering as Domain Thinking
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-teal-400">•</span>
+                                    Define the platform's "domain" as the software delivery and operations lifecycle.
+                                </li>
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-teal-400">•</span>
+                                    Identify developers as the "domain experts" whose cognitive load the platform must reduce.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Second bullet point -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-teal-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM21 21l-5.197-5.197" />
+                                </svg>
+                                Analyze the purpose of a platform
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-teal-400">•</span>
+                                    Explain that platforms should boost innovation through harmonization, not just enforce standards.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Designing the Platform Language -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-emerald transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-emerald-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.76 14.066 9.76 14.868 12.168m-4.87-3.48a48.343 48.343 0 00-3.334.114" />
+                        </svg>
+                        Designing the Platform Language
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Ubiquitous Language -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-emerald-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
+                                </svg>
+                                Model a domain language for developers
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-emerald-400">•</span>
+                                     Explain how a platform provides a meta-model of common architectures.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Bounded Contexts -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-emerald-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Identify Bounded Contexts within the platform
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-emerald-400">•</span>
+                                    Justify why a concept like "service" might have different meanings and models in different platform contexts.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 3: Platform Architecture Principles -->
+            <div class="mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-sky transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-sky-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                        </svg>
+                        Platform Architecture Principles
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Abstractions vs Illusions -->
+                        
+                        <!-- Avoid Premature Abstraction -->
+                        <div class="subtle-gradient p-5 rounded-lg">
+                            <h3 class="text-xl font-semibold text-sky-300 mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                                </svg>
+                                Avoid the "Pigeon-feeding" Anti-Pattern
+                            </h3>
+                            <ul class="list-none pl-8 space-y-3 text-slate-300">
+                                <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-sky-400">•</span>
+                                    Explain the danger of creating overly simplistic abstractions ("feeding pigeons") that solve only trivial problems and prevent developers from engaging with necessary complexity.
+                                </li>
+                                 <li class="animated-list-item">
+                                    <span class="task-icon inline-block w-5 h-5 mr-2 text-sky-400">•</span>
+                                    Formulate a strategy to provide meaningful abstractions that empower developers rather than just simplifying syntax.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
