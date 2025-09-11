@@ -7,6 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .hide-cursor {
+            cursor: none !important;
+        }
+    </style>
 </head>
 <body>
     <div id="slide-container"></div>
@@ -18,5 +23,16 @@
 
     <script src="navigation.js"></script>
     <script src="remote-control.js"></script>
+    <script>
+        function toggleCursorOnFullscreen() {
+            const body = document.body;
+            if (document.fullscreenElement) {
+                body.classList.add('hide-cursor');
+            } else {
+                body.classList.remove('hide-cursor');
+            }
+        }
+        document.addEventListener('fullscreenchange', toggleCursorOnFullscreen);
+    </script>
 </body>
 </html>
