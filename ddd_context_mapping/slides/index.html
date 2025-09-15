@@ -136,6 +136,55 @@
         .feedback {
             transition: opacity 0.3s ease-in;
         }
+
+        /* Light Theme Overrides */
+        body.theme-light {
+            background-color: #ffffff; /* white */
+            color: #0F172A; /* slate-900 */
+        }
+        body.theme-light #presentation-wrapper {
+            background: #ffffff;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); /* white -> slate-100 */
+        }
+        body.theme-light #navigation {
+            background: rgba(255, 255, 255, 0.75);
+            border-color: #e5e7eb; /* gray-200 */
+        }
+        body.theme-light #navigation svg { color: #475569; } /* slate-600 */
+        body.theme-light #slide-counter { color: #475569; }
+        body.theme-light .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        body.theme-light .arrow-label {
+            background-color: #f8fafc; /* slate-50 */
+            color: #0f172a; /* slate-900 */
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        body.theme-light .arrow { stroke: #0ea5e9; } /* sky-500 */
+        body.theme-light #progress-bar { box-shadow: 0 0 10px #a78bfa66; }
+        
+        /* Text color adjustments for readability on light background */
+        body.theme-light .text-white { color: #111827 !important; }  /* gray-900 */
+        body.theme-light .text-gray-200 { color: #374151 !important; } /* gray-700 */
+        body.theme-light .text-gray-300 { color: #4b5563 !important; } /* gray-600 */
+        body.theme-light .text-slate-300 { color: #475569 !important; } /* slate-600 */
+        body.theme-light .text-slate-400 { color: #475569 !important; } /* slate-600 */
+        body.theme-light .text-slate-500 { color: #334155 !important; } /* slate-700 */
+        /* Strong accents on light */
+        body.theme-light .text-red-400 { color: #b91c1c !important; }
+        body.theme-light .text-green-400 { color: #166534 !important; }
+        body.theme-light .text-yellow-400 { color: #b45309 !important; }
+        body.theme-light .text-blue-400 { color: #1e40af !important; }
+        /* Quiz option surfaces in light mode */
+        body.theme-light .quiz-option { background-color: #f8fafc !important; border-color: #e2e8f0 !important; color: #0f172a !important; }
+        body.theme-light .quiz-option:not([disabled]):hover { background-color: #eef2f7 !important; }
+        
+        /* Table header background adjustment */
+        body.theme-light .bg-slate-800\/80 { background-color: rgba(241, 245, 249, 0.8) !important; color: #0f172a !important; } /* slate-100 */
+        
+        /* Utility: hide one icon per theme in the toggle */
+        .hidden { display: none; }
     </style>
 </head>
 <body class="bg-slate-900 text-gray-300">
@@ -157,6 +206,18 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
+        </button>
+        <div class="w-px h-6 bg-slate-700 mx-3"></div>
+        <button id="theme-toggle" class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-slate-700/60 transition-colors">
+            <!-- Sun icon (for dark mode, indicates switching to light) -->
+            <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 15a5 5 0 100-10 5 5 0 000 10z" /><path fill-rule="evenodd" d="M10 1a1 1 0 011 1v1a1 1 0 11-2 0V2a1 1 0 011-1zm0 14a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm9-5a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 011 1zm11.657-6.657a1 1 0 010 1.414L15.414 6.0a1 1 0 11-1.414-1.414l.243-.243a1 1 0 011.414 0zM6 15.414a1 1 0 001.414 0l.243-.243A1 1 0 106.243 13.757l-.243.243A1 1 0 006 15.414zM15.414 14a1 1 0 011.414 0l.243.243A1 1 0 1115.657 15.9L15.414 15.657A1 1 0 0115.414 14zM4.586 6A1 1 0 003.172 4.586l.243-.243A1 1 0 114.829 5.757L4.586 6z" clip-rule="evenodd" />
+            </svg>
+            <!-- Moon icon (for light mode, indicates switching to dark) -->
+            <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300 hidden" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.293 13.293A8 8 0 116.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+            <span id="theme-label" class="text-sm text-gray-300">Light</span>
         </button>
     </div>
 
@@ -1268,6 +1329,26 @@
                     </div>
                 `;
                 break;
+            case 'quiz':
+                {
+                    const colorClasses = ['text-yellow-400', 'text-green-400', 'text-red-400', 'text-blue-400'];
+                    const optionsHtml = slideData.options.map((opt, i) => `
+                        <button class="quiz-option w-full text-left p-4 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-lg" data-correct="${opt.correct}" data-feedback="${opt.feedback}">
+                            <span class="${colorClasses[i % colorClasses.length]} text-2xl font-bold">${opt.text}</span>
+                        </button>
+                    `).join('');
+                    slideEl.innerHTML = `
+                        <div class="w-full max-w-4xl text-center">
+                             <h2 class="text-4xl font-bold mb-4 text-gray-200">${slideData.title}</h2>
+                             <p class="text-2xl text-slate-300 mb-8">${slideData.question}</p>
+                             <div class="quiz-options-container grid grid-cols-2 gap-6 max-w-4xl mx-auto mb-6">
+                                ${optionsHtml}
+                             </div>
+                             <div class="feedback-container h-24 text-lg p-4 rounded-lg opacity-0"></div>
+                        </div>
+                    `;
+                }
+                break;
             case 'context_map_simple':
                 slideEl.innerHTML = `
                     <h2 class="text-4xl font-bold mb-8 text-center text-gray-200">${slideData.title}</h2>
@@ -1334,23 +1415,7 @@
                     </div>
                 `;
                 break;
-            case 'quiz':
-                let optionsHtml = slideData.options.map((opt, i) => `
-                    <button class="quiz-option w-full text-left p-4 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-lg" data-correct="${opt.correct}" data-feedback="${opt.feedback}">
-                        <span class="font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${opt.text}
-                    </button>
-                `).join('');
-                slideEl.innerHTML = `
-                    <div class="w-full max-w-4xl text-center">
-                         <h2 class="text-4xl font-bold mb-4 text-gray-200">${slideData.title}</h2>
-                         <p class="text-2xl text-slate-300 mb-8">${slideData.question}</p>
-                         <div class="quiz-options-container space-y-4 mb-6">
-                            ${optionsHtml}
-                         </div>
-                         <div class="feedback-container h-24 text-lg p-4 rounded-lg opacity-0"></div>
-                    </div>
-                `;
-                break;
+            
             case 'lab_assignment':
                 let capabilitiesHtml = slideData.capabilities.map(cap => `<li>${cap}</li>`).join('');
                 let labTasksHtml = slideData.tasks.map(task => `<li class="flex items-start text-lg mb-3"><svg class="w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg><span>${task}</span></li>`).join('');
@@ -1490,10 +1555,19 @@
         feedbackContainer.innerHTML = option.dataset.feedback;
         feedbackContainer.style.opacity = '1';
 
+        const isLight = document.body.classList.contains('theme-light');
         if(option.dataset.correct === 'true') {
-            feedbackContainer.classList.add('bg-emerald-900/50', 'text-emerald-300');
+            if (isLight) {
+                feedbackContainer.classList.add('bg-emerald-100', 'text-emerald-700', 'border', 'border-emerald-300');
+            } else {
+                feedbackContainer.classList.add('bg-emerald-900/50', 'text-emerald-300');
+            }
         } else {
-            feedbackContainer.classList.add('bg-red-900/50', 'text-red-300');
+            if (isLight) {
+                feedbackContainer.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-300');
+            } else {
+                feedbackContainer.classList.add('bg-red-900/50', 'text-red-300');
+            }
         }
     }
 
@@ -1615,6 +1689,41 @@
         } else if (e.key === 'ArrowLeft') {
             // ...existing code...
         }
+    });
+
+    // Theme toggle + persistence
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeLabel = document.getElementById('theme-label');
+    const iconSun = document.getElementById('icon-sun');
+    const iconMoon = document.getElementById('icon-moon');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.body.classList.add('theme-light');
+            // Body text/background utility classes for better defaults
+            document.body.classList.remove('bg-slate-900', 'text-gray-300');
+            document.body.classList.add('bg-white', 'text-slate-800');
+            // Toggle icon/label
+            iconSun.classList.add('hidden');
+            iconMoon.classList.remove('hidden');
+            themeLabel.textContent = 'Dark';
+        } else {
+            document.body.classList.remove('theme-light');
+            document.body.classList.add('bg-slate-900', 'text-gray-300');
+            document.body.classList.remove('bg-white', 'text-slate-800');
+            iconSun.classList.remove('hidden');
+            iconMoon.classList.add('hidden');
+            themeLabel.textContent = 'Light';
+        }
+        localStorage.setItem('slides-theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('slides-theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+        const next = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+        applyTheme(next);
     });
 
     // Initial render

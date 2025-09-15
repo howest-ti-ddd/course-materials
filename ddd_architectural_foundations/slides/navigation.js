@@ -63,7 +63,8 @@ const slides = [
   'slide-53.html',
   'slide-57.html',
   'slide-58.html',
-  'slide-59.html'
+  'slide-59.html',
+  'slide-60.html'
 ];
 
 let currentSlide = getCurrentSlideFromURL() || 1;

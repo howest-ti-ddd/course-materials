@@ -52,6 +52,49 @@
             z-index: 100;
             box-shadow: 0 0 10px #A78BFA;
         }
+
+        /* Light Theme Overrides */
+        body.theme-light {
+            background-color: #ffffff;
+            color: #0F172A;
+        }
+        body.theme-light #presentation-wrapper {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+        body.theme-light #navigation {
+            background: rgba(255, 255, 255, 0.75);
+            border-color: #e5e7eb;
+        }
+        body.theme-light #navigation svg { color: #475569; }
+        body.theme-light #slide-counter { color: #475569; }
+        body.theme-light .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        body.theme-light .bg-slate-700\/50 { background-color: rgba(0,0,0,0.06) !important; }
+        
+        /* Text utilities on light */
+        body.theme-light .text-white { color: #111827 !important; }
+        body.theme-light .text-gray-200 { color: #374151 !important; }
+        body.theme-light .text-gray-100 { color: #1f2937 !important; }
+        body.theme-light .text-gray-300 { color: #4b5563 !important; }
+        body.theme-light .text-gray-400 { color: #475569 !important; }
+        body.theme-light .text-slate-300 { color: #475569 !important; }
+        body.theme-light .text-slate-400 { color: #475569 !important; }
+        body.theme-light .text-emerald-300 { color: #065f46 !important; } /* accentKeywords */
+        /* Common accent tweaks for icons/badges in cards */
+        body.theme-light .text-indigo-300 { color: #4338CA !important; }
+        body.theme-light .text-pink-300 { color: #9d174d !important; }
+        body.theme-light .text-fuchsia-300 { color: #86198f !important; }
+        body.theme-light .text-cyan-300 { color: #155e75 !important; }
+        body.theme-light .text-amber-300 { color: #92400e !important; }
+        body.theme-light .text-blue-300 { color: #1e40af !important; }
+
+        /* Table header/dark surfaces sometimes used inline */
+        body.theme-light .bg-slate-800 { background-color: #f8fafc !important; color: #0f172a !important; }
+        
+        /* Utility for theme toggle */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body class="bg-slate-900 text-gray-300">
@@ -73,6 +116,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
         </button>
+        <div class="w-px h-6 bg-slate-700 mx-3"></div>
+        <button id="theme-toggle" class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-slate-700/60 transition-colors" aria-label="Toggle theme">
+            <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path d="M10 15a5 5 0 100-10 5 5 0 000 10z"/><path fill-rule="evenodd" d="M10 1a1 1 0 011 1v1a1 1 0 11-2 0V2a1 1 0 011-1zm0 14a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm9-5a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 011 1zm11.657-6.657a1 1 0 010 1.414L15.414 6a1 1 0 11-1.414-1.414l.243-.243a1 1 0 011.414 0zM6 15.414a1 1 0 001.414 0l.243-.243A1 1 0 106.243 13.757l-.243.243A1 1 0 006 15.414zM15.414 14a1 1 0 011.414 0l.243.243A1 1 0 1115.657 15.9L15.414 15.657A1 1 0 0115.414 14zM4.586 6A1 1 0 003.172 4.586l.243-.243A1 1 0 114.829 5.757L4.586 6z" clip-rule="evenodd"/></svg>
+            <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 116.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+            <span id="theme-label" class="text-sm text-gray-300">Light</span>
+        </button>
     </div>
 <script>
 const slidesData = [
@@ -82,14 +131,6 @@ const slidesData = [
         title: 'Module Introduction',
         subtitle: 'Domain-Driven Design'
     },
-    // Preliminary Knowledge (better icon)
-    {
-        type: 'standard',
-        title: 'Preliminary Knowledge',
-        points: [
-            '<div class="flex items-center gap-6"><img src="https://img.icons8.com/color/96/graduation-cap.png" alt="Knowledge" class="w-16 h-16"/><span>All concepts of S4</span></div>'
-        ]
-    },
     // Course Goal (icon + bullet points)
     {
         type: 'standard',
@@ -98,7 +139,7 @@ const slidesData = [
             `<div class="flex flex-col md:flex-row items-center gap-8">
                 <img src="https://img.icons8.com/color/192/goal.png" alt="Goal" class="w-40 h-40"/>
                 <ul class="list-disc pl-8 text-xl text-slate-300 space-y-2">
-                    <li>Equip students (building on all S4 concepts) to use Domain-Driven Design to make sound architectural and collaborative design choices—delivered in a conference-style format.</li>
+                    <li>Equip students (building on S4 concepts) to use Domain-Driven Design to make sound architectural and collaborative design choices—delivered in a conference-style format.</li>
                     <li>Lesson lengths vary (≈1–3 hours) depending on topic complexity and lab depth.</li>
                 </ul>
             </div>`
@@ -499,6 +540,39 @@ const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 const slideCounter = document.getElementById('slide-counter');
 const progressBar = document.getElementById('progress-bar');
+
+// Theme toggle + persistence
+const themeToggleBtn = document.getElementById('theme-toggle');
+const themeLabel = document.getElementById('theme-label');
+const iconSun = document.getElementById('icon-sun');
+const iconMoon = document.getElementById('icon-moon');
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.body.classList.add('theme-light');
+        document.body.classList.remove('bg-slate-900', 'text-gray-300');
+        document.body.classList.add('bg-white', 'text-slate-800');
+        iconSun.classList.add('hidden');
+        iconMoon.classList.remove('hidden');
+        themeLabel.textContent = 'Dark';
+    } else {
+        document.body.classList.remove('theme-light');
+        document.body.classList.add('bg-slate-900', 'text-gray-300');
+        document.body.classList.remove('bg-white', 'text-slate-800');
+        iconSun.classList.remove('hidden');
+        iconMoon.classList.add('hidden');
+        themeLabel.textContent = 'Light';
+    }
+    try { localStorage.setItem('slides-theme', theme); } catch (e) {}
+}
+
+const savedTheme = (function(){ try { return localStorage.getItem('slides-theme'); } catch(e) { return null; } })() || 'dark';
+applyTheme(savedTheme);
+
+themeToggleBtn.addEventListener('click', () => {
+    const next = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+    applyTheme(next);
+});
 let currentSlide = 0;
 let slides = [];
 

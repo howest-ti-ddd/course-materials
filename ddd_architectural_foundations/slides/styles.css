@@ -124,7 +124,7 @@ h1, h2, h3 {
 
 .correct-answer:hover .answer-reveal,
 .incorrect-answer:hover .answer-reveal {
-    display: block;
+    display: block !important; /* override global .hidden */
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
@@ -133,3 +133,215 @@ h1, h2, h3 {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
+
+/* Accessibility: Avoid low-contrast teal-300 on projectors */
+.text-teal-300 { color: #818CF8 !important; } /* use indigo-400 instead */
+body.theme-light .text-teal-300 { color: #4338CA !important; } /* indigo-700 for light bg */
+
+/* Light Theme Overrides */
+body.theme-light {
+    background-color: #ffffff;
+    color: #0f172a; /* slate-900 */
+}
+/* Headings: remove heavy shadow on light */
+body.theme-light h1,
+body.theme-light h2,
+body.theme-light h3 {
+    text-shadow: none;
+}
+/* Navigation buttons */
+body.theme-light .nav-button {
+    background-color: #e5e7eb; /* gray-200 */
+    color: #111827; /* gray-900 */
+}
+body.theme-light .nav-button:hover {
+    background-color: #d1d5db; /* gray-300 */
+}
+/* Slide counter */
+body.theme-light #slideCounter {
+    background-color: rgba(148, 163, 184, 0.18); /* slate-400 alpha */
+    color: #334155; /* slate-700 */
+    border: 1px solid #e2e8f0; /* gray-200 */
+}
+/* Diagram and card surfaces */
+body.theme-light .diagram-bg {
+    background-color: #f8fafc; /* slate-50 */
+    border: 1px solid #e2e8f0; /* gray-200 */
+}
+/* Improve contrast for SVG text inside diagram backgrounds */
+/* In light theme, only force dark text for SVG labels that didn't set a fill.
+   Preserve explicit white/black fills inside dark boxes. */
+body.theme-light .diagram-bg svg text:not([fill]) { fill: #334155 !important; }
+/* Common "muted gray" labels used in dark mode need darkening on light bg */
+body.theme-light .diagram-bg svg text[fill="#D1D5DB"],
+body.theme-light .diagram-bg svg text[fill="#d1d5db"],
+body.theme-light .diagram-bg svg text[fill="#E5E7EB"],
+body.theme-light .diagram-bg svg text[fill="#e5e7eb"] { fill: #334155 !important; }
+body.theme-light .card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+/* Decision visuals */
+body.theme-light .decision-node {
+    background-color: #f1f5f9; /* slate-100 */
+    border: 1px solid #e2e8f0;
+}
+body.theme-light .decision-line { stroke: #cbd5e1; }
+body.theme-light .decision-text { fill: #334155; }
+/* Tables */
+body.theme-light .rating-table td,
+body.theme-light .rating-table th { border-color: #e5e7eb; }
+body.theme-light .rating-table th { background-color: #f1f5f9; color: #0f172a; }
+/* Answers hover states */
+body.theme-light .correct-answer:hover {
+    background-color: rgba(16, 185, 129, 0.15);
+    border-color: rgb(52, 211, 153);
+}
+body.theme-light .incorrect-answer:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+}
+/* Common text utility adjustments for light backgrounds */
+body.theme-light .text-white { color: #111827 !important; }
+body.theme-light .text-gray-200 { color: #374151 !important; }
+body.theme-light .text-gray-300 { color: #4b5563 !important; }
+body.theme-light .text-gray-400 { color: #475569 !important; }
+/* Dark background utility seen in slides */
+body.theme-light .bg-gray-800 { background-color: #f8fafc !important; color: #0f172a !important; }
+/* Light theme: lighten semi-transparent dark backgrounds used for callouts */
+body.theme-light .bg-gray-800\/50 {
+    background-color: rgba(248, 250, 252, 0.92) !important; /* slate-50 */
+    color: #0f172a !important;
+}
+body.theme-light .border-gray-700 { border-color: #e2e8f0 !important; }
+/* Light theme: ensure SVG text remains readable on light backgrounds */
+body.theme-light .diagram-bg svg .node-text { fill: #0f172a !important; }
+body.theme-light .diagram-bg svg .label-text { fill: #1e40af !important; }
+
+/* Light theme: light-on-light code block for projector readability */
+body.theme-light .code-block {
+    background-color: #f8fafc !important; /* slate-50 */
+    color: #0f172a !important;            /* slate-900 */
+    border-color: #e2e8f0 !important;     /* gray-200 */
+}
+body.theme-light .code-block pre,
+body.theme-light .code-block code { color: #0f172a !important; }
+/* Token color remaps for light background */
+body.theme-light .code-block .text-purple-400 { color: #6D28D9 !important; } /* purple-700 */
+body.theme-light .code-block .text-yellow-400 { color: #b45309 !important; } /* amber-700 */
+body.theme-light .code-block .text-red-400 { color: #b91c1c !important; }    /* red-700 */
+/* Neutral text inside code */
+body.theme-light .code-block .text-gray-300 { color: #334155 !important; }   /* slate-700 */
+body.theme-light .code-block .text-gray-500 { color: #475569 !important; }   /* slate-600 */
+
+/* Light theme: Decision Tree (slide 57) pastel palette optimized for projectors */
+body.theme-light #decision-tree svg rect { stroke-width: 1.5 !important; }
+/* Root */
+body.theme-light #decision-tree svg rect[fill="#4B5563"] { fill: #e2e8f0 !important; stroke: #94a3b8 !important; }
+/* Top decisions */
+body.theme-light #decision-tree svg rect[fill="#1e40af"] { fill: #c7d2fe !important; stroke: #6366f1 !important; }
+body.theme-light #decision-tree svg rect[fill="#7e22ce"] { fill: #e9d5ff !important; stroke: #a855f7 !important; }
+/* Mid-layer categories */
+body.theme-light #decision-tree svg rect[fill="#be185d"] { fill: #fecdd3 !important; stroke: #f43f5e !important; }
+body.theme-light #decision-tree svg rect[fill="#ca8a04"] { fill: #fde68a !important; stroke: #f59e0b !important; }
+body.theme-light #decision-tree svg rect[fill="#065f46"] { fill: #bbf7d0 !important; stroke: #10b981 !important; }
+body.theme-light #decision-tree svg rect[fill="#1d4ed8"] { fill: #bfdbfe !important; stroke: #3b82f6 !important; }
+/* Mid decisions */
+body.theme-light #decision-tree svg rect[fill="#047857"] { fill: #bbf7d0 !important; stroke: #16a34a !important; }
+body.theme-light #decision-tree svg rect[fill="#0f766e"] { fill: #99f6e4 !important; stroke: #14b8a6 !important; }
+/* Results */
+body.theme-light #decision-tree svg rect[fill="#c026d3"] { fill: #f5d0fe !important; stroke: #d946ef !important; }
+body.theme-light #decision-tree svg rect[fill="#16a34a"] { fill: #bbf7d0 !important; stroke: #22c55e !important; }
+body.theme-light #decision-tree svg rect[fill="#7f1d1d"] { fill: #fecaca !important; stroke: #ef4444 !important; }
+body.theme-light #decision-tree svg rect[fill="#15803d"] { fill: #bbf7d0 !important; stroke: #22c55e !important; }
+body.theme-light #decision-tree svg rect[fill="#3b82f6"] { fill: #bfdbfe !important; stroke: #3b82f6 !important; }
+body.theme-light #decision-tree svg rect[fill="#0ea5e9"] { fill: #bae6fd !important; stroke: #0ea5e9 !important; }
+
+/* Lines: shift to mid-saturated hues for visibility on light bg */
+body.theme-light #decision-tree svg .line-style { stroke-width: 3 !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#1e40af"] { stroke: #6366f1 !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#7e22ce"] { stroke: #a855f7 !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#be185d"] { stroke: #f43f5e !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#ca8a04"] { stroke: #f59e0b !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#065f46"] { stroke: #10b981 !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#1d4ed8"] { stroke: #3b82f6 !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#c026d3"] { stroke: #d946ef !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#047857"] { stroke: #16a34a !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#16a34a"] { stroke: #22c55e !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#7f1d1d"] { stroke: #ef4444 !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#15803d"] { stroke: #22c55e !important; }
+body.theme-light #decision-tree svg path.line-style[stroke="#3b82f6"] { stroke: #3b82f6 !important; }
+
+/* Theme toggle button (top-right) */
+.theme-toggle-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background-color: rgba(0, 0, 0, 0.35);
+    color: #E5E7EB;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 110;
+    cursor: pointer;
+}
+.theme-toggle-btn:hover { background-color: rgba(55, 65, 81, 0.8); }
+body.theme-light .theme-toggle-btn {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #334155;
+    border-color: rgba(0,0,0,0.08);
+}
+body.theme-light .theme-toggle-btn:hover { background-color: #f1f5f9; }
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* Light-theme readability for interactive question titles */
+body.theme-light .text-indigo-300 { color: #4338CA !important; } /* indigo-700 */
+body.theme-light .text-purple-300 { color: #6D28D9 !important; } /* purple-700 */
+/* Reduce pulsing animation on bright projectors */
+body.theme-light h2.animate-pulse { animation: none !important; }
+
+/* Light-theme colors for Golden Rule circles (slide 16) */
+body.theme-light .step-circle-1 {
+    background-color: #bae6fd !important; /* sky-200 */
+    color: #0c4a6e !important;            /* sky-900 */
+    border-color: #7dd3fc !important;     /* sky-300 */
+}
+body.theme-light .step-circle-2 {
+    background-color: #bbf7d0 !important; /* emerald-200 */
+    color: #064e3b !important;            /* emerald-900 */
+    border-color: #86efac !important;     /* emerald-300 */
+}
+body.theme-light .step-circle-3 {
+    background-color: #c7d2fe !important; /* indigo-200 */
+    color: #3730a3 !important;            /* indigo-800 */
+    border-color: #a5b4fc !important;     /* indigo-300 */
+}
+
+/* Colored pills for Architectural Characteristics (slide 24) */
+.char-pill {
+    font-weight: 600;
+    border-width: 1px;
+}
+/* Dark theme accents */
+.char-scalability { background-color: rgba(56, 189, 248, 0.12) !important; border-color: rgba(56, 189, 248, 0.55) !important; color: #7dd3fc !important; }
+.char-reliability  { background-color: rgba(16, 185, 129, 0.12) !important; border-color: rgba(16, 185, 129, 0.55) !important; color: #86efac !important; }
+.char-performance  { background-color: rgba(245, 158, 11, 0.12) !important; border-color: rgba(245, 158, 11, 0.55) !important; color: #fcd34d !important; }
+.char-deployability{ background-color: rgba(129, 140, 248, 0.12) !important; border-color: rgba(129, 140, 248, 0.55) !important; color: #a5b4fc !important; }
+.char-testability  { background-color: rgba(167, 139, 250, 0.12) !important; border-color: rgba(167, 139, 250, 0.55) !important; color: #c4b5fd !important; }
+.char-maintainability{ background-color: rgba(96, 165, 250, 0.12) !important; border-color: rgba(96, 165, 250, 0.55) !important; color: #93c5fd !important; }
+.char-elasticity   { background-color: rgba(34, 211, 238, 0.12) !important; border-color: rgba(34, 211, 238, 0.55) !important; color: #67e8f9 !important; }
+.char-faulttolerance{ background-color: rgba(244, 63, 94, 0.12) !important; border-color: rgba(244, 63, 94, 0.55) !important; color: #fda4af !important; }
+
+/* Light theme overrides for strong readability when beaming */
+body.theme-light .char-scalability { background-color: #e0f2fe !important; border-color: #7dd3fc !important; color: #0c4a6e !important; }
+body.theme-light .char-reliability  { background-color: #dcfce7 !important; border-color: #86efac !important; color: #064e3b !important; }
+body.theme-light .char-performance  { background-color: #fef3c7 !important; border-color: #fcd34d !important; color: #92400e !important; }
+body.theme-light .char-deployability{ background-color: #e0e7ff !important; border-color: #a5b4fc !important; color: #3730a3 !important; }
+body.theme-light .char-testability  { background-color: #f3e8ff !important; border-color: #e9d5ff !important; color: #581c87 !important; }
+body.theme-light .char-maintainability{ background-color: #dbeafe !important; border-color: #93c5fd !important; color: #1e3a8a !important; }
+body.theme-light .char-elasticity   { background-color: #cffafe !important; border-color: #67e8f9 !important; color: #164e63 !important; }
+body.theme-light .char-faulttolerance{ background-color: #ffe4e6 !important; border-color: #fecdd3 !important; color: #9f1239 !important; }
