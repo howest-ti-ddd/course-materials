@@ -1,181 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DDD: An Interactive Guide to Bounded Contexts & Context Mapping</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DDD: Relationships vs Integration Patterns (Improved)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-            background-color: #f8fafc; /* Use a light gray from Tailwind's palette */
-        }
-
-        /* Custom gradient for the header text */
-        .gradient-text {
-            background-image: linear-gradient(to right, #3b82f6, #1d4ed8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .pattern-card {
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pattern-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        /* A subtle animated underline for section titles */
-        .title-underline {
-            position: relative;
-            display: inline-block;
-        }
-        .title-underline::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 4px;
-            border-radius: 2px;
-            background-color: #3b82f6;
-            transition: width 0.3s ease;
-        }
-        
-        .details {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.5s ease-in-out;
-        }
-        
-        .details.show {
-           grid-template-rows: 1fr;
-        }
-
-        .details > div {
-            overflow: hidden;
-        }
-
-        /* SVG Node styles */
-        .context-map-node {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .context-map-node .node-shape {
-            transition: all 0.3s ease;
-        }
-        .context-map-node:hover .node-shape {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.7));
-        }
-        .context-map-node:hover text {
-            font-weight: 800;
-        }
-
-        /* SVG Connector styles */
-        .context-map-connector {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .context-map-connector:hover .connector-line {
-            stroke-width: 5;
-            stroke: #f97316;
-        }
-        .context-map-connector:hover text {
-            fill: #c2410c;
-            font-weight: 800;
-        }
-
-        /* Tab styles */
-        .tab-btn {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            border: none;
-            background-color: transparent;
-            font-weight: 600;
-            color: #4b5563;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .tab-btn::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 3px;
-            background-color: #2563eb;
-            border-radius: 2px;
-            transition: width 0.3s ease-in-out;
-        }
-
-        .tab-btn.active {
-            color: #1d4ed8;
-        }
-
-        .tab-btn.active::after {
-            width: 80%;
-        }
-        
-        /* Modal Animation */
-        #info-modal.hidden {
-            display: none;
-        }
-        
-        #info-modal {
-            display: flex;
-            animation: fadeIn 0.3s ease forwards;
-        }
-        
-        #info-modal .modal-content {
-            animation: slideUp 0.4s ease forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
+        .gradient-text { background-image: linear-gradient(to right, #3b82f6, #1d4ed8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .pattern-card { cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; }
+        .pattern-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+        .title-underline { position: relative; display: inline-block; }
+        .title-underline::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 50px; height: 4px; border-radius: 2px; background-color: #3b82f6; transition: width 0.3s ease; }
+        .details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s ease-in-out; }
+        .details.show { grid-template-rows: 1fr; }
+        .details > div { overflow: hidden; }
+        .context-map-node { cursor: pointer; transition: all 0.3s ease; }
+        .context-map-node .node-shape { transition: all 0.3s ease; }
+        .context-map-node:hover .node-shape { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.6)); }
+        .context-map-node:hover text { font-weight: 800; }
+        .context-map-connector { cursor: pointer; transition: all 0.3s ease; }
+        .context-map-connector:hover .connector-line { stroke-width: 5; stroke: #f97316; }
+        .context-map-connector:hover text { fill: #c2410c; font-weight: 800; }
+        .tab-btn { padding: 0.75rem 1.5rem; cursor: pointer; border: none; background-color: transparent; font-weight: 600; color: #4b5563; position: relative; transition: all 0.3s; }
+        .tab-btn::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 3px; background-color: #2563eb; border-radius: 2px; transition: width 0.3s ease-in-out; }
+        .tab-btn.active { color: #1d4ed8; }
+        .tab-btn.active::after { width: 80%; }
+        #info-modal.hidden { display: none; }
+        #info-modal { display: flex; animation: fadeIn 0.3s ease forwards; }
+        #info-modal .modal-content { animation: slideUp 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .badge { font-size: 0.7rem; letter-spacing: 0.02em; }
     </style>
 </head>
 <body class="text-gray-800 antialiased">
-
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-6 py-5">
             <h1 class="text-4xl font-extrabold gradient-text text-center">Navigating Your Domain</h1>
-            <p class="text-lg text-gray-600 text-center mt-1">An Interactive Guide to DDD Bounded Contexts & Context Mapping</p>
+            <p class="text-lg text-gray-600 text-center mt-1">DDD Bounded Contexts — <span class="font-semibold">Relationship Types</span> vs <span class="font-semibold">Integration Patterns</span></p>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-6 py-16">
-
         <!-- Introduction -->
         <section class="mb-24">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="text-content">
                     <h2 class="text-3xl font-bold mb-4 text-blue-800">The Problem: The "Big Ball of Mud"</h2>
-                    <p class="mb-4 text-lg text-gray-700 leading-relaxed">In large software projects, multiple teams work in parallel. Without clear boundaries, their models clash. One team's concept of a `Charge` might be a customer invoice, while another's is a vendor payment. When combined, the software becomes a buggy, unreliable "Big Ball of Mud."</p>
+                    <p class="mb-4 text-lg text-gray-700 leading-relaxed">In large software projects, multiple teams work in parallel. Without clear boundaries, their models clash. One team's concept of a <code>Charge</code> might be a customer invoice, while another's is a vendor payment. When combined, the software becomes a buggy, unreliable "Big Ball of Mud."</p>
                     <p class="text-lg font-semibold text-gray-800 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">Domain-Driven Design (DDD) provides strategic tools to prevent this chaos by defining clear model boundaries.</p>
                 </div>
                 <div class="flex items-center justify-center">
-                     <svg width="250" height="250" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="250" height="250" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="abstract tangle">
                         <defs>
                             <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" style="stop-color:#d1d5db;stop-opacity:1" />
@@ -202,230 +81,231 @@
                         <p class="mt-2 text-blue-700">Inside, every term of the <strong>Ubiquitous Language</strong> has a precise, unambiguous meaning.</p>
                     </div>
                     <div class="mt-6 text-center">
-                        <button onclick="toggleDetails('symptoms')" class="bg-red-500 text-white font-bold py-2 px-6 rounded-full hover:bg-red-600 transform hover:scale-105 transition-all duration-300 shadow-md">
-                            Recognize the Symptoms
-                        </button>
+                        <button onclick="toggleDetails('symptoms')" class="bg-red-500 text-white font-bold py-2 px-6 rounded-full hover:bg-red-600 transform hover:scale-105 transition-all duration-300 shadow-md">Recognize the Symptoms</button>
                         <div id="symptoms" class="details mt-4 text-left">
-                           <div class="pt-4">
-                             <div class="bg-red-50 p-4 rounded-lg border border-red-200">
-                                <h3 class="font-bold text-lg mb-2 text-red-800">When a context is fractured, you'll see:</h3>
-                                <ul class="list-disc list-inside space-y-2 text-gray-700">
-                                    <li><strong>Duplicate Concepts:</strong> Two models for the same idea, leading to inconsistencies.</li>
-                                    <li><strong>False Cognates:</strong> Same term (`Charge`), different meanings, leading to bugs and confusion.</li>
-                                </ul>
-                             </div>
-                           </div>
+                            <div class="pt-4">
+                                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                    <h3 class="font-bold text-lg mb-2 text-red-800">When a context is fractured, you'll see:</h3>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                        <li><strong>Duplicate Concepts:</strong> Two models for the same idea, leading to inconsistencies.</li>
+                                        <li><strong>False Cognates:</strong> Same term (<code>Charge</code>), different meanings, leading to bugs and confusion.</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Context Mapping -->
+                <!-- Relationship vs Integration -->
                 <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
                     <h2 class="text-3xl font-bold text-center mb-6 title-underline">Context Mapping</h2>
                     <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-6 rounded-lg">
-                        <p class="text-xl font-semibold">A visualization of the project's landscape, showing all Bounded Contexts and the relationships between them.</p>
+                        <p class="text-xl font-semibold">A map of all Bounded Contexts plus <em>relationship types</em> between teams and the <em>integration patterns</em> used on each side.</p>
                     </div>
                     <div class="mt-6">
                         <h3 class="text-xl font-bold mb-4 text-center text-green-800">Why is it Essential?</h3>
                         <ul class="space-y-4 text-lg">
-                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🗺️</span><div><strong class="font-semibold">It maps the existing terrain:</strong> Shows the project as it *is*, not as you wish it were.</div></li>
-                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">💬</span><div><strong class="font-semibold">It's a communication catalyst:</strong> Forces teams to discuss and define relationships.</div></li>
-                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🏢</span><div><strong class="font-semibold">It reveals organizational dynamics:</strong> Reflects team structures and communication flows.</div></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🗺️</span><div><strong class="font-semibold">It maps the existing terrain:</strong> Shows the project as it <em>is</em>, not as you wish it were.</div></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">💬</span><div><strong class="font-semibold">It clarifies collaboration:</strong> Relationship types (e.g., <em>Partnership, Customer–Supplier, Conformist</em>) vs integration patterns (e.g., <em>OHS/PL, ACL</em>).</div></li>
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">🏢</span><div><strong class="font-semibold">It reflects org dynamics:</strong> Team boundaries and communication flows are visible on the map.</div></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- How Maps Relate to Teams -->
-        <section id="maps-and-teams" class="mb-24 bg-purple-50 p-10 rounded-2xl">
-            <h2 class="text-3xl font-bold text-center mb-8 title-underline">Context Maps Are Team Maps</h2>
-            <p class="text-xl text-center text-purple-800 max-w-4xl mx-auto mb-10">A Context Map is a mirror of your organization's social structure. The technical boundaries directly reflect how your teams communicate and collaborate.</p>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h4 class="font-bold text-lg text-purple-700 mb-2">Boundaries Follow Teams</h4>
-                    <p class="text-gray-600">People who work closely naturally share a model. It's common to have one team per Bounded Context.</p>
+        <!-- Relationship Types -->
+        <section id="relationship-types" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-4 title-underline">Relationship Types</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">Use these to label the <strong>link</strong> between upstream/downstream teams. Choose one per link.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-green-400" onclick="toggleDetails('partnership')">
+                    <h4 class="text-xl font-semibold">🤝 Partnership</h4>
+                    <p class="text-gray-600 mt-2">Two teams coordinate closely and succeed/fail together.</p>
+                    <div id="partnership" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-green-800">Use When:</strong> Shared goals, frequent syncs. <br><strong>Key:</strong> Two-way planning and continuous integration.</div></div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h4 class="font-bold text-lg text-purple-700 mb-2">Relationships Define Collaboration</h4>
-                    <p class="text-gray-600">The patterns (Partnership, ACL) are explicit agreements on how teams will interact and depend on one another.</p>
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-green-400" onclick="toggleDetails('shared-kernel')">
+                    <h4 class="text-xl font-semibold">💎 Shared Kernel</h4>
+                    <p class="text-gray-600 mt-2">A tiny shared model segment maintained together.</p>
+                    <div id="shared-kernel" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-green-800">Use When:</strong> Coordination cost <em>&lt;</em> duplication cost. <br><strong>Key:</strong> Keep it small; changes require consultation.</div></div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h4 class="font-bold text-lg text-purple-700 mb-2">Reveals "Pain Points"</h4>
-                    <p class="text-gray-600">A map full of ACLs might indicate legacy systems. A messy map signals organizational friction.</p>
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('customer-supplier')">
+                    <h4 class="text-xl font-semibold">🛍️ Customer–Supplier</h4>
+                    <p class="text-gray-600 mt-2">Downstream’s needs influence the upstream’s backlog.</p>
+                    <div id="customer-supplier" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Use When:</strong> Upstream is motivated to serve downstream. <br><strong>Key:</strong> Joint acceptance tests; clear SLAs.</div></div>
+                </div>
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('conformist')">
+                    <h4 class="text-xl font-semibold">🙇 Conformist</h4>
+                    <p class="text-gray-600 mt-2">Downstream adopts the upstream’s model as-is.</p>
+                    <div id="conformist" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Use When:</strong> Upstream won’t adapt (e.g., vendor) and their model is good enough. <br><strong>Trade-off:</strong> Faster now, tighter coupling later.</div></div>
+                </div>
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-red-400" onclick="toggleDetails('separate-ways')">
+                    <h4 class="text-xl font-semibold">🚧 Separate Ways</h4>
+                    <p class="text-gray-600 mt-2">No integration; contexts evolve independently.</p>
+                    <div id="separate-ways" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-red-800">Use When:</strong> Little to no value in integrating. <br><strong>Note:</strong> Avoid for Core subdomains.</div></div>
                 </div>
             </div>
         </section>
 
         <!-- Integration Patterns -->
-        <section id="patterns" class="mb-24">
+        <section id="integration-patterns" class="mb-24">
             <h2 class="text-3xl font-bold text-center mb-4 title-underline">Integration Patterns</h2>
-            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">The lines on a Context Map represent specific organizational and technical patterns, driven by team collaboration.</p>
-
-            <!-- Cooperation -->
-            <div class="mb-16">
-                <h3 class="text-2xl font-bold mb-2 text-green-700">Category 1: Cooperation Patterns</h3>
-                <p class="text-gray-600 mb-6">For teams with well-established communication and dependent goals. They succeed or fail together.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-green-400" onclick="toggleDetails('partnership')">
-                        <h4 class="text-xl font-semibold">🤝 Partnership</h4>
-                        <p class="text-gray-600 mt-2">Two teams coordinate development and integration in an ad-hoc, cooperative manner.</p>
-                        <div id="partnership" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-green-800">Use When:</strong> Teams have great communication, shared goals, and frequent syncs. <br><strong>Key Aspect:</strong> Two-way coordination. Continuous integration is vital.</div></div>
-                    </div>
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-green-400" onclick="toggleDetails('shared-kernel')">
-                        <h4 class="text-xl font-semibold">💎 Shared Kernel</h4>
-                        <p class="text-gray-600 mt-2">A small, explicit subset of the domain model is shared between two teams. Changes require consultation.</p>
-                        <div id="shared-kernel" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-green-800">Use When:</strong> The cost of duplication is higher than the cost of coordination. <br><strong>Key Aspect:</strong> Couples the lifecycles. Keep the shared part small.</div></div>
-                    </div>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-8">Use these to annotate <strong>how</strong> each side integrates. You can mix-and-match with any relationship type.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('ohs')">
+                    <h4 class="text-xl font-semibold">🌐 Open Host Service (OHS)</h4>
+                    <p class="text-gray-600 mt-2">Upstream exposes a stable protocol (API) for all consumers.</p>
+                    <div id="ohs" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Key:</strong> Public contract decoupled from internal model.</div></div>
+                </div>
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('pl')">
+                    <h4 class="text-xl font-semibold">📜 Published Language (PL)</h4>
+                    <p class="text-gray-600 mt-2">Explicit message formats (e.g., JSON Schema, Avro).</p>
+                    <div id="pl" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Benefit:</strong> Lowers coupling & ambiguity for consumers.</div></div>
+                </div>
+                <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('acl')">
+                    <h4 class="text-xl font-semibold">🛡️ Anticorruption Layer (ACL)</h4>
+                    <p class="text-gray-600 mt-2">Downstream translation layer that protects its model.</p>
+                    <div id="acl" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Use When:</strong> Integrating with legacy or foreign models; preserve core purity.</div></div>
                 </div>
             </div>
-
-            <!-- Customer-Supplier -->
-            <div class="mb-16">
-                <h3 class="text-2xl font-bold mb-2 text-orange-700">Category 2: Customer-Supplier Patterns</h3>
-                <p class="text-gray-600 mb-6">For teams in an Upstream/Downstream relationship. The Upstream (supplier) provides services to the Downstream (customer).</p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('customer-supplier')">
-                        <h4 class="text-xl font-semibold">🛍️ Customer-Supplier</h4>
-                        <p class="text-gray-600 mt-2">Downstream priorities influence upstream planning through a formal process.</p>
-                        <div id="customer-supplier" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Use When:</strong> The upstream team is motivated to serve the downstream team. <br><strong>Key Aspect:</strong> Jointly developed automated acceptance tests are crucial.</div></div>
-                    </div>
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('conformist')">
-                        <h4 class="text-xl font-semibold">🙇 Conformist</h4>
-                        <p class="text-gray-600 mt-2">The downstream team slavishly adheres to the upstream team's model.</p>
-                        <div id="conformist" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Use When:</strong> Upstream has no motivation to help (e.g., vendor), but their model is "good enough". Simplifies integration.</div></div>
-                    </div>
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('acl')">
-                        <h4 class="text-xl font-semibold">🛡️ Anticorruption Layer (ACL)</h4>
-                        <p class="text-gray-600 mt-2">The downstream team builds an isolating translation layer to protect its model.</p>
-                        <div id="acl" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Use When:</strong> Integrating with a messy legacy system. The ACL translates the foreign model into your own concepts.</div></div>
-                    </div>
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('ohs')">
-                        <h4 class="text-xl font-semibold">🌐 Open Host Service (OHS)</h4>
-                        <p class="text-gray-600 mt-2">The upstream team defines a protocol (like a REST API) as a set of services.</p>
-                        <div id="ohs" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Key Aspect:</strong> Provide a stable, public interface decoupled from the internal implementation model.</div></div>
-                    </div>
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-orange-400" onclick="toggleDetails('pl')">
-                        <h4 class="text-xl font-semibold">📜 Published Language (PL)</h4>
-                        <p class="text-gray-600 mt-2">Using a well-documented, shared language for communication (e.g., JSON Schema).</p>
-                        <div id="pl" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-orange-800">Benefit:</strong> Reduces the learning curve and coupling for consumers, as the language is explicit and stable.</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Separate Ways -->
-            <div>
-                <h3 class="text-2xl font-bold mb-2 text-red-700">Category 3: Avoidance Pattern</h3>
-                <p class="text-gray-600 mb-6">When collaboration isn't worth the cost.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="pattern-card bg-white p-6 rounded-lg shadow-md border-t-4 border-red-400" onclick="toggleDetails('separate-ways')">
-                        <h4 class="text-xl font-semibold">🚧 Separate Ways</h4>
-                        <p class="text-gray-600 mt-2">Declare a Bounded Context to have no connection to another. Integration is expensive; sometimes the benefit is too small.</p>
-                        <div id="separate-ways" class="details mt-2 text-sm"><div class="pt-2"><strong class="text-red-800">Use When:</strong> Two sets of functionality have no significant relationship. <br><strong>Key Aspect:</strong> Ruthlessly prioritize. Avoid this for Core subdomains.</div></div>
-                    </div>
-                </div>
+            <div class="mt-10 max-w-3xl mx-auto bg-amber-50 border border-amber-200 p-5 rounded-xl">
+                <p class="text-amber-900"><strong>Typical combo:</strong> <span class="badge inline-block bg-amber-200 text-amber-900 px-2 py-0.5 rounded">Generic (Upstream)</span> exposes <strong>OHS/PL</strong> → <span class="badge inline-block bg-blue-200 text-blue-900 px-2 py-0.5 rounded">Core (Downstream)</span> uses <strong>ACL</strong>. Relationship is <strong>Customer–Supplier</strong>.</p>
             </div>
         </section>
 
         <!-- Interactive Use Cases -->
         <section id="interactive-use-cases" class="mt-24">
-             <h2 class="text-3xl font-bold text-center mb-4 title-underline">Context Map in Action</h2>
-             <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">Click on the diagrams to explore different scenarios.</p>
+            <h2 class="text-3xl font-bold text-center mb-4 title-underline">Context Map in Action</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-6">Click the diagrams. Badges show <span class="badge bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded">Relationship</span> vs <span class="badge bg-orange-100 text-orange-900 px-2 py-0.5 rounded">Integration</span>.</p>
+
             <div class="bg-white p-4 md:p-8 rounded-2xl shadow-2xl border border-gray-200">
                 <!-- Tab Buttons -->
                 <div class="flex flex-wrap justify-center border-b border-gray-200 mb-6">
                     <button id="btn-uc1" class="tab-btn active" onclick="switchTab('uc1')">Shared Kernel</button>
-                    <button id="btn-uc2" class="tab-btn" onclick="switchTab('uc2')">Customer-Supplier</button>
-                    <button id="btn-uc3" class="tab-btn" onclick="switchTab('uc3')">Anticorruption Layer</button>
-                    <button id="btn-uc4" class="tab-btn" onclick="switchTab('uc4')">Conformist & OHS</button>
+                    <button id="btn-uc2" class="tab-btn" onclick="switchTab('uc2')">Cust–Supp + OHS/PL → ACL</button>
+                    <button id="btn-uc3" class="tab-btn" onclick="switchTab('uc3')">Conformist</button>
+                    <button id="btn-uc4" class="tab-btn" onclick="switchTab('uc4')">ACL to Legacy</button>
                 </div>
 
-                <!-- Tab Content -->
+                <!-- UC1: Shared Kernel -->
                 <div id="uc1" class="tab-content">
-                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A `Catalog` team and an `Orders` team must share a core `Product` model. Duplicating this complex model would be too costly.</p>
+                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A <code>Catalog</code> team and an <code>Orders</code> team share a tiny core <code>Product</code> model. Duplication would be too costly.</p>
                     <svg viewBox="0 0 400 200" class="w-full h-auto max-w-lg mx-auto">
                         <g class="context-map-node" onclick="showInfo('uc1-catalog')">
                             <ellipse class="node-shape" cx="125" cy="100" rx="80" ry="60" fill="#e0f2fe" stroke="#3b82f6" stroke-width="2.5" />
                             <text x="100" y="105" font-weight="bold">Catalog</text>
                         </g>
                         <g class="context-map-node" onclick="showInfo('uc1-orders')">
-                             <ellipse class="node-shape" cx="275" cy="100" rx="80" ry="60" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5" />
+                            <ellipse class="node-shape" cx="275" cy="100" rx="80" ry="60" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5" />
                             <text x="255" y="105" font-weight="bold">Orders</text>
                         </g>
-                         <g class="context-map-connector" onclick="showInfo('uc1-kernel')">
-                             <path d="M 195 65 A 60 60 0 0 1 195 135" fill="#fef9c3" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
-                            <text x="170" y="100" font-weight="bold" font-size="12" fill="#713f12">Shared</text>
-                             <text x="172" y="115" font-weight="bold" font-size="12" fill="#713f12">Kernel</text>
-                         </g>
+                        <g class="context-map-connector" onclick="showInfo('uc1-kernel')">
+                            <path d="M 195 65 A 60 60 0 0 1 195 135" fill="#fef9c3" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+                            <text x="170" y="94" font-weight="bold" font-size="12" fill="#713f12">Shared</text>
+                            <text x="172" y="110" font-weight="bold" font-size="12" fill="#713f12">Kernel</text>
+                            <rect x="165" y="120" width="70" height="18" rx="9" fill="#d1fae5" stroke="#34d399" />
+                            <text x="171" y="132" font-size="10" fill="#065f46">Relationship</text>
+                        </g>
                     </svg>
                 </div>
+
+                <!-- UC2: Customer–Supplier with OHS/PL (up) and ACL (down) -->
                 <div id="uc2" class="tab-content hidden">
-                     <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A `Booking` system (Upstream) provides data to a `Yield Analysis` team (Downstream), who formally depends on them.</p>
-                    <svg viewBox="0 0 400 300" class="w-full h-auto max-w-sm mx-auto">
-                        <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/></marker></defs>
-                        <g class="context-map-node" onclick="showInfo('uc2-booking')">
-                             <rect x="125" y="30" width="150" height="80" rx="15" class="node-shape" fill="#fefce8" stroke="#f59e0b" stroke-width="2.5" />
-                            <text x="170" y="70" font-weight="bold">Booking</text>
-                            <text x="165" y="90" fill="#713f12">(Upstream)</text>
+                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> <code>Identity & Access</code> (Generic, Upstream) serves <code>Marketing</code> (Core, Downstream). Relationship is <b>Customer–Supplier</b>. Integration is <b>OHS/PL</b> upstream and <b>ACL</b> downstream.</p>
+                    <svg viewBox="0 0 460 300" class="w-full h-auto max-w-xl mx-auto">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/></marker>
+                        </defs>
+                        <g class="context-map-node" onclick="showInfo('uc2-identity')">
+                            <rect x="155" y="30" width="150" height="80" rx="15" class="node-shape" fill="#fefce8" stroke="#f59e0b" stroke-width="2.5" />
+                            <text x="165" y="65" font-weight="bold">Identity &amp; Access</text>
+                            <text x="190" y="83" font-size="11" fill="#92400e">(Upstream · Generic)</text>
+                            <!-- OHS/PL badge -->
+                            <g onclick="event.stopPropagation(); showInfo('uc2-ohs')">
+                                <rect x="188" y="95" width="85" height="22" rx="11" fill="#fff7ed" stroke="#fb923c" stroke-width="2" />
+                                <text x="197" y="110" font-size="10" font-weight="bold">OHS / PL</text>
+                            </g>
                         </g>
-                        <g class="context-map-node" onclick="showInfo('uc2-analysis')">
-                             <rect x="125" y="190" width="150" height="80" rx="15" class="node-shape" fill="#e0f2fe" stroke="#3b82f6" stroke-width="2.5" />
-                            <text x="160" y="230" font-weight="bold">Yield Analysis</text>
-                            <text x="160" y="250" fill="#0c4a6e">(Downstream)</text>
+                        <g class="context-map-node" onclick="showInfo('uc2-marketing')">
+                            <rect x="155" y="190" width="150" height="80" rx="15" class="node-shape" fill="#e0f2fe" stroke="#3b82f6" stroke-width="2.5" />
+                            <text x="195" y="225" font-weight="bold">Marketing</text>
+                            <text x="182" y="243" font-size="11" fill="#0c4a6e">(Downstream · Core)</text>
                         </g>
                         <g class="context-map-connector" onclick="showInfo('uc2-relationship')">
-                            <line class="connector-line" x1="200" y1="110" x2="200" y2="190" stroke="#fb923c" stroke-width="3" marker-end="url(#arrow)"/>
-                            <text x="210" y="150" font-weight="bold" fill="#c2410c">Customer-</text>
-                            <text x="210" y="165" font-weight="bold" fill="#c2410c">Supplier</text>
+                            <line class="connector-line" x1="230" y1="110" x2="230" y2="190" stroke="#fb923c" stroke-width="3" marker-end="url(#arrow)"/>
+                            <rect x="242" y="140" width="110" height="20" rx="10" fill="#ecfdf5" stroke="#34d399" />
+                            <text x="247" y="154" font-size="11" font-weight="bold" fill="#065f46">Customer–Supplier</text>
+                        </g>
+                        <!-- ACL badge near downstream edge -->
+                        <g class="context-map-connector" onclick="showInfo('uc2-acl')">
+                            <rect x="105" y="150" width="52" height="20" rx="10" fill="#fffbeb" stroke="#f59e0b" />
+                            <text x="116" y="164" font-size="10" font-weight="bold" fill="#7c2d12">ACL</text>
                         </g>
                     </svg>
                 </div>
+
+                <!-- UC3: Conformist to a vendor upstream -->
                 <div id="uc3" class="tab-content hidden">
-                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A new `Shipping` application must integrate with a messy `Legacy Tracking` system without being corrupted by its design.</p>
-                     <svg viewBox="0 0 450 250" class="w-full h-auto max-w-xl mx-auto">
-                         <g class="context-map-node" onclick="showInfo('uc3-shipping')">
-                             <rect x="20" y="85" width="150" height="80" rx="15" class="node-shape" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5" />
-                             <text x="50" y="125" font-weight="bold">New Shipping</text>
-                         </g>
-                         <g class="context-map-node" onclick="showInfo('uc3-legacy')">
-                              <rect x="280" y="85" width="150" height="80" rx="15" class="node-shape" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5" />
-                             <text x="305" y="125" font-weight="bold">Legacy System</text>
-                         </g>
-                         <g class="context-map-connector" onclick="showInfo('uc3-acl')">
-                             <line class="connector-line" x1="170" y1="125" x2="210" y2="125" stroke="#fb923c" stroke-width="3"/>
-                              <path d="M 210 95 L 240 80 L 240 170 L 210 155 Z" fill="#fff" stroke="#fb923c" stroke-width="3" />
-                              <text x="215" y="128" font-size="12" font-weight="bold" fill="#c2410c">ACL</text>
-                              <line class="connector-line" x1="240" y1="125" x2="280" y2="125" stroke="#fb923c" stroke-width="3" marker-end="url(#arrow)"/>
-                         </g>
-                     </svg>
+                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A <code>Billing</code> context integrates with a vendor <code>Payments Gateway</code>. The vendor won’t adapt, so Billing <b>Conforms</b> to their model (no ACL).</p>
+                    <svg viewBox="0 0 460 300" class="w-full h-auto max-w-xl mx-auto">
+                        <defs>
+                            <marker id="arrow2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/></marker>
+                        </defs>
+                        <g class="context-map-node" onclick="showInfo('uc3-vendor')">
+                            <rect x="155" y="30" width="150" height="80" rx="15" class="node-shape" fill="#fefce8" stroke="#f59e0b" stroke-width="2.5" />
+                            <text x="168" y="65" font-weight="bold">Payments Gateway</text>
+                            <text x="205" y="83" font-size="11" fill="#92400e">(Upstream · Vendor)</text>
+                            <g onclick="event.stopPropagation(); showInfo('uc3-ohs')">
+                                <rect x="195" y="95" width="70" height="22" rx="11" fill="#fff7ed" stroke="#fb923c" stroke-width="2" />
+                                <text x="205" y="110" font-size="10" font-weight="bold">OHS/PL</text>
+                            </g>
+                        </g>
+                        <g class="context-map-node" onclick="showInfo('uc3-billing')">
+                            <rect x="155" y="190" width="150" height="80" rx="15" class="node-shape" fill="#e0f2fe" stroke="#3b82f6" stroke-width="2.5" />
+                            <text x="210" y="230" font-weight="bold">Billing</text>
+                        </g>
+                        <g class="context-map-connector" onclick="showInfo('uc3-conformist')">
+                            <line class="connector-line" x1="230" y1="110" x2="230" y2="190" stroke="#fb923c" stroke-width="3" marker-end="url(#arrow2)"/>
+                            <rect x="240" y="140" width="86" height="20" rx="10" fill="#ecfdf5" stroke="#34d399" />
+                            <text x="245" y="154" font-size="11" font-weight="bold" fill="#065f46">Conformist</text>
+                        </g>
+                    </svg>
                 </div>
+
+                <!-- UC4: ACL to Legacy -->
                 <div id="uc4" class="tab-content hidden">
-                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A `Marketing` app needs user info from a central `Identity` system, which provides a clean API (Open Host Service).</p>
-                    <svg viewBox="0 0 400 300" class="w-full h-auto max-w-sm mx-auto">
-                        <g class="context-map-node" onclick="showInfo('uc4-identity')">
-                            <rect x="125" y="30" width="150" height="80" rx="15" class="node-shape" fill="#fefce8" stroke="#f59e0b" stroke-width="2.5" />
-                            <text x="145" y="65" font-weight="bold">Identity & Access</text>
-                            <g onclick="event.stopPropagation(); showInfo('uc4-ohs')"><rect x="170" y="98" width="60" height="25" fill="#fff7ed" stroke="#fb923c" stroke-width="2" class="cursor-pointer" /><text x="175" y="115" font-size="10" font-weight="bold">OHS/PL</text></g>
+                    <p class="text-center text-gray-600 mb-4 px-4"><b>Scenario:</b> A new <code>Shipping</code> app must integrate with a messy <code>Legacy Tracking</code> system without being corrupted by its design.</p>
+                    <svg viewBox="0 0 470 250" class="w-full h-auto max-w-xl mx-auto">
+                        <defs>
+                            <marker id="arrow3" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f97316"/></marker>
+                        </defs>
+                        <g class="context-map-node" onclick="showInfo('uc4-shipping')">
+                            <rect x="20" y="85" width="150" height="80" rx="15" class="node-shape" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5" />
+                            <text x="50" y="125" font-weight="bold">New Shipping</text>
                         </g>
-                        <g class="context-map-node" onclick="showInfo('uc4-marketing')">
-                            <rect x="125" y="190" width="150" height="80" rx="15" class="node-shape" fill="#e0f2fe" stroke="#3b82f6" stroke-width="2.5" />
-                            <text x="165" y="235" font-weight="bold">Marketing</text>
+                        <g class="context-map-node" onclick="showInfo('uc4-legacy')">
+                            <rect x="300" y="85" width="150" height="80" rx="15" class="node-shape" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5" />
+                            <text x="325" y="125" font-weight="bold">Legacy System</text>
                         </g>
-                        <g class="context-map-connector" onclick="showInfo('uc4-relationship')">
-                            <line class="connector-line" x1="200" y1="123" x2="200" y2="190" stroke="#fb923c" stroke-width="3" marker-end="url(#arrow)"/>
-                            <text x="210" y="160" font-weight="bold" fill="#c2410c">Conformist</text>
+                        <g class="context-map-connector" onclick="showInfo('uc4-acl')">
+                            <line class="connector-line" x1="170" y1="125" x2="210" y2="125" stroke="#fb923c" stroke-width="3"/>
+                            <path d="M 210 95 L 240 80 L 240 170 L 210 155 Z" fill="#fff" stroke="#fb923c" stroke-width="3" />
+                            <text x="215" y="128" font-size="12" font-weight="bold" fill="#c2410c">ACL</text>
+                            <line class="connector-line" x1="240" y1="125" x2="300" y2="125" stroke="#fb923c" stroke-width="3" marker-end="url(#arrow3)"/>
+                            <rect x="180" y="140" width="95" height="20" rx="10" fill="#ecfdf5" stroke="#34d399" />
+                            <text x="186" y="154" font-size="11" font-weight="bold" fill="#065f46">Integration</text>
                         </g>
                     </svg>
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- Modal -->
     <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center p-4 z-50">
         <div class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full p-6 relative">
-            <button onclick="hideInfo()" class="absolute top-3 right-4 text-gray-400 hover:text-gray-800 text-3xl leading-none font-semibold">&times;</button>
+            <button onclick="hideInfo()" class="absolute top-3 right-4 text-gray-400 hover:text-gray-800 text-3xl leading-none font-semibold" aria-label="Close">&times;</button>
             <h4 id="modal-title" class="font-bold text-xl text-blue-800 mb-3"></h4>
             <p id="modal-text" class="text-gray-700 leading-relaxed"></p>
         </div>
@@ -435,11 +315,7 @@
         function toggleDetails(id) {
             const currentlyOpen = document.querySelector('.details.show');
             const element = document.getElementById(id);
-
-            if (currentlyOpen && currentlyOpen.id !== id) {
-                currentlyOpen.classList.remove('show');
-            }
-            
+            if (currentlyOpen && currentlyOpen.id !== id) currentlyOpen.classList.remove('show');
             element.classList.toggle('show');
         }
 
@@ -448,19 +324,28 @@
         const modalText = document.getElementById('modal-text');
 
         const infoData = {
-            'uc1-catalog': { title: 'Context: Catalog', text: 'Manages all product information, pricing, and categories. This is a core part of the business.' },
-            'uc1-orders': { title: 'Context: Orders', text: 'Handles customer orders, shopping carts, and checkout. It needs accurate product information from the Catalog.' },
-            'uc1-kernel': { title: 'Relationship: Shared Kernel', text: 'The Catalog and Orders teams collaborate on a shared `Product` model. This avoids duplication but requires tight coordination. Changes to the kernel must be agreed upon by both teams.' },
-            'uc2-booking': { title: 'Context: Booking (Upstream)', text: 'The system of record for all cargo bookings. It acts as the supplier of data.' },
-            'uc2-analysis': { title: 'Context: Yield Analysis (Downstream)', text: 'Consumes booking data to generate reports on profitability and resource utilization. It is the customer.' },
-            'uc2-relationship': { title: 'Relationship: Customer-Supplier', text: 'A healthy upstream/downstream relationship. The Booking team budgets time to fulfill the Analysis team\'s data requests, and they create joint automated tests to ensure stability.' },
-            'uc3-shipping': { title: 'Context: New Shipping App', text: 'A modern application with a clean, expressive domain model for managing shipments.' },
-            'uc3-legacy': { title: 'Context: Legacy Tracking System', text: 'An old, difficult-to-change system. Its data model is messy and does not fit the needs of the new application.' },
-            'uc3-acl': { title: 'Relationship: Anticorruption Layer (ACL)', text: 'The Shipping team builds an ACL to protect its model. The ACL acts as a translator, converting data from the legacy system into the concepts and structures of the new, clean model. This prevents the legacy "mess" from corrupting the new design.' },
-            'uc4-identity': { title: 'Context: Identity & Access (Upstream)', text: 'A centralized, generic service for managing users and permissions. It acts as the supplier.' },
-            'uc4-marketing': { title: 'Context: Marketing (Downstream)', text: 'A separate application that needs user data for campaigns. It acts as the customer.' },
-            'uc4-ohs': { title: 'Interface: Open Host Service (OHS)', text: 'The Identity & Access team provides a stable, well-documented API (the OHS) using a Published Language (PL). This decouples its internal model from what consumers see.'},
-            'uc4-relationship': { title: 'Relationship: Conformist', text: 'The API from the Identity service is good enough for the Marketing team\'s needs. To save time and complexity, they choose to slavishly adhere (conform) to the API\'s model instead of building their own translation layer.' }
+            // UC1
+            'uc1-catalog': { title: 'Context: Catalog', text: 'Manages product information, pricing, and categories. Often core or supporting depending on the business.' },
+            'uc1-orders': { title: 'Context: Orders', text: 'Handles customer orders, carts, and checkout. Needs accurate product info from Catalog.' },
+            'uc1-kernel': { title: 'Relationship: Shared Kernel', text: 'Teams collaborate on a tiny shared Product model. Avoids duplication, but requires tight coordination. Keep it small.' },
+
+            // UC2
+            'uc2-identity': { title: 'Context: Identity & Access (Upstream · Generic)', text: 'Centralized generic service for users/permissions. Acts as upstream supplier.' },
+            'uc2-marketing': { title: 'Context: Marketing (Downstream · Core)', text: 'Consumes identity data for campaigns. Acts as downstream customer.' },
+            'uc2-ohs': { title: 'Integration (Upstream): OHS/PL', text: 'Upstream provides an Open Host Service with a Published Language—stable, well-documented API decoupled from internal model.' },
+            'uc2-acl': { title: 'Integration (Downstream): ACL', text: 'Downstream uses an Anticorruption Layer to translate into its own model and protect core concepts.' },
+            'uc2-relationship': { title: 'Relationship: Customer–Supplier', text: 'Downstream needs influence upstream planning and SLAs. Joint tests ensure stability.' },
+
+            // UC3
+            'uc3-vendor': { title: 'Context: Payments Gateway (Upstream · Vendor)', text: 'External provider with stable API but little willingness to adapt.' },
+            'uc3-billing': { title: 'Context: Billing (Downstream)', text: 'To save time, Billing adopts the vendor’s model as-is.' },
+            'uc3-ohs': { title: 'Integration (Upstream): OHS/PL', text: 'Vendor exposes a public API and message formats.' },
+            'uc3-conformist': { title: 'Relationship: Conformist', text: 'Downstream conforms to the upstream’s model; minimal translation. Faster, but higher coupling.' },
+
+            // UC4
+            'uc4-shipping': { title: 'Context: New Shipping App', text: 'Modern domain model for managing shipments.' },
+            'uc4-legacy': { title: 'Context: Legacy Tracking System', text: 'Difficult-to-change system with a mismatched model.' },
+            'uc4-acl': { title: 'Integration: Anticorruption Layer (ACL)', text: 'Translator at the boundary prevents the legacy model from leaking into the new design.' }
         };
 
         function showInfo(id) {
@@ -471,24 +356,12 @@
                 infoModal.classList.remove('hidden');
             }
         }
+        function hideInfo() { infoModal.classList.add('hidden'); }
+        infoModal.addEventListener('click', (e) => { if (e.target === infoModal) hideInfo(); });
 
-        function hideInfo() {
-            infoModal.classList.add('hidden');
-        }
-
-        infoModal.addEventListener('click', function(event) {
-            if (event.target === infoModal) {
-                hideInfo();
-            }
-        });
-        
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.tab-content').forEach((tab) => tab.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach((btn) => btn.classList.remove('active'));
             document.getElementById(tabId).classList.remove('hidden');
             document.getElementById('btn-' + tabId).classList.add('active');
         }

@@ -179,6 +179,16 @@
             ]
         },
         { type: 'legend', title: 'Context Map Relationships: The Legend' },
+        {
+            type: 'standard',
+            title: 'Relationships vs Integration',
+            subtitle: 'How to read the legend',
+            points: [
+                '<strong>Relationship Types:</strong> Partnership, Shared Kernel, Customer–Supplier, Conformist, Separate Ways.',
+                '<strong>Integration Patterns:</strong> Anticorruption Layer, Open Host Service, Published Language.',
+                '<strong>Use together:</strong> e.g., C/S with OHS+PL; Downstream chooses Conformist vs ACL.'
+            ]
+        },
         { type: 'context_map_simple', title: 'Basic Context Map: U → D' },
         // Quiz 1 (warm-up)
         {
@@ -363,15 +373,25 @@
             case 'legend':
                 slideEl.innerHTML = `
                     <h2 class="text-4xl font-bold mb-6 text-center text-gray-200">${slideData.title}</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 p-8">
-                        <div class="legend-item"><div class="legend-icon bg-green-500">P</div><strong class="text-gray-200">Partnership</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-teal-500">SK</div><strong class="text-gray-200">Shared Kernel</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-sky-500">C/S</div><strong class="text-gray-200">Customer-Supplier</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-yellow-500">CF</div><strong class="text-gray-200">Conformist</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-orange-500">ACL</div><strong class="text-gray-200">Anticorruption Layer</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-blue-500">OHS</div><strong class="text-gray-200">Open Host Service</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-violet-500">PL</div><strong class="text-gray-200">Published Language</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-slate-500">SW</div><strong class="text-gray-200">Separate Ways</strong></div>
+                    <div class="grid md:grid-cols-2 gap-10 p-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-300 mb-4">Relationship Types</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="legend-item"><div class="legend-icon bg-green-500">P</div><strong class="text-gray-200">Partnership</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-teal-500">SK</div><strong class="text-gray-200">Shared Kernel</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-sky-500">C/S</div><strong class="text-gray-200">Customer-Supplier</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-yellow-500">CF</div><strong class="text-gray-200">Conformist</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-slate-500">SW</div><strong class="text-gray-200">Separate Ways</strong></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-300 mb-4">Integration Patterns</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="legend-item"><div class="legend-icon bg-orange-500">ACL</div><strong class="text-gray-200">Anticorruption Layer</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-blue-500">OHS</div><strong class="text-gray-200">Open Host Service</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-violet-500">PL</div><strong class="text-gray-200">Published Language</strong></div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 break;

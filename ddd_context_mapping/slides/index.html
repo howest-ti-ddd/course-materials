@@ -233,7 +233,7 @@
                 'Define Domain, Subdomains, and Bounded Contexts with examples.',
                 'Explain why multiple models must coexist and how to maintain model integrity.',
                 'Draw a Context Map, labeling contexts, flows, and relationships.',
-                'Choose appropriate integration patterns for different team dynamics.',
+                'Choose appropriate relationship types and integration patterns.',
                 'Spot architectural red flags (like the "Big Ball of Mud") and propose mitigations.',
                 'Contrast technical partitioning with domain partitioning.'
             ]
@@ -622,6 +622,17 @@
             type: 'context_map_simple',
             title: 'Drawing a Basic Context Map'
         },
+        // NEW SLIDE 26: Relationships vs Integration
+        {
+            type: 'standard',
+            title: 'Relationships vs Integration',
+            subtitle: 'Two complementary dimensions on a Context Map',
+            points: [
+                '<strong>Relationship Types:</strong> Socio-technical alignment between teams/contexts (Partnership, Shared Kernel, Customer–Supplier, Conformist, Separate Ways).',
+                '<strong>Integration Patterns:</strong> Technical contract/translation at the boundary (Anticorruption Layer, Open Host Service, Published Language).',
+                '<strong>Combine them:</strong> Choose a relationship, then select integration patterns that fit (e.g., C/S + OHS+PL; downstream chooses Conformist vs ACL).'
+            ]
+        },
         // SLIDE 26: Relationships Legend
         {
             type: 'legend',
@@ -632,6 +643,7 @@
             type: 'relationship',
             pattern: 'Partnership (P)',
             color: 'bg-green-500',
+            category: 'Relationship Type',
             description: 'Two teams/contexts succeed or fail together. They must cooperate closely on planning and integration.',
             when: 'When two contexts are highly dependent and a change in one often requires a change in the other. Requires excellent communication.',
             tradeoffs: '<strong>Pro:</strong> Can build tightly integrated features. <strong>Con:</strong> High coordination overhead. One team can block the other.'
@@ -682,6 +694,7 @@
             type: 'relationship',
             pattern: 'Shared Kernel (SK)',
             color: 'bg-teal-500',
+            category: 'Relationship Type',
             description: 'Two teams explicitly agree to share a small, well-defined subset of their model and code (e.g., a library).',
             when: 'For genuinely common, stable concepts. The shared code is co-owned and changes require consultation.',
             tradeoffs: '<strong>Pro:</strong> Reduces duplication. <strong>Con:</strong> High coupling. The kernel must be kept <strong class="text-red-400">TINY</strong>. A large shared kernel becomes a mini-monolith.'
@@ -738,6 +751,7 @@
             type: 'relationship',
             pattern: 'Customer-Supplier (C/S)',
             color: 'bg-sky-500',
+            category: 'Relationship Type',
             description: 'A classic Upstream/Downstream relationship. The Downstream "Customer" team\'s needs are prioritized by the Upstream "Supplier" team.',
             when: 'When one team provides a service for another, and there is a clear power dynamic and shared goals.',
             tradeoffs: '<strong>Pro:</strong> Clear responsibilities. Downstream gets what it needs. <strong>Con:</strong> Upstream development can be constrained by downstream needs.'
@@ -781,6 +795,7 @@
             type: 'relationship',
             pattern: 'Conformist (CF)',
             color: 'bg-yellow-500',
+            category: 'Relationship Type',
             description: 'The Downstream team blindly adopts the model of the Upstream team. They have little to no influence.',
             when: 'When integrating with a huge, unchangeable legacy system or an external service. When the cost of translation is too high.',
             tradeoffs: '<strong>Pro:</strong> Simplest integration. No translation needed. <strong>Con:</strong> The downstream model is compromised. You are at the mercy of the upstream team.'
@@ -827,6 +842,7 @@
             type: 'relationship',
             pattern: 'Anticorruption Layer (ACL)',
             color: 'bg-orange-500',
+            category: 'Integration Pattern',
             description: 'The Downstream team builds a translation layer that isolates their model from the Upstream model.',
             when: 'To protect your Core Domain from a messy or incompatible upstream system (e.g., a legacy "Big Ball of Mud").',
             tradeoffs: '<strong>Pro:</strong> Protects your model\'s integrity and allows it to be designed cleanly. <strong>Con:</strong> Requires effort to build and maintain the translation layer.'
@@ -872,6 +888,7 @@
             type: 'relationship',
             pattern: 'Open Host Service (OHS) + Published Language (PL)',
             color: 'bg-blue-500',
+            category: 'Integration Pattern',
             description: 'The Upstream context offers a well-documented, public API (OHS) using a stable, shared data format (PL), like a defined JSON schema.',
             when: 'When an upstream service needs to be consumed by many different downstream clients.',
             tradeoffs: '<strong>Pro:</strong> Enables wide integration. Decouples clients from the host\'s internal model. <strong>Con:</strong> Requires significant effort to design a good, stable public API.'
@@ -915,6 +932,7 @@
             type: 'relationship',
             pattern: 'Separate Ways',
             color: 'bg-slate-500',
+            category: 'Relationship Type',
             description: 'The teams decide that integration is not worth the cost and complexity. They have no connection.',
             when: 'When the business value of connecting two contexts is negligible. Avoids forced, unnecessary complexity.',
             tradeoffs: '<strong>Pro:</strong> Maximum autonomy. Simple solution. <strong>Con:</strong> Duplication of data or functionality might occur. Hard to reverse if integration is needed later.'
@@ -952,6 +970,110 @@
                 { text: 'When you want to share a common set of value objects between two services.', correct: false, feedback: 'This is a perfect use case for a Shared Kernel, not Separate Ways.' },
                 { text: 'When two core parts of the business must exchange data in real-time.', correct: false, feedback: 'Real-time data exchange between core systems is a critical integration that would likely require a Partnership or Customer-Supplier relationship.' },
                 { text: 'When the cost and complexity of integration far outweigh the business value it would provide.', correct: true, feedback: 'Correct! Not integrating is often the simplest and most pragmatic choice when there\'s no compelling business need.' }
+            ]
+        },
+        // SECTION 5
+        { type: 'section_title', section: 'PART V', title: 'Common Scenarios' },
+        // Scenario: Generic -> Core (IAM to Core)
+        {
+            type: 'graphic_right',
+            title: 'Generic → Core: IAM to Core Domain',
+            subtitle: 'Stable identity upstream, core logic downstream',
+            points: [
+                '<strong>Upstream (Generic):</strong> IAM/Identity provider exposes standardized authN/Z.',
+                '<strong>Relationship:</strong> Customer–Supplier if internal, otherwise self-serve OHS.',
+                '<strong>Integration:</strong> OHS + Published Language (OAuth/OpenID claims, user events).',
+                '<strong>Downstream:</strong> Optional thin ACL to project identity into local terms (UserId, Roles, Permissions).'
+            ],
+            graphic: `<div class="w-full h-72 relative flex justify-center items-center">
+                <div class="context-box border-blue-500 text-blue-300 absolute" style="top: 35%; left: 8%;">IAM (OHS)</div>
+                <div class="context-box border-indigo-500 text-indigo-300 absolute" style="top: 35%; right: 8%;">Core Domain</div>
+                <div class="arrow-label" style="top: 20%; left: 14%;">PL: OAuth/Claims + User Events</div>
+            </div>`
+        },
+        // Scenario: Supporting -> Core (Payments to Sales)
+        {
+            type: 'graphic_right',
+            title: 'Supporting → Core: Payments to Sales',
+            subtitle: 'Protect core order language from PSP churn',
+            points: [
+                '<strong>Upstream (Supporting):</strong> Payments service standardizes multiple PSPs.',
+                '<strong>Relationship:</strong> Customer–Supplier (Sales is the customer).',
+                '<strong>Integration:</strong> OHS + Published Language for charges/refunds/events.',
+                '<strong>Downstream:</strong> ACL in Core to translate to order language and isolate provider volatility.'
+            ],
+            graphic: `<div class="w-full flex flex-col items-center gap-3">
+                <div class="text-xs uppercase tracking-wide text-slate-400">Upstream</div>
+                <div class="context-box border-cyan-500 text-cyan-300">Payments (OHS)</div>
+                <div class="text-sm text-slate-400">PL: Payments API + Events</div>
+                <svg class="w-6 h-6 text-cyan-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="w-2 h-16 bg-orange-500 rounded-full shadow-[0_0_12px_theme(colors.orange.500)] flex items-center justify-center">
+                    <span class="-rotate-90 text-orange-100 text-xs font-bold">ACL</span>
+                </div>
+                <svg class="w-6 h-6 text-cyan-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="text-xs uppercase tracking-wide text-slate-400">Downstream</div>
+                <div class="context-box border-violet-500 text-violet-300">Sales Core</div>
+            </div>`
+        },
+        // Scenario: Core -> Analytics (many consumers)
+        {
+            type: 'graphic_right',
+            title: 'Core → Analytics: Events for Many Consumers',
+            subtitle: 'Conform to event PL; use local ACLs inside Analytics',
+            points: [
+                '<strong>Upstream:</strong> Core emits domain events in a Published Language.',
+                '<strong>Relationship:</strong> Downstream Analytics as <em>Conformist</em> to the public PL.',
+                '<strong>Integration:</strong> Events-only feed; Analytics may add local ACLs to reconcile inconsistencies across sources.',
+                '<strong>Outcome:</strong> Domains stay clean; analytics vocabulary stays consistent.'
+            ],
+            graphic: `<div class="w-full flex flex-col items-center gap-3">
+                <div class="context-box border-violet-500 text-violet-300">Core (Events)</div>
+                <div class="text-sm text-slate-400">PL: Domain Events</div>
+                <svg class="w-6 h-6 text-cyan-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4v16m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="context-box border-emerald-500 text-emerald-300">Analytics (Conformist)</div>
+                <div class="text-[11px] text-slate-400">Local ACLs inside Analytics to harmonize sources</div>
+            </div>`
+        },
+        // Scenario: Unknown Clients
+        {
+            type: 'standard',
+            title: 'Microservice With Unknown Clients',
+            subtitle: 'Design for scale and change',
+            points: [
+                '<strong>Publish an Open Host Service + PL:</strong> Public, versioned API and schema; hide internals.',
+                '<strong>Governance:</strong> Semantic versioning, deprecation policy, compatibility tests.',
+                '<strong>Avoid per-client coupling:</strong> No custom endpoints; use generalized capabilities.',
+                '<strong>Consumer choice:</strong> Downstreams may Conform or build an ACL depending on their model needs.'
+            ]
+        },
+        // Scenario: Combining OHS/PL with Relationships
+        {
+            type: 'table',
+            title: 'Combining OHS/PL with Relationship Types',
+            headers: ['Relationship', 'Typical Combo', 'When It Fits', 'Watch Out'],
+            rows: [
+                ['Customer–Supplier', 'OHS + PL', 'Upstream serves multiple consumers; can prioritize needs', 'PL governance and versioning overhead'],
+                ['Conformist', 'Adopt upstream PL as-is', 'Devices/validators or public token formats; tight performance constraints', 'Model pollution; hard to switch providers'],
+                ['ACL', 'Upstream OHS+PL + local ACL', 'Upstream semantics don\'t fit; isolate churn', 'Translation cost and maintenance'],
+                ['Partnership', 'Co-design PL or small SK', 'Tightly co-developed features across contexts', 'High coordination; avoid large shared surface'],
+                ['Separate Ways', 'Thin OHS for delivery only', 'Generic services (e.g., Notifications) while composing locally', 'Duplicate templates/rules across teams']
+            ]
+        },
+        // Scenario: Other useful patterns
+        {
+            type: 'standard',
+            title: 'Other Useful Scenarios',
+            points: [
+                '<strong>External Legacy Upstream → New Core:</strong> Prefer ACL over Conformist to protect the Ubiquitous Language.',
+                '<strong>Core → Vendor Mobile App:</strong> OHS + PL; treat vendor as external; avoid shared kernel.',
+                '<strong>Wallet/Validators:</strong> Conformist to a simple, public token format while keeping broader OHS consumer-friendly.',
+                '<strong>Shared Kernel:</strong> Only for tiny, stable value objects (e.g., Money); never share aggregates.'
             ]
         },
         // SLIDE 55: Anti-Patterns
@@ -1164,21 +1286,32 @@
             case 'legend':
                 slideEl.innerHTML = `
                     <h2 class="text-4xl font-bold mb-6 text-center text-gray-200">${slideData.title}</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 p-8">
-                        <div class="legend-item"><div class="legend-icon bg-green-500">P</div><strong class="text-gray-200">Partnership</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-teal-500">SK</div><strong class="text-gray-200">Shared Kernel</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-sky-500">C/S</div><strong class="text-gray-200">Customer-Supplier</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-yellow-500">CF</div><strong class="text-gray-200">Conformist</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-orange-500">ACL</div><strong class="text-gray-200">Anticorruption Layer</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-blue-500">OHS</div><strong class="text-gray-200">Open Host Service</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-violet-500">PL</div><strong class="text-gray-200">Published Language</strong></div>
-                        <div class="legend-item"><div class="legend-icon bg-slate-500">SW</div><strong class="text-gray-200">Separate Ways</strong></div>
+                    <div class="grid md:grid-cols-2 gap-10 p-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-300 mb-4">Relationship Types</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="legend-item"><div class="legend-icon bg-green-500">P</div><strong class="text-gray-200">Partnership</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-teal-500">SK</div><strong class="text-gray-200">Shared Kernel</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-sky-500">C/S</div><strong class="text-gray-200">Customer-Supplier</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-yellow-500">CF</div><strong class="text-gray-200">Conformist</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-slate-500">SW</div><strong class="text-gray-200">Separate Ways</strong></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-300 mb-4">Integration Patterns</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="legend-item"><div class="legend-icon bg-orange-500">ACL</div><strong class="text-gray-200">Anticorruption Layer</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-blue-500">OHS</div><strong class="text-gray-200">Open Host Service</strong></div>
+                                <div class="legend-item"><div class="legend-icon bg-violet-500">PL</div><strong class="text-gray-200">Published Language</strong></div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 break;
             case 'relationship':
                 slideEl.innerHTML = `
                     <div class="w-full px-12 text-center">
+                        ${slideData.category ? `<div class=\"mb-2\"><span class=\"px-3 py-1 rounded-full text-xs uppercase tracking-wider bg-slate-800/70 text-slate-300 border border-slate-600\">${slideData.category}</span></div>` : ''}
                         <div class="inline-flex items-center mb-6">
                             <div class="legend-icon text-2xl ${slideData.color}">${
                                 slideData.pattern === 'Separate Ways' 

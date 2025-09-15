@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Context Mapping in Domain-Driven Design — Complete Text</title>
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0F172A; /* slate-900 */
+      color: #D1D5DB; /* gray-300 */
+    }
+    #page-wrapper {
+      min-height: 100vh;
+      background: #0F172A;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #A78BFA 0%, #F472B6 100%);
+      width: 0%;
+      transition: width 0.2s ease-out;
+      z-index: 100;
+      box-shadow: 0 0 10px #A78BFA;
+    }
+    /* Typography tweaks inside article */
+    #article-content h2 { color: #A78BFA; font-weight: 800; letter-spacing: 0.2px; }
+    #article-content h3 { color: #60A5FA; font-weight: 700; }
+    #article-content p { line-height: 1.75; }
+    #article-content ul { list-style: disc; padding-left: 1.5rem; }
+    #article-content li { margin: 0.35rem 0; }
+    /* Anchor offset for sticky header */
+    .section-anchor { scroll-margin-top: 96px; }
+    /* TOC */
+    .toc a { color: #CBD5E1; }
+    .toc a:hover { color: #FFFFFF; }
+    .toc .active { color: #FDE68A; font-weight: 600; }
+
+    /* Typography polish */
+    #article-content.prose { max-width: none; }
+    #article-content.prose h2 { color: #E9D5FF; font-weight: 900; letter-spacing: 0.2px; }
+    #article-content.prose h3 { color: #93C5FD; font-weight: 800; }
+    #article-content.prose p { color: #CBD5E1; }
+    #article-content.prose ul>li::marker { color: #A78BFA; }
+    #article-content strong { color: #A78BFA; font-weight: 800; }
+    .accent { color: #A78BFA; font-weight: 700; }
+
+    /* Lead paragraph + drop cap */
+    .lead-paragraph { font-size: 1.1rem; line-height: 1.95; color: #E5E7EB; }
+    .lead-paragraph::first-letter {
+      float: left;
+      font-size: 2.6rem;
+      line-height: 1;
+      padding-right: 8px;
+      padding-top: 4px;
+      color: #A78BFA;
+      font-weight: 900;
+    }
+
+    /* Callouts */
+    .callout { background: rgba(30,41,59,0.5); border-left: 4px solid; border-radius: 0.5rem; padding: 0.875rem 1rem; }
+    .callout.example { border-color: #34D399; background-color: rgba(6,78,59,0.12); }
+    .callout.note { border-color: #F59E0B; background-color: rgba(120,53,15,0.12); }
+    .callout.summary { border-color: #A78BFA; background-color: rgba(76,29,149,0.12); }
+
+    /* Anchor links */
+    .anchor-link { opacity: 0; margin-left: 8px; color: #94A3B8; text-decoration: none; font-weight: 800; transition: opacity 0.2s ease; }
+    #article-content h2:hover .anchor-link { opacity: 1; }
+
+    /* Mermaid container */
+    .diagram-card { overflow-x: auto; display: flex; justify-content: center; align-items: center; }
+    .diagram-card .mermaid { margin: 0 auto; }
+    /* Make all diagrams up to 400px tall, without exceeding container width */
+    .diagram-card .mermaid svg { max-height: 800px; height: 400px; width: auto; max-width: 100% !important; }
+    /* Keep final map consistent with the same sizing */
+    .diagram-card.context-map-lg .mermaid svg { max-height: 800px; }
+  </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+  <div id="progress-bar"></div>
+  <div id="page-wrapper" class="pb-16">
+    <header class="sticky top-0 z-40 border-b border-slate-800/60 bg-slate-900/70 backdrop-blur glass-card">
+      <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-center text-center">
+        <div class="flex items-center gap-3 justify-center">
+          <div class="h-9 w-9 rounded-lg bg-indigo-600/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 font-black">CM</div>
+          <div>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-indigo-400 to-cyan-400 drop-shadow-sm">A Guide to Context Mapping</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 mt-6 grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6">
+      <!-- TOC -->
+      <aside class="order-2 md:order-1 md:sticky md:top-28 h-fit">
+        <nav id="toc" class="toc glass-card rounded-xl p-4 border border-slate-700/60">
+          <div class="text-sm uppercase tracking-wider text-slate-400 mb-2">Table of contents</div>
+          <ul id="toc-list" class="space-y-1 text-sm"></ul>
+        </nav>
+      </aside>
+
+      <!-- Article -->
+      <section class="order-1 md:order-2">
+        <article id="article" class="glass-card rounded-xl p-6 md:p-8 border border-slate-700/60">
+          <header class="mb-6">
+            <div class="mt-1 flex items-center gap-3 text-slate-400 text-sm">
+              <span id="reading-time" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-700/60 bg-slate-800/40 text-slate-300"></span>
+            </div>
+          </header>
+          <div id="article-content" class="prose prose-invert max-w-none"></div>
+        </article>
+
+      </section>
+    </main>
+
+    <!-- Raw article source (parsed by JS) -->
+    <script id="article-raw" type="text/plain">
+Key Terms and Definitions
+To make the rest of this guide practical, here are concise definitions used throughout:
+
+  • Domain: The problem space your software addresses within the business.
+
+  • Subdomain: A coherent subset of the domain. Classify each as Core (strategic differentiator), Supporting (helps core), or Generic (commodity).
+
+  • Bounded Context: An explicit boundary within which a particular domain model and Ubiquitous Language are consistent. It includes code, model, semantics, and team ownership.
+
+  • Subdomain vs Bounded Context: Subdomain is a business classification in the problem space; a Bounded Context is a solution boundary in the software. They are related but not 1:1. One subdomain can be implemented by multiple contexts (or combined with others inside one context) depending on constraints.
+
+  • Bounded Context ≠ Microservice: A Bounded Context is a linguistic/model boundary; a microservice is a deployment/runtime boundary. One Bounded Context can span multiple services, and one service can (unfortunately) leak multiple Bounded Contexts. Don’t conflate the two when mapping.
+
+  • Ubiquitous Language: The shared, precise vocabulary used by domain experts and developers within a Bounded Context.
+
+  • Context Map: A strategic diagram showing all Bounded Contexts and the patterns of relationships and integrations between them.
+
+Why We Need Boundaries: The Role of a Bounded Context
+In any large software system, multiple models are always in play. If these models aren't isolated, they bleed into one another, creating confusion, bugs, and duplicated effort. A Bounded Context is a core pattern in Domain-Driven Design (DDD) that addresses this by defining an explicit boundary. Within this boundary, a specific domain model is consistent, unified, and applicable. It’s the area where a particular Ubiquitous Language—the shared vocabulary between developers and domain experts—has a precise, unambiguous meaning.
+
+Eric Evans, in his foundational DDD text, recounts a story where two teams unknowingly developed conflicting definitions for an object named "Charge." When their code was merged, the system became unreliable. One team's "Charge" was for customer invoicing, while the other's was for vendor payments. They were conceptually different things sharing the same name. This ambiguity is precisely what a Bounded Context prevents. By drawing a clear line, a team knows exactly where their model applies and where it doesn't, ensuring the model remains pure, focused, and powerful within its designated scope.
+
+Note: Continuous Integration (CI) lives inside a Bounded Context. CI keeps a single model unified within one context; don’t try to “CI” across contexts—integrate via contracts and translation (OHS/PL, ACL) between contexts instead.
+
+Why Context Mapping is Essential
+Simply defining Bounded Contexts isn't enough, especially in complex systems with multiple teams and services. We must also map the relationships between them. A Context Map is a high-level, strategic diagram of your software landscape. It illustrates all the Bounded Contexts and, crucially, the nature of the integrations connecting them. This practice is essential for several reasons:
+
+  • It Exposes Hidden Assumptions: Drawing a map forces teams to discuss and define their relationships. Is a team expecting a cooperative partnership from a service that has no plans to provide new features? Mapping this relationship as Customer-Supplier versus a potential Conformist situation brings this mismatch to light early, preventing project delays and aligning expectations.
+
+  • It Improves Communication: The map becomes a shared artifact for communication. It provides a common vocabulary (e.g., "upstream," "downstream," "ACL") that allows architects, developers, and stakeholders to discuss the system's architecture and team dynamics with clarity. It answers the critical questions: who depends on whom, and what is the nature of that dependency?
+
+  • It Guides Integration Strategy: Not all integrations are equal. A Context Map helps teams strategically choose the right integration pattern for each connection. Should we invest in a close partnership? Should we defensively isolate our model with an Anticorruption Layer? Or is integration not worth the cost, making Separate Ways the better choice? The map makes these decisions explicit and deliberate.
+
+In essence, a Context Map makes the invisible—the boundaries and relationships between models and teams—visible and tangible. The very act of creating one often reveals critical insights that can save a project from confusion and failure.
+
+Heuristics for Finding Boundaries
+You rarely “get” the perfect boundaries up front—discover them iteratively. Heuristics that signal a likely Bounded Context boundary:
+
+  • Language shifts: The same term means different things in different conversations, or different terms describe the same concept.
+
+  • Different rules and rates of change: Parts of the model evolve at different speeds or are governed by different policies/compliance.
+
+  • Data lifecycle mismatch: When data becomes valid, authoritative, or final differs across areas (e.g., provisional vs. settled states).
+
+  • Different user personas and workflows: Distinct goals, UI flows, or authorization models.
+
+  • Transactional boundaries: You cannot (or should not) keep everything strongly consistent in one transaction.
+
+  • Team/organizational boundaries: Clear ownership or prioritization differences; separate backlogs/roadmaps.
+
+  • Performance/availability needs: Parts of the system need different SLAs, scalability, or data-volume patterns.
+
+  • External dependencies: Integration with third-party or legacy systems that you cannot change.
+
+Integration Patterns Between Bounded Contexts
+When two Bounded Contexts need to interact, DDD provides a vocabulary of patterns to describe their relationship. These patterns capture both the technical integration and the organizational dynamic between the teams involved. Choosing the right pattern depends on factors like team structure, political realities, and the strategic importance of the models.
+
+Relationship vs Integration
+Relationship patterns describe power and influence between teams; integration patterns describe how systems exchange information. You almost always choose one of each for any connection.
+
+  • Relationship patterns: Express who is upstream/downstream, how much influence the downstream has (Customer-Supplier vs Conformist), and whether teams are tightly coupled (Partnership, Shared Kernel) or decoupled (Separate Ways).
+
+  • Integration patterns: Express the technical boundary and contract. Examples include ACL (translation layer to protect the model) and OHS/PL (shared public contract). Orthogonal choices include sync vs async, APIs vs events.
+
+  • Combine deliberately: Customer-Supplier + OHS/PL (downstream influences upstream API), Conformist + OHS/PL (downstream simply adopts upstream), Downstream + ACL (shield core model), Partnership + co-owned API or kernel.
+
+  • How to choose: First decide the relationship (org reality, ownership, roadmap, rate of change), then pick the integration that preserves model integrity and operational fitness (schema stability, number of consumers, latency/throughput).
+
+  When to avoid each pattern:
+  • Shared Kernel: Only when tiny and stable; keep the kernel minimal and protected by shared contract tests.
+  • Conformist: Only when you truly cannot influence the upstream; prefer OHS/PL or an ACL if autonomy and model purity matter.
+  • Anticorruption Layer: Use to protect a Core Domain or when integrating with unstable/legacy models; avoid for trivial integrations where duplication is cheaper.
+  • Partnership: Rare; use only when teams share tight, time‑coupled outcomes with joint planning and synchronized releases.
+  • Separate Ways: Prefer when two areas don’t exchange behavior/data and integration cost outweighs value.
+
+ 
+Partnership
+A Partnership exists when two teams are so interdependent that their success is intertwined—they succeed or fail together. In this relationship, there is no clear upstream or downstream; both teams are equal partners who must collaborate closely to deliver a shared outcome. They coordinate their development roadmaps, manage integration as a joint responsibility, and communicate constantly about interface changes.
+
+This pattern requires a high degree of trust and synchronization. It works best for teams that have an excellent working relationship, perhaps within the same department. The main risk is that one team's delays or failures directly impact the other.
+
+Example: Pricing and Promotions jointly deliver discount rules; a new stacking policy requires coordinated planning, shared tests, and synchronized releases.
+
+Shared Kernel
+A Shared Kernel is a pattern where two or more Bounded Contexts explicitly share a small, well-defined subset of the domain model. This shared portion—the "kernel"—could be a set of core entities, value objects, or a common library. Any change to the kernel affects all teams that use it, requiring careful coordination and consultation.
+
+The key to a successful Shared Kernel is to keep it as small as possible. It should only contain the concepts that are absolutely essential to share. This pattern creates a tight coupling between the contexts, so it must be managed with a disciplined process, including integrated tests to ensure changes don't break any consuming context. It is a pragmatic choice when the cost of duplication is higher than the cost of coordination.
+
+Example: Orders and Billing share a Money value object and rounding rules with shared contract tests in a kernel repository.
+
+Customer-Supplier Development
+This is a common and important pattern describing a clear upstream-downstream relationship. One context (the upstream Supplier) provides services or data that another context (the downstream Customer) consumes. In a healthy Customer-Supplier relationship, the upstream team actively considers the needs of the downstream team in its planning and prioritizes their requests.
+
+Unlike a Partnership, the relationship is asymmetric; the upstream team could technically ignore the downstream team, but chooses to cooperate for mutual benefit. The downstream team has a voice in the features it depends on, and the upstream team gains clarity on how its services are used. This requires open negotiation and clear agreements on deliverables and schedules. A critical element is a set of automated acceptance tests, owned by the downstream team, that validate the upstream interface, giving the upstream team freedom to refactor without fear of breaking its customers.
+
+Example: Reporting (downstream) requests Orders (upstream) add couponApplied to exports; Reporting supplies acceptance tests run in Orders’ CI.
+
+Conformist
+A Conformist relationship is a less desirable form of an upstream-downstream dynamic. It occurs when the upstream team has all the power and provides no support for the downstream team's specific needs. The downstream team is forced to "conform" to the upstream model as-is, slavishly adhering to its data formats and concepts, even if they are a poor fit for the downstream domain.
+
+A team might accept this relationship if the upstream system is an external third-party service, a legacy system that can't be changed, or an internal team with different priorities. The main benefit is simplified integration—no complex translation layer is needed. However, the cost is high: the downstream team loses autonomy, and its model becomes polluted with foreign concepts, compromising its design integrity.
+
+Example: Shipping conforms to a carrier API and status codes, mapping its workflow to the carrier’s concepts and release cadence.
+
+Separate Ways
+The simplest pattern is often overlooked: no integration at all. Separate Ways is the conscious decision to declare that two Bounded Contexts have no connection. This is the right choice when the cost and complexity of integration far outweigh the benefits.
+
+Integration always introduces overhead—development effort, runtime coupling, and inter-team coordination. If two domains have no significant functional overlap, it might be more effective to allow them to solve their problems independently, even if it means some minor duplication of functionality (e.g., each context having its own simple reporting mechanism). As Eric Evans advises, sometimes you should be "ruthless" in cutting loose unrelated pieces to simplify the overall system.
+
+In essence: Integration is expensive; if two areas don’t exchange behavior or data, intentionally decouple.
+
+Example: HR and E‑commerce remain separate; each keeps its own simple reporting to avoid coupling.
+
+
+Anticorruption Layer
+An Anticorruption Layer (ACL) is a defensive pattern used by a downstream context to protect itself from a messy, unstable, or poorly designed upstream model. Instead of conforming, the downstream team builds an isolating translation layer. This layer acts as a buffer, translating data and concepts from the upstream model into terms that are clean and appropriate for the downstream model, and vice versa.
+
+The ACL allows the downstream context to maintain its own pure, uncompromised domain model, free from the influence of external systems. It's an essential pattern when integrating with legacy systems ("Big Balls of Mud") or when protecting a Core Domain from corruption. While it requires the extra effort of building and maintaining the translation logic, it provides crucial long-term design integrity and decouples the downstream system from the volatility of its dependencies.
+
+Example: Checkout integrates with a legacy ERP via an ACL that translates ERP invoices to clean domain events and shields the core model from ERP quirks.
+
+Open Host Service
+An Open Host Service (OHS) is a pattern applied by an upstream context that wants to provide a stable, well-documented, and easily consumable interface for multiple downstream clients. Instead of creating bespoke integrations for each consumer, the upstream team defines a public protocol—often a REST API or a set of messaging endpoints—that exposes its capabilities as a set of services. A key part of this pattern is the Published Language, which is the common data model used for communication.
+
+Example: The Catalog exposes a public OpenAPI with a stable product schema used by Search, Recommendations, and Storefront.
+
+Published Language
+A Published Language (PL) is a well-documented, shared language used for communication between Bounded Contexts. It acts as a common interchange format, reducing the complexity of direct model-to-model translation. This language is frequently, but not exclusively, used in combination with an Open Host Service. The key benefit is decoupling: the upstream service can evolve its internal model freely as long as it continues to support the stable, published language for its clients.
+
+This PL is often defined using schemas like JSON Schema, OpenAPI, or Avro for events. By formalizing the contract, the language makes integration more predictable and robust for all consuming contexts. It becomes the definitive source of truth for inter-service communication, allowing teams to work independently without breaking each other.
+
+Example: OrderPlaced v3 adds optional fields for coupon info; v2 consumers continue to work unchanged.
+
+Upstream/Downstream and Team Dynamics
+Context Maps are socio-technical: they reflect power and influence between teams, not just data flows.
+
+  • Upstream: Sets the model and published contracts. Can optimize for its own purposes. Healthy upstreams provide Open Host Services and a clear Published Language.
+
+  • Downstream: Consumes upstream contracts. Options range from Customer-Supplier (influence via requests and acceptance tests), to Conformist (little influence), to defensive ACL when autonomy matters.
+
+  • Governance: Make influence explicit. Define contact points, negotiation cadence, and acceptance-test responsibilities to avoid “illusory” Customer-Supplier relationships that are Conformist in practice.
+
+  • Conway’s Law: Architecture mirrors communication structures; expect your Context Map to reflect team boundaries and power.
+
+  • Power and roadmaps: Upstream/downstream choices are shaped by team mandate and roadmap priorities; make these dynamics explicit on the map.
+
+  • Reverse-Conway maneuvers: If the current org design fights the desired architecture, consider reorganizing teams to fit the desired Context Map.
+
+Integration Style Choices
+Relationship patterns describe “who influences whom”; integration style describes “how they talk”. Choose deliberately:
+
+  • Request/Response (HTTP/REST, gRPC): Good for query-heavy access and immediate feedback. Beware tight runtime coupling and cascading failures; add timeouts, retries, and fallbacks.
+
+  • Messaging (events, commands): Good for decoupling and throughput; enables autonomy and temporal decoupling. Requires idempotency, replay tolerance, and schema evolution.
+
+  • Events as Published Language: Upstream publishes domain events with stable, versioned schemas. Downstreams translate into their own models (often via ACL).
+
+  • Consistency trade-offs: Prefer eventual consistency across contexts. Use Sagas/process managers and Outbox patterns to coordinate long-running workflows without distributed transactions.
+
+Operational and Governance Practices
+Make integrations safe to change:
+
+  • Contract versioning: Use additive changes when possible; deprecate removals with clear timelines. Communicate compatibility guarantees.
+
+  • Consumer-Driven Contracts: Downstream-owned tests assert upstream behavior (acceptance tests or CDC tools). Run in CI to catch breaking changes early.
+
+  • Event schema evolution: Be backward/forward compatible. Avoid breaking field renames; prefer new optional fields. Document invariants.
+
+  • SLAs and observability: Define availability/latency budgets for OHS. Add metrics, tracing, and dead-letter handling for messaging.
+
+Common Smells and Anti-Patterns
+Watch for these when mapping or implementing contexts:
+
+  • Shared database coupling: Two contexts writing to the same tables. Replace with contracts (OHS/PL, events) and, if needed, ACL.
+
+  • Leaky language: Foreign terms pollute a Core Domain’s model. Use ACL, or re-evaluate boundaries.
+
+  • Overgrown Shared Kernel: The kernel becomes “common library of everything”. Keep it tiny and high-value, with strict change discipline.
+
+  • Ambiguous ownership: No clear upstream for a concept. Decide ownership and direction explicitly on the map.
+
+  • Premature fragmentation: Too many contexts too early. Start coarse, then split when autonomy and rate-of-change justify it.
+
+Checklist: Creating a Context Map
+Use this as a practical, iterative workflow:
+
+  • Identify subdomains; label Core, Supporting, Generic.
+
+  • Propose initial Bounded Contexts aligned to language, ownership, and change rate.
+
+  • For each relation, pick a pattern (Partnership, C/S, Conformist, Separate Ways, ACL, OHS/PL) and mark U/D.
+
+  • Choose integration style (sync vs async), define contracts, and versioning approach.
+
+  • Capture governance: owners, SLAs, acceptance tests, deprecation policy.
+
+  • Draw the map, review with teams, and update as the system evolves.
+
+
+Drawing and Maintaining Context Maps Effectively
+A Context Map is a living document, not a formal, one-time artifact. Its value comes from its use as a communication and strategic tool. Here are some practical tips for creating and using them:
+
+In essence: Draw as‑is, not to‑be. Change the Context Map only after reality changes.
+
+  • Start Simple on a Whiteboard: The best context maps are often sketched during a team discussion on a whiteboard. This encourages collaboration and makes it easy to iterate. The goal is communication, not a perfect UML diagram. Focus on capturing the current reality, not a hypothetical future.
+
+  • Include Key Elements: A map should clearly show each Bounded Context (as a bubble), the relationships between them (as lines), and the pattern defining each relationship (e.g., `U` for Upstream, `D` for Downstream, `ACL`, `OHS/PL`).
+
+  • It's Not an Architecture Diagram: A Context Map is not a network topology or deployment diagram. It illustrates relationships between *models* and *teams*, not servers or protocols. Its purpose is strategic—to reveal domain relationships and organizational dynamics. Keeping this distinction clear prevents the map from becoming cluttered with unnecessary technical details.
+
+  • Use it to Drive Conversations: The map's primary purpose is to facilitate discussions. When planning new features, refer to the map to understand the impact on other contexts. As decisions are made and the system evolves, update the map to reflect the new reality.
+
+  • Keep it Visible and Accessible: Post the map in the team's workspace or on a shared wiki. Making it easily accessible encourages everyone to use the same vocabulary and think in terms of Bounded Contexts and their relationships.
+
+In conclusion, Context Mapping is a powerful strategic tool from Domain-Driven Design. It helps teams manage the complexity of large software systems by making model boundaries and integration strategies explicit. By visualizing the landscape, teams can make informed, deliberate decisions that align technical architecture with organizational reality, leading to more robust, maintainable, and successful systems.
+    </script>
+    <noscript>
+      <div class="mx-auto max-w-4xl p-4">
+        <div class="glass-card rounded-xl p-4">
+          <p class="text-rose-300 font-semibold">JavaScript is disabled. Showing the raw article text:</p>
+          <pre class="mt-3 whitespace-pre-wrap text-slate-300"></pre>
+        </div>
+      </div>
+    </noscript>
+  </div>
+
+  <script>
+    // Utilities
+    const slugify = (str) => str
+      .toLowerCase()
+      .replace(/[^a-z0-9\s\-–—]/g, '')
+      .replace(/[\s\-–—]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const normalize = (s) => (s || '')
+      .toLowerCase()
+      .replace(/[–—]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // Curated headings for this article
+    const CANONICAL_HEADINGS = [
+      'Key Terms and Definitions',
+      'Why We Need Boundaries: The Role of a Bounded Context',
+      'Why Context Mapping is Essential',
+      'Heuristics for Finding Boundaries',
+      'Integration Patterns Between Bounded Contexts',
+      'Relationship vs Integration',
+      'Relationship Patterns',
+      'Partnership',
+      'Shared Kernel',
+      'Customer-Supplier Development',
+      'Conformist',
+      'Separate Ways',
+      'Integration Patterns',
+      'Anticorruption Layer',
+      'Open Host Service',
+      'Published Language',
+      'Upstream/Downstream and Team Dynamics',
+      'Integration Style Choices',
+      'Operational and Governance Practices',
+      'Common Smells and Anti-Patterns',
+      'Checklist: Creating a Context Map',
+      'Try It: University Ticketing Lab',
+      'Further Reading',
+      'Drawing and Maintaining Context Maps Effectively',
+    ];
+    const HEADINGS_MAP = new Map(CANONICAL_HEADINGS.map(h => [normalize(h), h]));
+
+    // Highlight selected terms (limited to avoid over-accenting)
+    const highlightCounters = {};
+    const HIGHLIGHT_RULES = [
+      { key: 'domain', re: /\bDomain?\b/gi, max: 8 },
+      { key: 'subdomain', re: /\bSubdomain?\b/gi, max: 8 },
+      { key: 'bounded-context', re: /\bBounded Contexts?\b/gi, max: 8 },
+      { key: 'context-map', re: /\bContext Map\b/gi, max: 8 },
+      { key: 'upstream', re: /\bUpstream\b/gi, max: 8, perParagraph: 1 },
+      { key: 'downstream', re: /\bDownstream\b/gi, max: 8, perParagraph: 1 },
+      { key: 'shared-kernel', re: /\bShared Kernel\b/gi, max: 4 },
+      { key: 'customer-supplier', re: /\bCustomer[–—-]Supplier\b/gi, max: 4 },
+      { key: 'acl', re: /\bAnticorruption Layer\b/gi, max: 6 },
+      { key: 'ohs', re: /\bOpen Host Service\b/gi, max: 6 },
+      { key: 'pl', re: /\bPublished Language\b/gi, max: 6 },
+    ];
+    function escapeHtml(s) {
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+    function highlightTerms(text) {
+      let out = escapeHtml(text);
+      HIGHLIGHT_RULES.forEach(rule => {
+        let count = highlightCounters[rule.key] || 0;
+        let paragraphCount = 0;
+        out = out.replace(rule.re, (m) => {
+          if (count >= rule.max) return m;
+          if (rule.perParagraph && paragraphCount >= rule.perParagraph) return m;
+          count++; paragraphCount++;
+          return `<strong class="accent">${m}</strong>`;
+        });
+        highlightCounters[rule.key] = count;
+      });
+      return out;
+    }
+
+    function parseArticle(raw) {
+       // Cleanup artifacts from PDF-like text
+      raw = raw.replace(/\f/g, '\n');
+      // Remove standalone page numbers (a line with just digits)
+      raw = raw.split(/\n/).filter(l => !/^\s*\d+\s*$/.test(l)).join('\n');
+
+      const lines = raw.split(/\n/);
+      const blocks = [];
+      let buffer = [];
+      const flushParagraph = () => {
+        if (buffer.length === 0) return;
+        const text = buffer.join(' ').replace(/\s+/g, ' ').trim();
+        if (text) blocks.push({ type: 'p', text });
+        buffer = [];
+      };
+
+      let i = 0;
+      while (i < lines.length) {
+        let line = lines[i];
+        const t = line.trim();
+
+        if (t === '') {
+          flushParagraph();
+          i++; continue;
+        }
+
+        const current = normalize(t);
+        const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : '';
+        const combined = normalize(t + ' ' + nextLine);
+
+        if (HEADINGS_MAP.has(combined)) {
+          flushParagraph();
+          const text = HEADINGS_MAP.get(combined);
+          blocks.push({ type: 'h2', text });
+          i += 2;
+          if (i < lines.length && lines[i].trim() === '') i++;
+          continue;
+        }
+
+        if (HEADINGS_MAP.has(current)) {
+          flushParagraph();
+          const text = HEADINGS_MAP.get(current);
+          blocks.push({ type: 'h2', text });
+          i += 1;
+          if (i < lines.length && lines[i].trim() === '') i++;
+          continue;
+        }
+
+        if (/^[\s]*[•\-]\s+/.test(line)) {
+          flushParagraph();
+          const items = [];
+          const bulletRe = /^[\s]*[•\-]\s+/;
+          while (i < lines.length) {
+            if (lines[i].trim() === '') { i++; break; } // empty line ends list
+            if (!bulletRe.test(lines[i])) break;
+            
+            let content = lines[i].replace(bulletRe, '').trim();
+            i++;
+            
+            while (i < lines.length) {
+              const cont = lines[i];
+              const tcont = cont.trim();
+              if (tcont === '' || bulletRe.test(cont) || HEADINGS_MAP.has(normalize(tcont))) break;
+              
+              content += ' ' + tcont;
+              i++;
+            }
+            items.push(content);
+          }
+          blocks.push({ type: 'ul', items });
+          continue;
+        }
+
+        buffer.push(t);
+        i++;
+      }
+
+      flushParagraph();
+      return blocks;
+    }
+
+    function renderArticle(blocks, container) {
+      const headings = [];
+      let expectLead = true;
+      const wrapDiagram = (code, caption) => {
+          const card = document.createElement('div');
+          card.className = 'diagram-card glass-card rounded-lg p-4 mt-4 border border-slate-700/60';
+          const mer = document.createElement('div');
+          mer.className = 'mermaid';
+          const normalized = typeof code === 'string' ? code.replace(/\\n/g, '\n') : '';
+          mer.textContent = normalized;
+          card.appendChild(mer);
+          if (caption) {
+            const cap = document.createElement('p');
+            cap.className = 'mt-2 text-xs text-slate-400 text-center';
+            cap.textContent = caption;
+            card.appendChild(cap);
+          }
+          return card;
+        };
+
+      const insertDiagramFor = (title) => {
+        const t = normalize(title);
+        if (t === normalize('Relationship vs Integration')) {
+          return wrapDiagram(`graph TD\n  Rel[Relationship] --> U[Upstream]\n  Rel --> D[Downstream]\n  Int[Integration] --> OHS[OHS/PL]\n  Int --> ACL[ACL]\n  Rel -. combine .- Int\n  style Rel fill:#0f172a,stroke:#a78bfa,color:#e9d5ff\n  style Int fill:#0f172a,stroke:#22c55e,color:#dcfce7`);
+        }
+        if (t === normalize('Key Terms and Definitions')) {
+          return wrapDiagram(`graph TD\n  Domain((Domain)) --> Subdomains[Subdomains]\n  Subdomains --> Core[Core]\n  Subdomains --> Supporting[Supporting]\n  Subdomains --> Generic[Generic]\n  Subdomains --> BC[Bounded Contexts]\n  BC --> Map[Context Map]\n  style Domain fill:#0f172a,stroke:#22d3ee,color:#e0f2fe\n  style BC fill:#0f172a,stroke:#a78bfa,color:#e9d5ff\n  style Map fill:#0f172a,stroke:#f59e0b,color:#fde68a`);
+        }
+        if (t === normalize('Why We Need Boundaries: The Role of a Bounded Context')) {
+          return wrapDiagram(`graph LR\n  A[Model A] --- X((Ambiguity)) --- B[Model B]\n  X -. resolved by .-> BA[Bounded Context A]\n  X -. resolved by .-> BB[Bounded Context B]\n  style BA fill:#0f172a,stroke:#22c55e,color:#dcfce7\n  style BB fill:#0f172a,stroke:#22c55e,color:#dcfce7\n  style X fill:#0f172a,stroke:#ef4444,color:#fecaca`);
+        }
+        if (t === normalize('Why Context Mapping is Essential')) {
+          return wrapDiagram(`graph TD\n  Map[Context Map] --> R1[Reveals Assumptions]\n  Map --> R2[Improves Communication]\n  Map --> R3[Guides Integration]\n  style Map fill:#0f172a,stroke:#a78bfa,color:#e9d5ff`);
+        }
+        if (t === normalize('Heuristics for Finding Boundaries')) {
+          return wrapDiagram(`graph TD\n  H[Boundary Heuristics] --> L[Language Shifts]\n  H --> RC[Rate of Change]\n  H --> DL[Data Lifecycle]\n  H --> P[Personas/Workflows]\n  H --> T[Transactions]\n  H --> O[Ownership]\n  H --> S[SLAs/Perf]\n  H --> E[External deps]\n  style H fill:#0f172a,stroke:#34d399,color:#d1fae5`);
+        }
+        if (t === normalize('Integration Patterns Between Bounded Contexts')) {
+          return wrapDiagram(`graph TD\n  IP[Integration / Relationship Patterns] --> Ptn[Partnership]\n  IP --> CS[Customer-Supplier]\n  IP --> CF[Conformist]\n  IP --> SK[Shared Kernel]\n  IP --> SW[Separate Ways]\n  IP --> ACL[ACL]\n  IP --> OHS[OHS/PL]\n  style IP fill:#0f172a,stroke:#38bdf8,color:#e0f2fe`);
+        }
+        if (t === normalize('Partnership')) {
+          return wrapDiagram(`graph LR\n  A[Context A] -->|Partnership| B[Context B]\n  linkStyle 0 stroke:#a78bfa,stroke-width:2px,stroke-dasharray: 5 5\n  style A fill:#0f172a,stroke:#a78bfa,color:#e9d5ff\n  style B fill:#0f172a,stroke:#a78bfa,color:#e9d5ff`);
+        }
+        if (t === normalize('Shared Kernel')) {
+          return wrapDiagram(`graph TD\n  subgraph Context A\n    ModelA\n  end\n  subgraph Context B\n    ModelB\n  end\n  Kernel[(Shared Kernel)]\n  ModelA --> Kernel\n  ModelB --> Kernel\n  style Kernel fill:#a78bfa22,stroke:#a78bfa,color:#e9d5ff`);
+        }
+        if (t === normalize('Customer-Supplier Development')) {
+          return wrapDiagram(`graph LR\n  Upstream["Upstream (Supplier)"] -- "OHS/PL" --> Downstream["Downstream (Customer)"]\n  Downstream -. "Requests" .-> Upstream\n  linkStyle 0 stroke:#38bdf8,stroke-width:2px\n  linkStyle 1 stroke:#64748b,stroke-dasharray: 4 4`);
+        }
+        if (t === normalize('Conformist')) {
+          return wrapDiagram(`graph LR\n  Downstream[Downstream] --"Conforms to (U)"--> Upstream[Upstream]\n  linkStyle 0 stroke:#eab308,stroke-width:2px`);
+        }
+        if (t === normalize('Anticorruption Layer')) {
+          return wrapDiagram(`graph LR\n  Upstream[Upstream] --> ACL(ACL) --"Shields (D)"--> Downstream[Downstream]\n  style ACL fill:#22c55e22,stroke:#22c55e,color:#86efac`);
+        }
+        if (t === normalize('Open Host Service')) {
+          return wrapDiagram(`graph TD\n  Upstream["Upstream (OHS)"] -- "Published Language" --> D1["Downstream 1"]\n  Upstream -- "Published Language" --> D2["Downstream 2"]\n  linkStyle 0 stroke:#a78bfa,stroke-width:2px\n  linkStyle 1 stroke:#a78bfa,stroke-width:2px`);
+        }
+         if (t === normalize('Published Language')) {
+          return wrapDiagram(`graph LR\n  subgraph Upstream Context\n    InternalModel -- Translates --> PL(Published Language)\n  end\n  PL -- Consumed by --> Downstream[Downstream Context]\n  style PL fill:#f59e0b22,stroke:#f59e0b,color:#fde68a`);
+        }
+        if (t === normalize('Separate Ways')) {
+          return wrapDiagram(`graph LR\n  A[Context A]:::s\n  B[Context B]:::s\n  classDef s fill:#0f172a,stroke:#64748b,color:#cbd5e1`);
+        }
+        if (t === normalize('Upstream/Downstream and Team Dynamics')) {
+            return wrapDiagram(`graph LR\n  Upstream[Upstream] -- Contracts (OHS/PL) --> Downstream[Downstream]\n  Downstream -. Acceptance Tests .-> Upstream\n  Downstream -- ACL optional --> Domain[Clean Downstream Model]\n  style Domain fill:#0f172a,stroke:#22c55e,color:#dcfce7`);
+        }
+        if (t === normalize('Integration Style Choices')) {
+            return wrapDiagram(`graph TD\n  Styles[Integration Styles] --> Sync[Sync: REST/gRPC]\n  Styles --> Async[Async: Events/Msgs]\n  Async --> EC[Eventual Consistency]\n  Sync --> RR[Request/Response]\n  style Styles fill:#0f172a,stroke:#38bdf8,color:#e0f2fe`);
+        }
+        if (t === normalize('Operational and Governance Practices')) {
+            return wrapDiagram(`graph TD\n  Gov[Governance] --> Ver[Contract Versioning]\n  Gov --> CDC[Consumer-Driven Contracts]\n  Gov --> Schema[Schema Evolution]\n  Gov --> SLAs[SLAs & Observability]\n  style Gov fill:#0f172a,stroke:#f59e0b,color:#fde68a`);
+        }
+        if (t === normalize('Common Smells and Anti-Patterns')) {
+            return wrapDiagram(`graph TD\n  Smells[Smells] --> SDB[Shared DB]\n  Smells --> LL[Leaky Language]\n  Smells --> SK[Overgrown Shared Kernel]\n  Smells --> AO[Ambiguous Ownership]\n  Smells --> PF[Premature Fragmentation]\n  style Smells fill:#0f172a,stroke:#ef4444,color:#fee2e2`);
+        }
+        if (t === normalize('Checklist: Creating a Context Map')) {
+            return wrapDiagram(`graph TD\n  Start([Start]) --> SD[Identify Subdomains]\n  SD --> BC[Propose Bounded Contexts]\n  BC --> PAT[Choose Patterns U/D]\n  PAT --> INT[Select Integration Styles]\n  INT --> GOV[Define Governance]\n  GOV --> DRAW[Draw & Review]\n  DRAW --> Iterate([Iterate])`);
+        }
+        if (t === normalize('Try It: University Ticketing Lab')) {
+            return wrapDiagram(`graph LR\n  Sales[Sales & Reservations] --- Catalog[Event Catalog]\n  Sales --- Payments[Payments]\n  Sales --- Wallet[Ticket Wallet]\n  Sales --- Reporting[Reporting]\n  classDef n fill:#0f172a,stroke:#94A3B8,color:#fff;\n  class Sales,Catalog,Payments,Wallet,Reporting n;`);
+        }
+        if (t === normalize('Further Reading')) {
+            return wrapDiagram(`graph TD\n  Read[Further Reading] --> Slides[Slides]\n  Read --> Labs[Labs]\n  Read --> PDFs[PDFs]\n  style Read fill:#0f172a,stroke:#a78bfa,color:#e9d5ff`);
+        }
+        if (t === normalize('Drawing and Maintaining Context Maps Effectively')) {
+            const card = wrapDiagram(`graph TD
+    %% Nodes (7 total)
+    Sales["Sales & Reservations\\n(Core)"]
+    Catalog["Event Catalog\\n(Supporting)"]
+    Payments["Payments & Student Accounts\\n(Supporting)"]
+    Wallet["Ticket Wallet & Validation\\n(Supporting)"]
+    Reporting["Reporting & Analytics\\n(Supporting)"]
+    Platform["Platform Services (IAM + Notifications)\\n(Generic)"]
+    Legacy["Legacy Accounting\\n(External)"]
+
+    %% Relationships
+    Catalog -- "U(OHS/PL) → D(C/S)" --- Sales
+    Payments -- "U(OHS/PL) → D(ACL)" --- Sales
+    Legacy -- "U → D(ACL)" --- Sales
+    Platform -- "U(OHS/PL) → D(Conformist)" --- Sales
+    Sales -- "U → D (Separate Ways for now)" --- Reporting
+    Sales -- "U(OHS/PL) → D(Conformist)" --- Wallet
+
+    %% Styling by type
+    classDef core fill:#0f172a,stroke:#6366f1,stroke-width:3px,color:#fff;
+    classDef supporting fill:#0f172a,stroke:#94A3B8,stroke-width:2px,color:#fff;
+    classDef generic fill:#0f172a,stroke:#22c55e,stroke-width:2px,color:#fff;
+    classDef external fill:#0f172a,stroke:#ef4444,stroke-width:2px,color:#fff;
+
+    class Sales core;
+    class Catalog,Payments,Wallet,Reporting supporting;
+    class Platform generic;
+    class Legacy external;
+    `, '');
+            card.classList.add('context-map-lg');
+            return card;
+        }
+        // Fallback: always provide a minimal visual for any section
+        const safe = title.replace(/`/g, '\\`').replace(/\"/g, '"');
+        return wrapDiagram(`graph LR\n  T[\"${safe}\"]\n  style T fill:#0f172a,stroke:#64748b,color:#cbd5e1`);
+      };
+      
+      const categoryFor = (title) => {
+        const t = normalize(title);
+        const rel = ['partnership','shared kernel','customer-supplier development','conformist', 'separate ways'];
+        const intg = ['anticorruption layer','open host service', 'published language'];
+        if (rel.includes(t)) return { label: 'Relationship Pattern', color: 'border-violet-500 text-violet-300 bg-violet-500/10' };
+        if (intg.includes(t)) return { label: 'Integration Pattern', color: 'border-emerald-500 text-emerald-300 bg-emerald-500/10' };
+        return null;
+      };
+
+      const iconFor = (title) => {
+        const t = normalize(title);
+        const svg = (inner) => {
+          const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          el.setAttribute('viewBox','0 0 24 24');
+          el.setAttribute('fill','none');
+          el.setAttribute('stroke','currentColor');
+          el.setAttribute('stroke-width','1.5');
+          el.setAttribute('stroke-linecap','round');
+          el.setAttribute('stroke-linejoin','round');
+          el.setAttribute('class','h-6 w-6 mr-2');
+          el.innerHTML = inner;
+          return el;
+        };
+        if (t === normalize('Key Terms and Definitions')) return svg('<circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/>');
+        if (t === normalize('Why We Need Boundaries: The Role of a Bounded Context')) return svg('<rect x="3" y="7" width="8" height="10" rx="1"/><rect x="13" y="7" width="8" height="10" rx="1"/>');
+        if (t === normalize('Why Context Mapping is Essential')) return svg('<circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/>');
+        if (t === normalize('Heuristics for Finding Boundaries')) return svg('<path d="M12 2v20"/><path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h14"/>');
+        if (t === normalize('Integration Patterns Between Bounded Contexts')) return svg('<path d="M6 12h12"/><path d="M6 8h12"/><path d="M6 16h12"/><circle cx="6" cy="8" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="6" cy="16" r="1"/>');
+        if (t === normalize('Relationship vs Integration')) return svg('<circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M11 12h2"/>');
+        if (t === normalize('Partnership')) return svg('<path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M3 3l7 7"/><path d="M14 14l7 7"/>');
+        if (t === normalize('Shared Kernel')) return svg('<path d="M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21l-4.24-4.24 6.71-6.15z"></path><path d="M19.05 4.95 14.1 9.9l1.41 1.41 4.95-4.95ZM14.1 19.05l4.95-4.95-1.41-1.41-4.95 4.95"></path><path d="M7.95 4.95 2.9 9.9l4.24 4.24 2.23-2.23"></path>');
+        if (t === normalize('Customer-Supplier Development')) return svg('<path d="M14 9a2 2 0 1 0-4 0v2a2 2 0 1 0 4 0v-2z"></path><path d="M18 9a2 2 0 1 0-4 0v2a2 2 0 1 0 4 0v-2z"></path><path d="M6 9a2 2 0 1 0-4 0v2a2 2 0 1 0 4 0v-2z"></path><path d="M6 15H4a2 2 0 0 0-2 2v2"></path><path d="M18 15h2a2 2 0 0 1 2 2v2"></path><path d="M12 15h0a2 2 0 0 1-2-2V7.5a2.5 2.5 0 0 1 5 0V13a2 2 0 0 1-2 2z"></path>');
+        if (t === normalize('Conformist')) return svg('<path d="m12 19-7-7 7-7"/><path d="m19 19-7-7 7-7"/>');
+        if (t === normalize('Anticorruption Layer')) return svg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>');
+        if (t === normalize('Open Host Service')) return svg('<path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"></path><path d="M10 20v-1a2 2 0 1 1 4 0v1"></path><path d="M12 16h.01"></path><path d="M17 10h.01"></path><path d="M21 10h.01"></path><path d="m21 14-4 6h6l-4-6z"></path>');
+        if (t === normalize('Published Language')) return svg('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>');
+        if (t === normalize('Separate Ways')) return svg('<path d="M16 3h5v5"></path><path d="M8 21H3v-5"></path><line x1="12" x2="21" y1="12" y2="3"></line><line x1="3" x2="12" y1="21" y2="12"></line>');
+        if (t === normalize('Upstream/Downstream and Team Dynamics')) return svg('<circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M11 12h2"/>');
+        if (t === normalize('Integration Style Choices')) return svg('<path d="M3 12h7"/><path d="M14 7h7"/><path d="M14 17h7"/><circle cx="10" cy="12" r="2"/><circle cx="21" cy="7" r="2"/><circle cx="21" cy="17" r="2"/>');
+        if (t === normalize('Operational and Governance Practices')) return svg('<path d="M3 7h18"/><path d="M3 12h18"/><path d="M3 17h18"/><path d="M7 7v10"/><path d="M12 7v10"/><path d="M17 7v10"/>');
+        if (t === normalize('Common Smells and Anti-Patterns')) return svg('<path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5"/>');
+        if (t === normalize('Checklist: Creating a Context Map')) return svg('<path d="M6 10l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/>');
+        if (t === normalize('Try It: University Ticketing Lab')) return svg('<path d="M3 12h18"/><path d="M12 3v18"/><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>');
+        if (t === normalize('Further Reading')) return svg('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>');
+        // Default icon for any section
+        return svg('<circle cx="12" cy="12" r="9"/>');
+      };
+
+
+      for (const b of blocks) {
+        if (b.type === 'h2') {
+          const id = slugify(b.text);
+          const h = document.createElement('h2');
+          h.id = id;
+          h.className = 'section-anchor mt-10 first:mt-0 text-2xl md:text-3xl font-extrabold';
+          
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-2 flex-wrap';
+
+          const left = document.createElement('div');
+          left.className = 'flex items-center';
+          const icon = iconFor(b.text);
+          if (icon) left.appendChild(icon);
+          
+          const span = document.createElement('span');
+          span.textContent = b.text;
+          left.appendChild(span);
+
+          const al = document.createElement('a');
+          al.href = `#${id}`;
+          al.className = 'anchor-link';
+          al.textContent = '#';
+          left.appendChild(al);
+
+          row.appendChild(left);
+          
+          const cat = categoryFor(b.text);
+          if (cat) {
+            const badge = document.createElement('span');
+            badge.className = `text-xs px-2 py-0.5 rounded-full border ${cat.color}`;
+            badge.textContent = cat.label;
+            row.appendChild(badge);
+          }
+          
+          h.appendChild(row);
+          container.appendChild(h);
+          
+          const catLabel = (categoryFor(b.text) || {}).label || null;
+          headings.push({ id, text: b.text, category: catLabel });
+          expectLead = true;
+
+          const d = insertDiagramFor(b.text);
+          if (d) container.appendChild(d);
+
+        } else if (b.type === 'p') {
+            let wrapper = container;
+            const p = document.createElement('p');
+            const t = b.text;
+            
+            const calloutType = ['example:', 'note:', 'in conclusion', 'in essence'].find(pfx => t.toLowerCase().startsWith(pfx));
+            
+            if (calloutType) {
+                const div = document.createElement('div');
+                div.className = 'callout mt-4';
+                let typeClass = 'note';
+                if (calloutType.startsWith('example')) typeClass = 'example';
+                if (calloutType.startsWith('in')) typeClass = 'summary';
+                div.classList.add(typeClass);
+                
+                p.className = 'm-0';
+                p.innerHTML = highlightTerms(t);
+                div.appendChild(p);
+                container.appendChild(div);
+                expectLead = false;
+            } else {
+                if (expectLead) {
+                  p.className = 'mt-4 lead-paragraph';
+                  expectLead = false;
+                } else {
+                  p.className = 'mt-4 text-slate-200';
+                }
+                p.innerHTML = highlightTerms(t);
+                container.appendChild(p);
+            }
+
+        } else if (b.type === 'ul') {
+          const ul = document.createElement('ul');
+          ul.className = 'mt-4 list-disc pl-6 text-slate-200';
+          b.items.forEach(it => {
+            const li = document.createElement('li');
+            li.innerHTML = highlightTerms(it);
+            ul.appendChild(li);
+          });
+          container.appendChild(ul);
+          expectLead = false;
+        }
+      }
+      return headings;
+    }
+
+    function buildTOC(headings) {
+      const tocList = document.getElementById('toc-list');
+      tocList.innerHTML = '';
+
+      let relShown = false;
+      let intShown = false;
+      let bcmShown = false; // BUILDING CONTEXT MAPS label state
+      headings.forEach(h => {
+        if (h.category === 'Relationship Pattern' && !relShown) {
+          const lbl = document.createElement('li');
+          lbl.className = 'mt-3 text-xs uppercase tracking-wider text-slate-400';
+          lbl.textContent = 'Relationship Patterns';
+          tocList.appendChild(lbl);
+          relShown = true;
+        }
+        if (h.category === 'Integration Pattern' && !intShown) {
+          const lbl = document.createElement('li');
+          lbl.className = 'mt-3 text-xs uppercase tracking-wider text-slate-400';
+          lbl.textContent = 'Integration Patterns';
+          tocList.appendChild(lbl);
+          intShown = true;
+        }
+
+        // Insert BUILDING CONTEXT MAPS label directly above
+        // the Upstream/Downstream and Team Dynamics section
+        if (!bcmShown && normalize(h.text) === normalize('Upstream/Downstream and Team Dynamics')) {
+          const lbl = document.createElement('li');
+          lbl.className = 'mt-3 text-xs uppercase tracking-wider text-slate-400';
+          lbl.textContent = 'BUILDING CONTEXT MAPS';
+          tocList.appendChild(lbl);
+          bcmShown = true;
+        }
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${h.id}`;
+        a.textContent = h.text;
+        a.className = 'block px-2 py-1 rounded hover:bg-slate-800/60 hover:text-white transition-colors';
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+      return tocList.querySelectorAll('a');
+    }
+
+    function setupScrollSpy(links) {
+        const sections = Array.from(links).map(a => {
+            const id = a.getAttribute('href').slice(1);
+            const el = document.getElementById(id);
+            return el ? { el, link: a } : null;
+        }).filter(Boolean);
+
+        const setActive = (link) => {
+            links.forEach(l => l.classList.remove('active'));
+            if (link) link.classList.add('active');
+        };
+
+        const onScroll = () => {
+            const scrollY = window.scrollY;
+            let current = null;
+            
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const section = sections[i];
+                if (section.el.offsetTop <= scrollY + 100) { // 100px offset
+                    current = section.link;
+                    break;
+                }
+            }
+            setActive(current);
+        };
+        
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    }
+    
+    function setupProgressBar() {
+        const bar = document.getElementById('progress-bar');
+        const onScroll = () => {
+            const total = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY || 0;
+            const pct = total > 0 ? (scrolled / total) * 100 : 0;
+            bar.style.width = pct + '%';
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    }
+
+    // Boot
+    (function init() {
+      const rawEl = document.getElementById('article-raw');
+      const raw = rawEl ? rawEl.textContent : '';
+      let blocks = parseArticle(raw);
+      const container = document.getElementById('article-content');
+      const headings = renderArticle(blocks, container);
+      const links = buildTOC(headings);
+      setupScrollSpy(links);
+      setupProgressBar();
+      
+      const words = (raw.match(/\b\w+\b/g) || []).length;
+      const mins = Math.max(1, Math.round(words / 220)); // Avg reading speed
+      const rt = document.getElementById('reading-time');
+      if (rt) rt.textContent = `${mins} min read`;
+
+      const ns = document.querySelector('noscript pre');
+      if (ns) ns.textContent = raw;
+    })();
+  </script>
+  <!-- Mermaid JS for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      window.mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+      // Explicitly render after content is injected
+      if (window.mermaid.run) {
+        window.mermaid.run({ querySelector: '.mermaid' });
+      } else if (window.mermaid.init) {
+        window.mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+      }
+    }
+  </script>
+</body>
+</html>
