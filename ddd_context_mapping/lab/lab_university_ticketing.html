@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDD Lab Context Mapping: Campus Ticketing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* slate-900 */
+            color: #D1D5DB; /* gray-300 */
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #lab-wrapper {
+            background: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        /* Enhanced styling for cards */
+        .card-accent-indigo {
+            border-left: 4px solid #6366F1;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .card-accent-cyan {
+            border-left: 4px solid #22D3EE;
+            box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.1), 0 4px 6px -4px rgba(34, 211, 238, 0.1);
+        }
+
+        .card-accent-purple {
+            border-left: 4px solid #A855F7;
+             box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.1), 0 4px 6px -4px rgba(168, 85, 247, 0.1);
+        }
+        
+        /* Animated list markers */
+        .animated-list-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .animated-list-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .task-icon {
+            transition: all 0.2s ease;
+        }
+        
+        .animated-list-item:hover .task-icon {
+            color: #22D3EE;
+            transform: scale(1.2);
+        }
+        
+        /* Subtle gradient background for enhanced visual depth */
+        .subtle-gradient {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+    <div id="lab-wrapper" class="min-h-screen py-12 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header - Enhanced with animation and visual weight -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 mb-4 animate-[pulse_4s_ease-in-out_infinite] leading-tight py-2">
+                    DDD Lab: Context Mapping
+                </h1>
+                <p class="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">
+                    Scenario: <span class="text-cyan-300 font-medium">Campus Ticketing</span>
+                </p>
+                <div class="mt-6 w-24 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Company & Team Structure Section -->
+            <div class="mb-8 md:mb-12">
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-purple transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-purple-300 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-7.284.004A3 3 0 017.096 15.5a3 3 0 013.74.479m-9.74 0a9.093 9.093 0 013.74.479M12 15.75a3 3 0 01-3.74.479m5.488 0a3 3 0 013.74-.479m-8.485-.911a3 3 0 01-3.74-.479m15.97 0a3 3 0 01-3.74-.479M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        The Setup: Company & Team Structure
+                    </h2>
+                    <p class="text-lg text-slate-300 mb-6 leading-relaxed">
+                        The "Campus Ticketing" platform is a strategic project at <strong>University Digital Services (UDS)</strong>. The goal is to unify a fragmented system into a single, modern platform. Several teams are involved, each with its own priorities and culture.
+                    </p>
+                    <div class="subtle-gradient p-5 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                               <svg class="w-6 h-6 text-cyan-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.25l-.648-1.688a2.25 2.25 0 01-1.423-1.423L12.75 18.5l1.688-.648a2.25 2.25 0 011.423-1.423L18.5 15.75l.648 1.688a2.25 2.25 0 011.423 1.423l1.688.648-.648 1.688a2.25 2.25 0 01-1.423 1.423z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-cyan-300">Core Ticketing Team ("Phoenix")</h4>
+                                <p class="text-slate-400">Builds the central ticketing/sales engine (Core Domain). They are an experienced, co-located agile team running on a two-week release cycle. Communication is high-bandwidth and constant.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                                <svg class="w-6 h-6 text-yellow-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 00-.12-1.03l-2.268-9.64a3.375 3.375 0 00-3.285-2.602H7.923a3.375 3.375 0 00-3.285 2.602l-2.268 9.64a4.5 4.5 0 00-.12 1.03v.228m15.459 0a2.25 2.25 0 01-2.25 2.25h-10.5a2.25 2.25 0 01-2.25-2.25m15 0V5.137c0-.175-.012-.347-.037-.517h-14.92c-.025.17-.037.342-.037.517v12.113C2.96 16.06 3 15.928 3 15.75c0-1.02.404-1.944 1.06-2.625a3.75 3.75 0 012.868-1.375H17.07a3.75 3.75 0 012.868 1.375c.656.68.1.06 1.599 1.06 2.625z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-yellow-300">Legacy Accounting Team</h4>
+                                <p class="text-slate-400">Maintains the university's central billing system from a different building. This team is siloed, risk-averse, and works on a slow, quarterly release cycle. Communication is formal and often delayed.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                                <svg class="w-6 h-6 text-rose-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-rose-300">External Mobile App Vendor</h4>
+                                <p class="text-slate-400">Located in a different timezone, this vendor develops the official university app and has their own product roadmap and release schedule. All integration is handled formally via APIs and scheduled meetings.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                                <svg class="w-6 h-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12M3.75 3.75h16.5M12 21v-6.75A2.25 2.25 0 009.75 12H6a2.25 2.25 0 00-2.25 2.25v6.75m12 0v-6.75a2.25 2.25 0 00-2.25-2.25H14.25a2.25 2.25 0 00-2.25 2.25v6.75" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-green-300">Supporting Internal Teams</h4>
+                                <p class="text-slate-400">Includes the <span class="font-semibold">Event Management Team</span> and the <span class="font-semibold">Analytics Team</span>. They have separate backlogs and priorities but share the same overall goals. Both are downstream consumers of data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lab Content - Enhanced with better spacing and visual hierarchy -->
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 mb-8">
+                <!-- Scenario Section - More visual appeal -->
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-indigo transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-indigo-300 mb-4 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        Description
+                    </h2>
+                
+                    <p class="text-lg text-slate-300 mb-6 leading-relaxed">
+                        You are designing the new "Campus Ticketing" platform. It sells tickets for various university events 
+                        (concerts, sports, guest lectures). Consider the different business capabilities involved based on the team structure.
+                    </p>
+                    <p class="text-cyan-300">
+                        There is no single fixed answer!
+                    </p>
+                    <p class="text-cyan-300">Focus on the reasoning behind your decisions.
+                        </p>
+                     <div class="subtle-gradient p-5 rounded-lg">
+                        <strong class="block mb-3 text-indigo-300 font-medium">Potential capabilities</strong>
+                        <ul class="list-disc pl-5 space-y-2 text-slate-300 marker:text-indigo-400">
+                            <li>Ticketing / Sales (browse, seat selection, buying, reserving)</li>
+                            <li><span class="font-semibold">Event Catalog</span> (events, venues, seat maps)</li>
+                            <li>Payments (PSP integration) and Campus <span class="font-semibold">Student Accounts</span></li>
+                            <li>Identity & Access (students, faculty, public)</li>
+                            <li>Reporting / Analytics (sales, attendance)</li>
+                            <li>Email / Notifications</li>
+                            <li>Integration with a <span class="font-semibold">legacy Accounting</span> system</li>
+                            <li><span class="font-semibold">Ticket Wallet / Presentation</span> (view tickets, QR, validation)</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Materials section - Improved styling -->
+                    <div class="mt-8 border-t border-slate-700 pt-6">
+                        <h3 class="font-bold text-lg text-indigo-300 mb-4 flex items-center">
+                            <svg class="w-6 h-6 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                            Materials Provided
+                        </h3>
+                        
+                        <div class="subtle-gradient p-4 rounded-lg">
+                            <ul class="space-y-4 text-slate-300">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 mr-3 text-indigo-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="font-medium">Post-it notes</span>
+                                    <span class="ml-2 text-slate-400">(Bounded Context and domains)</span>
+                                </li>
+                                
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 mr-3 text-indigo-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    <div>
+                                        <span class="font-medium">Markers (4 free to choose colors):</span>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mt-2 ml-1">
+                                            <div class="flex items-center bg-slate-800/40 rounded-md px-3 py-2">
+                                                <div class="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
+                                                <span class="text-sm"><span class="font-medium text-red-300">Color 1:</span> Relationship lines</span>
+                                            </div>
+                                            <div class="flex items-center bg-slate-800/40 rounded-md px-3 py-2">
+                                                <div class="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                                                <span class="text-sm"><span class="font-medium text-green-300">Color 2:</span> Relationship labels</span>
+                                            </div>
+                                            <div class="flex items-center bg-slate-800/40 rounded-md px-3 py-2">
+                                                <div class="w-3 h-3 bg-blue-400 rounded-full mr-2"></div>
+                                                <span class="text-sm"><span class="font-medium text-blue-300">Color 3:</span> U/D markers</span>
+                                            </div>
+                                            <div class="flex items-center bg-slate-800/40 rounded-md px-3 py-2">
+                                                <div class="w-3 h-3 bg-purple-400 rounded-full mr-2"></div>
+                                                <span class="text-sm"><span class="font-medium text-purple-300">Color 4:</span> Context names</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 mr-3 text-indigo-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span class="font-medium">Large paper</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Section - More interactive and engaging -->
+                <div class="glass-card p-6 md:p-8 rounded-lg card-accent-cyan transform transition-all duration-300 hover:translate-y-[-5px]">
+                    <h2 class="text-3xl font-bold text-cyan-300 mb-4 flex items-center">
+                        <svg class="w-8 h-8 mr-3 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Group Task
+                    </h2>
+                    <ul class="space-y-5 text-slate-300">
+                        <li class="animated-list-item flex items-start text-lg">
+                            <svg class="task-icon w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span><strong>Classify Subdomains:</strong> First, identify the <strong class="text-cyan-300">Core</strong>, <strong class="text-purple-300">Supporting</strong>, and <strong class="text-gray-300">Generic</strong> subdomains from the scenario by assigning "potential capabilities" to each domain.</span>
+                        </li>
+                        <li class="animated-list-item flex items-start text-lg">
+                            <svg class="task-icon w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span><strong>Define Contexts:</strong> Based on your subdomains and the team structure, identify and name 5-7 Bounded Contexts.</span>
+                        </li>
+                        <li class="animated-list-item flex items-start text-lg">
+                            <svg class="task-icon w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span><strong>Create Post-Its:</strong> Write each Bounded Context name and its domain type (Core, Supporting, or Generic) on post-it notes using <span class="text-purple-300 font-semibold">Color 4</span>.</span>
+                        </li>
+                        <li class="animated-list-item flex items-start text-lg">
+                            <svg class="task-icon w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span><strong>Draw Context Map:</strong> Attach the post-its on the provided paper, then draw Upstream/Downstream arrows between contexts using <span class="text-red-300 font-semibold">Color 1</span> for relationship lines. (Only focus on relationships with the core)</span>
+                        </li>
+                        <li class="animated-list-item flex items-start text-lg">
+                            <svg class="task-icon w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span><strong>Label Relationships:</strong> Label each integration with a relationship pattern and integration strategy(ACL, Conformist, etc.) using <span class="text-green-300 font-semibold">Color 2</span>. Mark upstream (U) and downstream (D) on each connection using <span class="text-blue-300 font-semibold">Color 3</span>.</span>
+                        </li>
+                        <li class="animated-list-item flex items-start text-lg">
+                            <svg class="task-icon w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span><strong>Defend contract decision:</strong> (Accounting: <strong class="text-yellow-300">ACL</strong> or <strong class="text-rose-300">Conformist</strong>?)</span>
+                        </li>
+                    </ul>
+                    <hr class="border-slate-700 my-8">
+                    <div class="subtle-gradient p-5 rounded-lg">
+                        <h3 class="text-2xl font-bold text-gray-200 mb-3">Deliverable: <strong class="text-indigo-300">Leho</strong></h3>
+                        <ul class="list-disc pl-5 space-y-2 text-slate-300 marker:text-indigo-400">
+                            <li>The teachers (Mr. Blomme & Mr. Casier) could take a picture of the different solutions and upload them to Leho.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
