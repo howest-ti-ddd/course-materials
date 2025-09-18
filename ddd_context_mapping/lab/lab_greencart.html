@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DDD Lab Context Mapping: GreenCart Collective (Improved)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0F172A; color: #D1D5DB; }
+    .glass-card { background: rgba(30, 41, 59, 0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    #lab-wrapper { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); }
+    .card-accent-green { border-left: 4px solid #22C55E; box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.15), 0 4px 6px -4px rgba(34, 197, 94, 0.12); }
+    .card-accent-teal { border-left: 4px solid #14B8A6; box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.15), 0 4px 6px -4px rgba(20, 184, 166, 0.12); }
+    .card-accent-sky { border-left: 4px solid #0EA5E9; box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.15), 0 4px 6px -4px rgba(14, 165, 233, 0.12); }
+    .card-accent-yellow { border-left: 4px solid #F59E0B; box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.15), 0 4px 6px -4px rgba(245, 158, 11, 0.12); }
+    .animated-list-item { transition: transform 0.2s ease; }
+    .animated-list-item:hover { transform: translateX(5px); }
+    .task-icon { transition: all 0.2s ease; }
+    .animated-list-item:hover .task-icon { color: #14B8A6; transform: scale(1.12); }
+    .subtle-gradient { background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%); }
+    .chip { display:inline-flex; align-items:center; gap:.5rem; padding:.25rem .6rem; border-radius:9999px; background:rgba(148,163,184,.15); border:1px solid rgba(148,163,184,.25); font-size:.75rem; }
+    .badge { padding:.15rem .5rem; border-radius:.5rem; font-size:.7rem; font-weight:600; }
+    .badge-core{ background:#064E3B; color:#A7F3D0; border:1px solid rgba(16,185,129,.35);} /* emerald */
+    .badge-support{ background:#1E3A8A; color:#93C5FD; border:1px solid rgba(59,130,246,.35);} /* blue */
+    .badge-generic{ background:#374151; color:#D1D5DB; border:1px solid rgba(107,114,128,.45);} /* gray */
+    .legend-dot{ width:.55rem; height:.55rem; border-radius:9999px; display:inline-block; margin-right:.4rem; }
+    details[open] summary .chev { transform: rotate(90deg); }
+  </style>
+</head>
+<body class="bg-slate-900 text-gray-300">
+  <div id="lab-wrapper" class="min-h-screen py-12 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-400 to-green-400 mb-4 animate-[pulse_4s_ease-in-out_infinite] leading-tight py-2">
+          DDD Lab: Context Mapping
+        </h1>
+        <p class="text-2xl md:text-3xl text-gray-400 max-w-3xl mx-auto">Scenario: <span class="text-teal-300 font-semibold">GreenCart E‑Commerce</span></p>
+        <div class="mt-6 w-24 h-1 bg-gradient-to-r from-teal-500 to-green-500 mx-auto rounded-full"></div>
+      </div>
+
+      <!-- Company & Team Structure -->
+      <div class="mb-8 md:mb-12">
+        <div class="glass-card p-6 md:p-8 rounded-lg card-accent-sky">
+          <h2 class="text-3xl font-bold text-sky-300 mb-6 flex items-center">
+            <svg class="w-8 h-8 mr-3 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-7.284.004A3 3 0 017.096 15.5a3 3 0 013.74.479m-9.74 0a9.093 9.093 0 013.74.479M12 15.75a3 3 0 01-3.74.479m5.488 0a3 3 0 013.74-.479m-8.485-.911a3 3 0 01-3.74-.479m15.97 0a3 3 0 01-3.74-.479M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            The Setup: Company & Team Structure
+          </h2>
+          <p class="text-lg text-slate-300 mb-6 leading-relaxed"><strong>GreenCart Collective</strong> is building a marketplace for certified sustainable goods. Multiple internal teams and external partners collaborate with different timelines, toolchains, and incentives.</p>
+<div class="rounded-lg p-5 bg-slate-800/50 border border-slate-700 mb-5">
+  <p class="text-slate-300 leading-relaxed mb-4"><strong>GreenCart Collective</strong> is a purpose‑driven marketplace that curates certified sustainable goods. The company’s value proposition is trust: every product listing is backed by third‑party certifications and a transparent vendor profile. The initial launch targets the Benelux market with EU expansion in sight; legal and financial guardrails include GDPR, VAT‑compliant invoicing, and PSD2/SCA for payments.</p>
+  <p class="text-slate-300 leading-relaxed mb-4">The product we’re building is a two‑sided marketplace: a delightful shopping experience for consumers (rich catalog, sustainability badges, powerful search) and a lightweight seller portal for vendors (onboarding, product submission, inventory sync). Consumers can browse, add to cart, check out, and track orders and returns; sellers can publish stock and receive shipping labels via the 3PL integration.</p>
+  <p class="text-slate-300 leading-relaxed">Team structure reflects those concerns. <span class="font-semibold text-green-300">Oasis</span> (Marketplace & Catalog) defines the product vocabulary and is the upstream for pricing and availability. <span class="font-semibold text-amber-300">Orchard</span> (Checkout & Orders) protects transactional invariants—tax totals, capture/void flows, idempotency—and orchestrates external services. Two partners sit outside our organizational boundary: <span class="font-semibold text-rose-300">Shiplark</span> (3PL) exposes a rigid shipping model and release cadence we don’t control, while <span class="font-semibold text-indigo-300">PayLeaf</span> (PSP) is a generic capability with a stable SDK. These asymmetries drive the upstream/downstream relationships and the need for an Anticorruption Layer toward Logistics.</p>
+</div>
+          <div class="subtle-gradient p-5 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                <svg class="w-6 h-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-green-300">Core Marketplace Team (“Oasis”)</h4>
+                <p class="text-slate-400">Owns <em>Product Catalog & Marketplace</em> experience (Core Domain). Fast-moving, UX-driven, ships bi-weekly.</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                <svg class="w-6 h-6 text-amber-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.328 1.093-.828l2.857-9.643A.75.75 0 0020.25 3H4.5"/></svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-amber-300">Checkout & Orders Team (“Orchard”)</h4>
+                <p class="text-slate-400">Owns Cart, Checkout, Payments orchestration, and Order lifecycle. Reliability & compliance first.</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                <svg class="w-6 h-6 text-rose-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 013.375-3.375h1.5a1.125 1.125 0 011.125 1.125v-1.5a3.375 3.375 0 013.375-3.375H9.75"/></svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-rose-300">Logistics Partner (“Shiplark”)</h4>
+                <p class="text-slate-400">External 3PL for warehousing & shipping. Rigid API: ShipmentRequests, InventoryLevels. Low flexibility.</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 bg-slate-700 rounded-md p-2 mr-4">
+                <svg class="w-6 h-6 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-indigo-300">Payment Provider (“PayLeaf”)</h4>
+                <p class="text-slate-400">External PSP/SDK (think Stripe‑like). Generic capability; already stable domain & API.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario + Materials -->
+      <div class="grid md:grid-cols-2 gap-8 md:gap-12 mb-8">
+        <!-- Description -->
+        <div class="glass-card p-6 md:p-8 rounded-lg card-accent-green">
+          <h2 class="text-3xl font-bold text-green-300 mb-4 flex items-center">
+            <svg class="w-8 h-8 mr-3 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Description
+          </h2>
+          <p class="text-lg text-slate-300 mb-6 leading-relaxed">Map bounded contexts and their relationships so teams can move fast without stepping on each other. <span class="text-teal-300 font-medium">There is no single fixed answer.</span></p>
+          <div class="subtle-gradient p-5 rounded-lg">
+            <strong class="block mb-3 text-green-300 font-medium">Potential capabilities</strong>
+            <ul class="list-disc pl-5 space-y-2 text-slate-300 marker:text-green-400">
+              <li>Product Catalog (products, vendors, certifications)</li>
+              <li>Marketplace & Search (browsing, filtering, discovery)</li>
+              <li>Shopping Cart & Checkout</li>
+              <li>Order Management (status, returns)</li>
+              <li>Payments (cards, wallets)</li>
+              <li>User Accounts & Identity</li>
+              <li>Inventory & Warehousing</li>
+              <li>Shipping & Fulfillment</li>
+              <li>Content & Community (reviews, blog)</li>
+              <li>Reporting & Analytics</li>
+            </ul>
+          </div>
+
+          <div class="mt-8 border-t border-slate-700 pt-6">
+            <h3 class="font-bold text-lg text-green-300 mb-4 flex items-center">
+              <svg class="w-6 h-6 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+              Materials
+            </h3>
+            <div class="subtle-gradient p-4 rounded-lg">
+              <ul class="space-y-4 text-slate-300">
+                <li class="flex items-start"><span class="chip">Post‑its for contexts & domain type</span></li>
+                <li class="flex items-start"><span class="chip">Large paper or whiteboard</span></li>
+                <li class="flex items-start">
+                  <div>
+                    <div class="mb-2 font-medium">Markers (consistent color legend):</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div class="chip"><span class="legend-dot" style="background:#F87171"></span><span><span class="font-semibold text-red-300">Color 1</span>: Lines & arrows</span></div>
+                      <div class="chip"><span class="legend-dot" style="background:#34D399"></span><span><span class="font-semibold text-emerald-300">Color 2</span>: Labels (relationship & pattern)</span></div>
+                      <div class="chip"><span class="legend-dot" style="background:#60A5FA"></span><span><span class="font-semibold text-blue-300">Color 3</span>: U/D direction</span></div>
+                      <div class="chip"><span class="legend-dot" style="background:#C084FC"></span><span><span class="font-semibold text-purple-300">Color 4</span>: Context names</span></div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Group Task -->
+        <div class="glass-card p-6 md:p-8 rounded-lg card-accent-teal">
+          <h2 class="text-3xl font-bold text-teal-300 mb-4 flex items-center">
+            <svg class="w-8 h-8 mr-3 text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Group Task
+          </h2>
+          <ul class="space-y-5 text-slate-300">
+            <li class="animated-list-item flex items-start text-lg">
+              <svg class="task-icon w-6 h-6 mr-3 text-teal-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <span><strong>Classify Subdomains:</strong> Assign capabilities to <span class="badge badge-core">Core</span>, <span class="badge badge-support">Supporting</span>, or <span class="badge badge-generic">Generic</span>.</span>
+            </li>
+            <li class="animated-list-item flex items-start text-lg">
+              <svg class="task-icon w-6 h-6 mr-3 text-teal-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <span><strong>Define Bounded Contexts:</strong> Name each and tag it with its domain type.</span>
+            </li>
+            <li class="animated-list-item flex items-start text-lg">
+              <svg class="task-icon w-6 h-6 mr-3 text-teal-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <span><strong>Create Post‑its:</strong> One per context. Write the <em>name</em> + <em>domain type</em> in <span class="text-purple-300 font-semibold">Color 4</span>.</span>
+            </li>
+            <li class="animated-list-item flex items-start text-lg">
+              <svg class="task-icon w-6 h-6 mr-3 text-teal-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <span><strong>Draw Context Map (focus rule):</strong> Attach post‑its, then connect <u>only relationships that touch your chosen Core context</u> using <span class="text-red-300 font-semibold">Color 1</span>. This improves readability.</span>
+            </li>
+            <li class="animated-list-item flex items-start text-lg">
+              <svg class="task-icon w-6 h-6 mr-3 text-teal-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <span><strong>Label each connection:</strong> Add <em>Relationship</em> (e.g., Customer/Supplier, Shared Kernel, Conformist, Separate Ways) and <em>Integration Pattern</em> (e.g., ACL, Open Host Service, Published Language) in <span class="text-emerald-300 font-semibold">Color 2</span>; mark <span class="text-blue-300 font-semibold">U/D</span> on both ends for upstream/downstream with <span class="text-blue-300 font-semibold">Color 3</span>.</span>
+            </li>
+            <li class="animated-list-item flex items-start text-lg">
+              <svg class="task-icon w-6 h-6 mr-3 text-teal-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <span><strong>Defend contract decision:</strong> Explain why <span class="text-amber-300 font-semibold">Checkout & Orders</span> ↔ <span class="text-rose-300 font-semibold">Logistics Partner</span> needs an <span class="text-rose-300 font-semibold">Anticorruption Layer</span> instead of a simple <span class="text-sky-300 font-semibold">Conformist</span> approach.</span>
+            </li>
+          </ul>
+
+          <hr class="border-slate-700 my-8">
+          <div class="subtle-gradient p-5 rounded-lg">
+            <h3 class="text-2xl font-bold text-gray-200 mb-3">Deliverable: <span class="text-teal-300">Leho</span></h3>
+            <ul class="list-disc pl-5 space-y-2 text-slate-300 marker:text-teal-400">
+              <li>Mr. Blomme & Mr. Casier will take a picture of some of the results (no grading)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
