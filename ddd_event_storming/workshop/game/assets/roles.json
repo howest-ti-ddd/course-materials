@@ -4,7 +4,7 @@
     {
       "meta": {
         "id": 1,
-        "name": "The Architect's Apprentice",
+        "name": "The Architect's Apprenticeeeeeee",
         "subtitle": "Aggregate Builder",
         "emoji": "🧱",
         "roleFamily": "developer"
@@ -467,7 +467,7 @@
               "id": "narration-token",
               "name": "Narration Token",
               "intent": "narrate full timeline",
-              "description": "narrate full timeline",
+              "description": "Take the lead and narrate full timeline",
               "frequency": "perRound",
               "limit": 1,
               "ui": {
