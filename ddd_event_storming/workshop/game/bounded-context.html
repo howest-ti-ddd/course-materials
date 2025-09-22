@@ -1,0 +1,240 @@
+<main class="max-w-6xl mx-auto p-6 space-y-8">
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">Decision Tree for Uncovering Bounded Contexts</h1>
+                    <p class="text-lg text-gray-700 mb-6">This guide helps you identify Bounded Contexts—the major modules of your system—from the clues you've gathered during a Big Picture Event Storming session.</p>
+                    <p class="text-base text-gray-700">Use it as a discovery aid: every "YES" points to a candidate context and a hypothesis to test with stakeholders, rather than a final structural decision.</p>
+                </article>
+
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">1. Are there Linguistic Mismatches?</h2>
+                        <div class="space-y-4">
+                            <div class="grid gap-3 md:grid-cols-2">
+                                <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                    <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                    <p class="text-sm text-gray-700">Do different departments (e.g., sales, accounting, logistics) use varying terminology for similar concepts or events?</p>
+                                </div>
+                                <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                    <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                    <p class="text-sm text-gray-700">Is a 'customer order' in sales called a 'shipping request' in logistics?</p>
+                                </div>
+                                <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                    <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                    <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - This is a strong signal of a candidate Bounded Context boundary. Forcing a unified model creates friction; explore separate models and confirm with the affected teams that the split reduces effort and confusion.</p>
+                                </div>
+                                <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                    <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                    <p class="text-sm text-gray-700">Sketch candidate contexts for each team (e.g., 'Sales', 'Logistics', 'Accounting'), then validate that the language, rules, and data really diverge before committing to the split.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">2. Are there Structural Boundaries in the Event Timeline?</h2>
+                        <div class="space-y-6">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">2a. Key Events</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Have key events been identified that represent major handoffs of responsibility?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">Does 'Order Placed' mark a handoff from the sales team to the fulfillment team?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - These events act as "chapter boundaries" and highlight subprocesses that are strong candidates for Bounded Contexts, pending validation with domain experts.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">Prototype a context boundary around each distinct subprocess (e.g., 'Sales', 'Fulfillment') and test whether ownership, policies, and language stay cohesive inside that boundary.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">2b. Swimlanes</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Have swimlanes been used to separate different roles or user types, like 'Admin' vs. 'Guest'?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">An 'Admin' swimlane that owns different vocabulary and rules from a 'Customer' swimlane may highlight distinct responsibilities. If both lanes share the same language, treat the split with caution.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - Swimlanes signal candidate context boundaries, but confirm that each lane carries a distinct ubiquitous language, data lifecycle, and policy before you promote it.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">If the divergence is real, document a candidate Bounded Context. When the difference is only permissions (e.g., Admin vs. Customer on the same workflows), keep one context and model the distinction as roles or policies.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">2c. Themes</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Are there groups of related events (e.g., payment processing, user management) that can be extracted into their own separate area?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">Events about payments often cluster together, separate from onboarding or catalog activities, hinting at their own space.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - Separating events into a theme is a strong indication that responsibilities cohere into a candidate context. Classify the theme as core, supporting, or generic to decide how much design rigor it deserves.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">Extract the events within the theme into their own candidate Bounded Context—such as 'Payment Processing' or 'User Management'—and align investment with its strategic classification.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">3. Are there Problematic Clues that Highlight Boundaries?</h2>
+                        <div class="space-y-6">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">3a. Hotspots at Handoffs</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Are <span class="red-note">Hotspots</span> concentrated around handoff events or areas with organizational problems?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">Multiple red notes on the 'Order Approved' event signal that teams struggle to agree on terms and responsibilities.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - These issues often signal an area to investigate. They might indicate a candidate Bounded Context boundary, but they can also point to unclear collaboration or policy gaps.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">First clarify responsibilities and rules at the handoff. If friction remains after tightening the process, capture the work in a candidate Bounded Context.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">3b. Repeated or Problematic Systems</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Does the same <span class="pink-note">System</span> appear in many different locations with associated <span class="red-note">Hotspots</span>?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">A legacy system appearing on 'Order Placed', 'Payment Processed', and 'Shipping Initiated'—each with Hotspots—shows it is overloaded.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - This is a strong indication that a legacy system carries too many responsibilities. Validate whether the pain is due to coupling or simply poor integrations before carving out new contexts.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">If coupling is the root problem, decompose the legacy system's responsibilities into candidate Bounded Contexts so teams can own their domains independently.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">3c. "Hot Mess" Events</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Is there a key event identified as a "hot mess" with many <span class="red-note">Hotspots</span> highlighting significant business and technical pain points?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">A single “Customer Onboarded” event that demands input from sales, legal, and tech becomes a bottleneck for everyone.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - This highlights a clear need to decouple responsibilities, or at least reassess policies that force everyone through the same choke point.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">Work with stakeholders to streamline rules and, if the workload naturally separates, decompose the "hot mess" into candidate contexts (e.g., "Customer Profile", "Legal Agreements") to reduce complexity.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">4. Validate and Connect Candidate Contexts</h2>
+                        <div class="space-y-6">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">4a. Calibration Step</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Have you confirmed that each proposed boundary reduces complexity, aligns with team capabilities, and serves current business goals?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">Finance and Operations validate that separating "Billing" and "Invoicing" lets them deploy independently and cuts handoff time—so the answer is <span class="strong-emphasis">YES</span>.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - Lock in the boundary. <span class="strong-emphasis">NO</span> - Revisit the design; you may be over-splitting or fighting the current team topology.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">Review each candidate with business and technical stakeholders, revisit the Event Storming board, and adjust the boundary until language, responsibilities, and ownership line up.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-3">4b. Integration Patterns</h3>
+                                <div class="space-y-4">
+                                    <div class="grid gap-3 md:grid-cols-2">
+                                        <div class="rounded-lg border border-blue-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-blue-900"><span>❓</span><span>Question</span></p>
+                                            <p class="text-sm text-gray-700">Have you selected a collaboration pattern that keeps the new contexts in sync without reintroducing tight coupling?</p>
+                                        </div>
+                                        <div class="rounded-lg border border-amber-200 bg-white/80 p-4 shadow-sm">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-amber-900"><span>💡</span><span>Example</span></p>
+                                            <p class="text-sm text-gray-700">"Sales" emits domain events that "Logistics" consumes through an anti-corruption layer, keeping language isolated—so the answer is <span class="strong-emphasis">YES</span>.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-emerald-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-emerald-900"><span>✅</span><span>Answer</span></p>
+                                            <p class="text-sm text-gray-700"><span class="strong-emphasis">YES</span> - Document the chosen pattern (events, translation maps, ACLs, open host services). <span class="strong-emphasis">NO</span> - Plan the integration before you commit to the split.</p>
+                                        </div>
+                                        <div class="rounded-lg border border-indigo-200 bg-white/80 p-4 shadow-sm md:col-span-2">
+                                            <p class="mb-2 flex items-center gap-2 font-semibold text-indigo-900"><span>🛠️</span><span>Solution</span></p>
+                                            <p class="text-sm text-gray-700">Document the integration strategy alongside each candidate context boundary so the team can plan implementation, contracts, and governance from the start.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </main>

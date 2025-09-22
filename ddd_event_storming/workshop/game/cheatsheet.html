@@ -1,0 +1,183 @@
+<section class="card rounded-2xl p-6 md:p-8 shadow-lg">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">1. Big Picture Event Storming (≈55 min total)</h2>
+                    <div class="space-y-6 text-gray-700">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Chaotic Exploration (15 min)</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Write <span class="orange-note">Domain Events</span> (past tense) and place them quickly.</li>
+                                <li>Capture questions, pain points, or risks as <span class="red-note">Hotspots</span>.</li>
+                                <li>The <span class="strong-emphasis">Language Custodian</span> keeps phrasing consistent.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Enforce the Timeline (20 min)</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Arrange events left → right; add missing ones as they surface.</li>
+                                <li>Mark unresolved ordering debates with a Hotspot instead of stalling.</li>
+                                <li>Highlight pivotal moments (e.g., tape) to form lightweight chapters.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Swimlanes, People & Systems (10 min)</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Draw horizontal swimlanes for roles, teams, or parallel tracks.</li>
+                                <li>Add <span class="yellow-note">Actors</span> and <span class="pink-note">Systems</span> where they interact.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Explicit Walkthrough & Reverse Narrative (10 min)</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Narrate forward once, then walk the story backward to expose gaps.</li>
+                                <li>After this walkthrough only the <span class="strong-emphasis">Story Anchor</span> may consult/quote the story.</li>
+                                <li><span class="strong-emphasis">Archivist Unlock:</span> Archivist may open the Event Library and propose up to 10 critical events (group consent required).</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Problems & Opportunities (10 min)</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Use <span class="red-note">Hotspots</span> for issues; use dots/⭐ to flag opportunities.</li>
+                                <li>Arrow voting: 1–3 votes each. If a tie remains after 2 minutes, the moderator decides.</li>
+                            </ul>
+                        </div>
+                        <p class="text-sm text-gray-500">Notice emerging clusters now, but draw dotted Bounded Context boundaries during the dedicated discovery block.</p>
+                    </div>
+                </section>
+
+                <section class="card rounded-2xl p-6 md:p-8 shadow-lg mt-8">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">2. Process Modelling Event Storming (≈40 min)</h2>
+                    <div class="space-y-6 text-gray-700">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Happy Path (10 min)</h3>
+                            <p>Map the common successful scenario with <span class="orange-note">Domain Events</span>; capture questions as Hotspots.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Apply the Grammar (15 min)</h3>
+                            <p>Follow <span class="orange-note">Event</span> → <span class="lilac-note">Policy</span> → <span class="blue-note">Command</span> → <span class="pink-note">System</span> → <span class="orange-note">Event</span>.</p>
+                            <p>For human work, insert <span class="lilac-note">Policy</span> → [Actor] → <span class="green-note">Read Model</span> → <span class="blue-note">Command</span>.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Non-Happy Paths (10 min)</h3>
+                            <p>Branch exceptions, compensations, and failure handling; add Hotspots for unresolved risks.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Backwards Walkthrough (5 min)</h3>
+                            <p>Walk the flow in reverse to ensure every event has a valid predecessor.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Repeat</h3>
+                            <p>Repeat this stem for another scenario, until satisfied or time runs out.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card rounded-2xl p-6 md:p-8 shadow-lg mt-8">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">3. Bounded Context Discovery (≈15 min)</h2>
+                    <p class="text-gray-600 mb-4">The <span class="strong-emphasis">Boundary Builder</span> leads this block using the decision tree.</p>
+                    <div class="space-y-6 text-gray-700">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Walk the Decision Tree</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Does the language shift?</li>
+                                <li>Does ownership or responsibility change?</li>
+                                <li>Do rules or policies differ?</li>
+                                <li>Is specialized knowledge required here?</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Mark the Boundaries</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Answer “yes”? Draw a dotted boundary, name the context, and note translations where contexts touch.</li>
+                                <li>If debate runs beyond 3 minutes, mark a Hotspot “Boundary TBD” and move on.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card rounded-2xl p-6 md:p-8 shadow-lg mt-8">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">4. Software Design Event Storming (≈35 min)</h2>
+                    <div class="space-y-6 text-gray-700">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Choose the Context</h3>
+                            <p>Pick one bounded context (often the slice you just modelled) to deepen.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Replace Systems with Aggregates (10 min)</h3>
+                            <p>Convert internal <span class="pink-note">Systems</span> into <span class="yellow-note">Aggregates</span> where you own the invariants; external systems stay pink.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Define Aggregates (15 min)</h3>
+                            <p class="text-gray-700 mb-3">Once the slice is decomposed, give every <span class="yellow-note">Aggregate</span> a clear purpose and clean interfaces.</p>
+                            <div class="space-y-3">
+                                <div class="bg-white/80 border border-yellow-200 rounded-lg p-4">
+                                    <p class="font-semibold text-yellow-900">1. Isolate &amp; consolidate</p>
+                                    <p class="text-sm text-gray-700">Sweep up all 🟨 Aggregate stickies into a fresh area. Merge duplicates into a single canonical Aggregate so the team is talking about the same thing.</p>
+                                </div>
+                                <div class="bg-white/80 border border-blue-200 rounded-lg p-4">
+                                    <p class="font-semibold text-blue-900">2. Define the boundaries</p>
+                                    <p class="text-sm text-gray-700">For each Aggregate, line up the 🟦 Commands it accepts on one side and the 🟧 Events it emits on the other. Seeing both sides together exposes its public API.</p>
+                                </div>
+                                <div class="bg-white/80 border border-indigo-200 rounded-lg p-4">
+                                    <p class="font-semibold text-indigo-900">3. Review the lifecycle</p>
+                                    <p class="text-sm text-gray-700">Walk the flow for gaps. If <span class="strong-emphasis">Update Shipping Address</span> exists without a <span class="strong-emphasis">Create Order</span>, you’ve probably missed a crucial starting point.</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mt-4">This pass surfaces missing events, data needs, and ownership questions so the resulting components stay tight and robust.</p>
+                            <figure class="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4">
+                                <div class="mermaid">
+                                    flowchart LR
+                                        subgraph Commands
+                                            ADD_ITEM["🟦 ADD ITEM"]
+                                            REMOVE_ITEM["🟦 REMOVE ITEM"]
+                                            UPDATE_QTY["🟦 UPDATE QTY"]
+                                            CREATE_EMPTY["🟦 CREATE EMPTY"]
+                                            ADD_CUSTOMER["🟦 ADD CUSTOMER"]
+                                            MARK_CHECKED_OUT["🟦 MARK AS CHECKED OUT"]
+                                        end
+                                        subgraph Aggregate
+                                            SHOPPING_CART["🟨 SHOPPING CART"]
+                                        end
+                                        subgraph Events
+                                            ITEM_ADDED["🟧 ITEM ADDED"]
+                                            ITEM_REMOVED["🟧 ITEM REMOVED"]
+                                            QTY_UPDATED["🟧 QTY UPDATED"]
+                                            CART_CREATED["🟧 CART CREATED"]
+                                            CUSTOMER_ADDED["🟧 CUSTOMER ADDED"]
+                                            CART_CHECKED_OUT["🟧 CART CHECKED OUT"]
+                                        end
+
+                                        ADD_ITEM --> SHOPPING_CART
+                                        REMOVE_ITEM --> SHOPPING_CART
+                                        UPDATE_QTY --> SHOPPING_CART
+                                        CREATE_EMPTY --> SHOPPING_CART
+                                        ADD_CUSTOMER --> SHOPPING_CART
+                                        MARK_CHECKED_OUT --> SHOPPING_CART
+
+                                        SHOPPING_CART --> ITEM_ADDED
+                                        SHOPPING_CART --> ITEM_REMOVED
+                                        SHOPPING_CART --> QTY_UPDATED
+                                        SHOPPING_CART --> CART_CREATED
+                                        SHOPPING_CART --> CUSTOMER_ADDED
+                                        SHOPPING_CART --> CART_CHECKED_OUT
+                                </div>
+                                <figcaption class="text-gray-600 text-sm italic mt-4">Example arrangement: the 🟨 “SHOPPING CART” aggregate connects incoming 🟦 commands to outgoing 🟧 events.</figcaption>
+                            </figure>
+                        </div>                  
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Refinement Pass (5 min)</h3>
+                            <p>Polish names, ensure ubiquitous language, and verify invariants.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                            <h3 class="font-semibold text-lg text-gray-700 mb-2">Bounded Context Discovery</h3>
+                            <p>Got through a new Bounded Context Discovery, see: 3. Bounded Context Discovery.</p>
+                        </div>
+                        
+                    </div>
+                </section>
+
+                <section class="card rounded-2xl p-6 md:p-8 shadow-lg mt-8">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">General Notes</h2>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">                        
+                        <li><span class="strong-emphasis">Tokens:</span> “once per round” means once per major phase block; reset at the next block.</li>
+                        <li><span class="strong-emphasis">Aim:</span> optimize for shared understanding and momentum over perfection.</li>
+                    </ul>
+                </section>

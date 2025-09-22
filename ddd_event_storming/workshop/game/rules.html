@@ -1,0 +1,231 @@
+
+    <div class="max-w-screen-xl mx-auto p-4 md:p-8">
+        
+        <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">The Game Rules</h2>
+
+        <main class="w-full space-y-8">
+            
+            <section id="purpose" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Purpose & Win Condition</h2>
+                <p class="text-lg mb-6 text-gray-700">You’ll run a full Event Storming across all three levels (Big Picture → Process Modelling → Software Design) for the “Perfect Birding App.”</p>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Win Condition</h3>
+                    <p class="mb-4 text-gray-700">The team "wins" if, by the end, you have:</p>
+                    <ul class="list-disc list-inside space-y-3 text-gray-600">
+                        <li>A coherent timeline of <strong class="text-gray-800">Domain Events</strong> with <strong class="text-gray-800">Actors</strong>, <strong class="text-gray-800">Systems</strong>, and <strong class="text-gray-800">Bounded Contexts</strong>.</li>
+                        <li>One process modeled with <strong class="text-gray-800">Policies</strong> and <strong class="text-gray-800">Commands</strong>.</li>
+                        <li>A software design slice with <strong class="text-gray-800">Aggregates</strong> and their <strong class="text-gray-800">Commands</strong> and <strong class="text-gray-800">Events</strong>.</li>
+                        <li>A list of prioritized problems and next steps.</li>
+                    </ul>
+                    <p class="mt-6 italic text-gray-500">Perfection is not required; shared understanding is.</p>
+                </div>
+            </section>
+
+            <section id="setup" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Setup <span class="text-gray-500 font-normal text-2xl">(10 minutes)</span></h2>
+                <div class="grid md:grid-cols-2 gap-8 text-gray-700">
+                    <article>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Team Composition</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>1 Moderator</strong></li>
+                            <li><strong>Up to 9 Domain Experts</strong></li>
+                            <li><strong>Up to 9 Developers</strong></li>
+                        </ul>
+                         <p class="mt-3 text-sm text-gray-500">Minimum to play: <strong>1 moderator + 4 participants</strong>.</p>
+                    </article>
+                    <article>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Materials</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Wall / long surface & Sharpies</li>
+                            <li>Sticky notes in all required colors</li>
+                            <li>Painter’s tape for chapters/boundaries</li>
+                            <li>Timer visible to all</li>
+                            <li>Printed/visible pages of key documents</li>
+                        </ul>
+                    </article>
+                </div>
+                <article class="mt-8 text-gray-700">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Role Assignment</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Hand each student a role card or let them choose randomly.</li>
+                        <li>Every role storms fully (adds events, speaks up) plus uses their <strong>superpower</strong> at key moments.</li>
+                        <li><strong>Missing role?</strong> When a role-specific duty comes up, the moderator first asks for a volunteer; if no one steps in, the moderator either covers it personally or assigns someone.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <section id="timeline" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Session Timeline <span class="text-gray-500 font-normal text-2xl">(3 hours)</span></h2>
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">0. Setup & Brief (10 min)</h4>
+                        <ul class="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-600">
+                            <li>Reread this Rulebook (2 min).</li>
+                            <li>Moderator explains color legend & win condition (3 min).</li>
+                            <li>Everyone skims "Het Verhaal van de App" (5 min).</li>
+                        </ul>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">1. Big Picture Event Storming (55 min)</h4>
+                        <ul class="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-600">
+                            <li><strong>Chaotic Exploration (15 min):</strong> Write <span class="note note-orange">Events</span> and <span class="note note-red">Hotspots</span>.</li>
+                            <li><strong>Enforce Timeline (20 min):</strong> Order events left-to-right, mark chapters.</li>
+                            <li><strong>Actors & Systems (10 min):</strong> Add Actors, <span class="note note-pink">Systems</span>, and swimlanes.</li>
+                            <li><strong>Walkthroughs (10 min):</strong> Narrate forward then reverse. After this, only the Story Anchor can consult the story.</li>
+                            <li><strong>Archivist Unlock:</strong> After walkthrough, Archivist proposes missing events.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">2. Problems & Priorities (10 min)</h4>
+                         <ul class="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-600">
+                            <li>Add/cluster <span class="note note-red">Hotspots</span> & <span class="note note-green">Opportunities</span>. Arrow-vote to prioritize.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">3. Bounded Context Discovery (15 min)</h4>
+                        <div class="mt-2 ml-4 text-gray-600 space-y-4">
+                            <p>The <strong>Boundary Builder</strong> leads using the <strong>Bounded Contexts</strong> page. Sketch tentative boundaries (dotted lines), name contexts; add notes for translations/ownership.</p>
+                            <div>
+                                <h5 class="font-semibold text-gray-700">Process (step-by-step)</h5>
+                                <ul class="list-disc list-inside space-y-2 mt-2">
+                                   <li><strong>Gather attention (1 min)</strong></li>
+                                   <li><strong>Walk the decision tree (10 min)</strong></li>
+                                   <li><strong>Quick team validation (3 min)</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">4. Process Modelling (40 min)</h4>
+                         <ul class="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-600">
+                            <li>Choose a slice, map the <strong>Happy Path</strong> with <span class="note note-orange">Events</span>.</li>
+                            <li>Apply Grammar: <span class="note note-orange">Event</span> → <span class="note note-lilac">Policy</span> → <span class="note note-blue">Command</span>.</li>
+                            <li>Model <strong>Non-Happy Paths</strong> and conduct a backwards walkthrough.</li>
+                            <li>Repeat until satisfied, for another scenario or time runs out.</li>
+                        </ul>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">5. Software Design Slice (35 min)</h4>
+                         <ul class="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-600">
+                            <li>Replace internal <span class="note note-pink">Systems</span> with <span class="note note-yellow">Aggregates</span> where you own invariants.</li>
+                            <li>For each Aggregate, list the <span class="note note-blue">Commands</span> it handles and <span class="note note-orange">Events</span> it emits.</li>
+                            <li>Refine names for a consistent ubiquitous language.</li>
+                            <li>Got through a new Bounded Context Discovery, see: 3. Bounded Context Discovery.</li>
+                        </ul>
+                    </div>
+                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-semibold text-lg text-gray-800">6. Wrap Up & Reflection (15 min)</h4>
+                         <ul class="mt-2 ml-4 list-disc list-inside space-y-1 text-gray-600">
+                            <li>Photograph boards to preserve the session outcomes.</li>
+                            <li>Collect Exit Tickets: “One thing on the board that wouldn’t exist without my role.”</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+  
+            
+            <section id="tokens" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Token Reference</h2>
+                <p class="mb-6 text-gray-700">Tokens are special powers. "Once per round" resets at each major phase (Big Picture, Process Modelling, etc.).</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="p-3 font-semibold text-gray-700">Role</th>
+                                <th class="p-3 font-semibold text-gray-700">Token / Power</th>
+                                <th class="p-3 font-semibold text-gray-700">Timing</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 text-gray-700">
+                            <tr><td class="p-3">Architect’s Apprentice</td><td class="p-3"><strong>Box Token</strong> (draw boundary box)</td><td class="p-3"><span class="font-semibold text-yellow-600">🟨 Once per round</span></td></tr>
+                            <tr><td class="p-3">Command Constructor</td><td class="p-3"><strong>Rewrite Token</strong> (rename command)</td><td class="p-3"><span class="font-semibold text-red-600">🟥 Once per session</span></td></tr>
+                            <tr><td class="p-3">Command Constructor</td><td class="p-3"><strong>Convert Fake Command → Read Model</strong></td><td class="p-3"><span class="font-semibold text-red-600">🟥 Once per session</span></td></tr>
+                            <tr><td class="p-3">Flow Mapper</td><td class="p-3"><strong>Narration Token</strong> (narrate full timeline)</td><td class="p-3"><span class="font-semibold text-yellow-600">🟨 Once per round</span></td></tr>
+                            <tr><td class="p-3">Story Anchor</td><td class="p-3"><strong>Canon Cards</strong> (Quote, Add, or Tag)</td><td class="p-3"><span class="font-semibold text-red-600">🟥 3 per session</span></td></tr>
+                            <tr><td class="p-3">Reality Checker</td><td class="p-3"><strong>Veto Token</strong> (remove unrealistic sticky)</td><td class="p-3"><span class="font-semibold text-yellow-600">🟨 Once per round</span></td></tr>
+                            <tr><td class="p-3">Detail Diver</td><td class="p-3"><strong>Pause Token</strong> (stop to deep dive)</td><td class="p-3"><span class="font-semibold text-red-600">🟥 Once per session</span></td></tr>
+                            <tr><td class="p-3">Archivist</td><td class="p-3"><strong>Archive Unlock Token</strong></td><td class="p-3"><span class="font-semibold text-blue-600">🔵 After 1st walkthrough</span></td></tr>
+                            <tr><td class="p-3">Problem Spotter</td><td class="p-3"><strong>Hotspot Tokens</strong></td><td class="p-3"><span class="font-semibold text-blue-600">🔵 Limited pool (3-5)</span></td></tr>
+                            <tr><td class="p-3">Boundary Builder</td><td class="p-3"><strong>Dotted Line Token</strong> (draw boundary)</td><td class="p-3"><span class="font-semibold text-green-600">🟩 Unlimited</span></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-4 text-sm">
+                        <p><span class="font-semibold text-green-600">🟩 Unlimited</span> → can be used freely.</p>
+                        <p><span class="font-semibold text-yellow-600">🟨 Once per round</span> → reset each block/round.</p>
+                        <p><span class="font-semibold text-red-600">🟥 Once per session</span> → one-time power for the whole game.</p>
+                        <p><span class="font-semibold text-blue-600">🔵 Special condition</span> → limited pool or only usable in certain phases.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="artifacts" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Artifact Guide</h2>
+                 <p class="mb-6 text-gray-700">Certain roles have exclusive access to key documents at specific times to guide the process.</p>
+                 <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="p-3 font-semibold text-gray-700">Role</th>
+                                <th class="p-3 font-semibold text-gray-700">Exclusive Artifact</th>
+                                <th class="p-3 font-semibold text-gray-700">When / How</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 text-gray-700">
+                            <tr><td class="p-3">Moderator</td><td class="p-3"><strong>Cheatsheet</strong></td><td class="p-3">Has full access throughout to keep team aligned.</td></tr>
+                            <tr><td class="p-3">Story Anchor</td><td class="p-3"><strong>Het Verhaal van de App (Story)</strong></td><td class="p-3">Everyone may read in first 30 mins. After that, exclusive access for Story Anchor.</td></tr>
+                            <tr><td class="p-3">Archivist</td><td class="p-3"><strong>Event Library</strong></td><td class="p-3">Locked until after the first big picture walkthrough.</td></tr>
+                            <tr><td class="p-3">Boundary Builder</td><td class="p-3"><strong>Bounded Contexts Page</strong></td><td class="p-3">Leads boundary discovery using this decision tree.</td></tr>                            
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="checklist" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Outputs Checklist</h2>
+                <p class="mb-4 text-gray-700">By the end, ensure you have photographed:</p>
+                 <ul class="list-disc list-inside space-y-3 columns-1 md:columns-2 text-gray-600">
+                    <li><strong>Big Picture wall:</strong> ordered events, chapters, actors/systems.</li>
+                    <li><strong>Bounded Context sketch:</strong> context lines and names.</li>
+                    <li><strong>Process model:</strong> for minimum one slice.</li>
+                    <li><strong>Software design slice:</strong> aggregates with their commands and events.</li>                    
+                    <li><strong>Exit tickets</strong> collected.</li>
+                </ul>
+            </section>
+
+            <section id="playbook" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Moderator Playbook & FAQ</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Quick Playbook</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li>Say: “<strong>Events first, correctness later.</strong>”</li>
+                            <li>Enforce <strong>past tense</strong> for events and <strong>verb+noun</strong> for commands.</li>
+                            <li>Protect <strong>guardrails</strong> (Canon & Archive).</li>
+                            <li>If momentum drops, ask: “What happened right before this?” or “Who owns this data?”</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">FAQ / Edge Cases</h3>
+                         <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li><strong>Disagreement on boundaries?</strong> Mark both proposals as dotted, add a hotspot “Boundary TBD”, and decide later.</li>
+                            <li><strong>Running late?</strong> Prioritize capturing the Big Picture and the top problems.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="appendix" class="card p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Facilitator Appendix</h2>
+                <div class="bg-blue-50 border border-blue-200 text-blue-800 p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-900 mb-3">"Walk the room quietly; observe, don’t lead."</h3>
+                    <p class="mb-4">As a facilitator, you are not a player. Your role is to be a guardian. You ensure time discipline, learning outcomes, and fairness, but you don’t interfere with the student-led play.</p>
+                    <p class="font-semibold">If a group is stuck, ask questions like, "Who has a token that could help here?" or "What does the cheatsheet say for this phase?"</p>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+
+

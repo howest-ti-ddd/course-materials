@@ -1,0 +1,1306 @@
+{
+  "version": "2.1.0",
+  "roles": [
+    {
+      "meta": {
+        "id": 1,
+        "name": "The Architect's Apprentice",
+        "subtitle": "Aggregate Builder",
+        "emoji": "🧱",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "junior backend dev, analytical, perfectionist, loves diagrams",
+        "expectation": "Participate fully, but also look for clusters of events/commands that could form an Aggregate.",
+        "example": "Seeing \"Observation Registered\" and \"Photo Uploaded,\" suggest an \"Observation\" Aggregate.",
+        "superpower": "Spot natural Aggregate boundaries",
+        "action": "Group commands and events, propose Aggregates",
+        "why": "Helps reveal bounded responsibilities",
+        "reminder": "You storm events, policies, hotspots like everyone else",
+        "quote": "Structure is not a prison, it's freedom with walls."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You may draw a \"box\" around clusters once per round — but explain why first",
+          "tokens": [
+            {
+              "id": "box-token",
+              "name": "Box Token",
+              "intent": "draw boundary box",
+              "description": "draw boundary box",
+              "frequency": "perRound",
+              "limit": 1,
+              "ui": {
+                "badge": "🟨",
+                "hint": "🟨 Once per round"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Spot Aggregates (normal duty)",
+            "description": "The Architect's Apprentice looks for natural clusters of events and commands that belong together. Their job is to spot when several stickies really represent a single domain concept.",
+            "examples": [
+              "Orders have: 'Place Order' (Command) → 'Order Placed' (Event). These belong together inside an **Order Aggregate**."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Box Token (special, once per round)",
+            "description": "Once per round, the Apprentice may **draw a box** around a cluster of stickies to propose an Aggregate. But before boxing, they must explain *why this cluster belongs together*.",
+            "examples": [
+              "Original cluster: 'Take Payment', 'Payment Processed', 'Refund Issued'. Box Token → becomes **Payment Aggregate**."
+            ],
+            "tokenRef": "box-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Software.AggregateReplacement",
+            "description": "Software Design – Replace Systems with Aggregates",
+            "example": "Replace \"AI System\" with \"BirdObservation.\""
+          },
+          {
+            "phase": "Software.DefineAggregates",
+            "description": "Software Design – Define Aggregates",
+            "example": "\"Observation Registered\" + \"Photo Uploaded\" → \"Observation\" Aggregate."
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 2,
+        "name": "The Policy Prober",
+        "emoji": "🔮",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "QA engineer, curious, persistent question-asker",
+        "expectation": "Storm normally, but also uncover implicit rules.",
+        "example": "After \"Observation Shared,\" ask: \"What if it's rare?\" → policy: \"Blur location.\"",
+        "superpower": "Sniff out hidden business rules",
+        "action": "Ask \"Whenever X happens, then what?\" Add lilac stickies",
+        "why": "Exposes policies driving behavior",
+        "reminder": "You storm broadly, your bonus is making rules visible",
+        "quote": "The rule you don't see is the one that bites hardest."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Every time you add a policy, phrase it aloud as \"Whenever …, then ….\"",
+          "tokens": [
+            {
+              "id": "whenever-then-token",
+              "name": "Whenever... Then... Token",
+              "intent": "formalize hidden rules",
+              "description": "formalize hidden rules",
+              "frequency": "unlimited",
+              "limit": null,
+              "ui": {
+                "badge": "🟩",
+                "hint": "🟩 Unlimited but formalized"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Probe for Hidden Rules (normal duty)",
+            "description": "The Policy Prober's job is to **sniff out implicit rules**. They constantly ask: *'Whenever X happens, then what?'* When a rule emerges, they write it down as a lilac Policy sticky.",
+            "examples": [
+              "Event: 'Order Placed'. Prober: 'Whenever an order is placed, then what?' Sticky: 'Check Customer Credit' (Policy)."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Whenever… Then… Token (special, unlimited but formalized)",
+            "description": "Every time they add a Policy, they must **say it aloud in the format**: 'Whenever [Event], then [Rule].' This forces the group to agree the rule is explicit and valid.",
+            "examples": [
+              "Must verbalize: 'Whenever Order Placed, then Check Customer Credit.'"
+            ],
+            "tokenRef": "whenever-then-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Process.ApplyGrammar",
+            "description": "Process Modelling – Apply Grammar",
+            "example": "After \"Rare Bird Observed\" → add policy \"Blur location before sharing.\""
+          },
+          {
+            "phase": "Process.NonHappyPaths",
+            "description": "Process Modelling – Explore Non-Happy Paths",
+            "example": "\"Payment Received\" → \"What if it's late?\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 3,
+        "name": "The Command Constructor",
+        "emoji": "📘",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "detail-obsessed, playful but precise UX-to-dev",
+        "expectation": "Add stickies like others, but ensure commands are clear.",
+        "example": "Replace \"Check Photo\" with \"SubmitPhotoForIdentification.\"",
+        "superpower": "Sharpen vague commands into precise ones",
+        "action": "Challenge unclear verbs, suggest \"verb + noun\" commands",
+        "why": "Keeps intent sharp, aligns with CQRS",
+        "reminder": "You storm fully; your lens is precision",
+        "quote": "Say what you mean, mean what you say, or the code will misunderstand you."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You get one \"Command Rewrite Token\" to rename an unclear sticky",
+          "tokens": [
+            {
+              "id": "rewrite-token",
+              "name": "Rewrite Token",
+              "intent": "rename unclear command",
+              "description": "rename an unclear command sticky",
+              "frequency": "perSession",
+              "limit": 1,
+              "ui": {
+                "badge": "🟥",
+                "hint": "🟥 Once per session (each token)"
+              }
+            },
+            {
+              "id": "convert-token",
+              "name": "Convert Token",
+              "intent": "convert fake command to read model",
+              "description": "convert fake command to read model",
+              "frequency": "perSession",
+              "limit": 1,
+              "ui": {
+                "badge": "🟥",
+                "hint": "🟥 Once per session (each token)"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Sharpening Commands (normal duty)",
+            "description": "Commands must always be written as 'Verb + Noun'. The Command Constructor spots sloppy commands and fixes them. No permission needed — this is their everyday power.",
+            "examples": [
+              "❌ 'Bird Sighting' (looks like an event). ✅ 'Report Bird Sighting' (clear command)."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Rewrite Token + Convert Token (special, once per game each)",
+            "description": "**Rewrite Token**: Once per session, they may completely rename a fuzzy command. **Convert Token**: Once per session, fix queries written as commands by converting to Read Models.",
+            "examples": [
+              "Rewrite: 'Send Email' → 'Notify User of New Sighting'. Convert: ❌ 'Get Bird Species' → ✅ 'Bird Species Data' (green Read Model)."
+            ],
+            "tokenRef": "rewrite-token-convert-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Process.ApplyGrammar",
+            "description": "Process Modelling – Apply Grammar",
+            "example": "\"Check Photo\" → \"SubmitPhotoForIdentification.\""
+          },
+          {
+            "phase": "Process.RefineIterate",
+            "description": "Process Modelling – Refine Iterations",
+            "example": "\"Handle Bird Data\" → \"RegisterObservation.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 4,
+        "name": "The Error Explorer",
+        "emoji": "💥",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "senior dev, pragmatic, sarcastic edge-case hunter",
+        "expectation": "Contribute normally, but always ask: \"What could go wrong?\"",
+        "example": "After \"Payment Processed,\" ask: \"What if it fails?\" → \"Payment Failed.\"",
+        "superpower": "Uncover non-happy paths",
+        "action": "Add hotspots and compensating events",
+        "why": "Builds robust systems",
+        "reminder": "You storm fully; your bonus is resilience",
+        "quote": "Murphy was an optimist."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Each failure you add must also include at least one response",
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Process.NonHappyPaths",
+            "description": "Process Modelling – Non-Happy Paths",
+            "example": "\"Payment Processed\" → add \"Payment Failed.\""
+          },
+          {
+            "phase": "Refining.Hotspots",
+            "description": "Refining the Model – Hotspots",
+            "example": "\"Upload failed due to weak connectivity.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 5,
+        "name": "The Data Detective",
+        "emoji": "🕵️",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "data engineer, logical, patient puzzle-solver",
+        "expectation": "Storm fully, but also ask what data is needed for decisions.",
+        "example": "Before \"Suggestion Accepted,\" propose \"AI Identification Details\" read model.",
+        "superpower": "Focus on information needs",
+        "action": "Add green read models where data supports choices",
+        "why": "Connects decisions to queries",
+        "reminder": "You storm broadly; your gift is surfacing data needs",
+        "quote": "Without data, you're just another person with an opinion."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You can mark any event with a \"?\" to ask: \"What info is needed here?\"",
+          "tokens": [
+            {
+              "id": "question-mark-token",
+              "name": "Question Mark Token",
+              "intent": "trigger information needs discussion",
+              "description": "trigger information needs discussion",
+              "frequency": "unlimited",
+              "limit": null,
+              "ui": {
+                "badge": "🟩",
+                "hint": "🟩 Unlimited use"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Add Read Models (normal duty)",
+            "description": "The Data Detective always asks: *'What information is needed here?'* When a decision requires info, they add a green Read Model sticky.",
+            "examples": [
+              "At event 'Order Approved', they ask: 'What data supports approval?' → sticky: 'Customer Credit Score'."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Question Mark Token (special, unlimited use)",
+            "description": "They may place a '?' mark on any sticky to trigger discussion: *'What info is needed here?'*",
+            "examples": [
+              "Put '?' on 'Refund Processed' → forces group to ask: *'Who authorizes this? What data is needed?'*"
+            ],
+            "tokenRef": "question-mark-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Process.HumanIntervention",
+            "description": "Process Modelling – Human Intervention",
+            "example": "Before \"Accept Suggestion\" → add \"AI Identification Details.\""
+          },
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Refining the Model – Add Missing Read Models",
+            "example": "\"Renew Subscription\" → \"Current Plan Details.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 6,
+        "name": "The Boundary Builder",
+        "emoji": "🚧",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "solution architect, diplomatic big-picture thinker",
+        "expectation": "Storm like others, but spot language shifts or ownership changes.",
+        "example": "Split \"Observation Shared\" from \"Badge Earned\" → separate contexts.",
+        "superpower": "Look for potential Bounded Contexts",
+        "action": "Propose borders when language diverges",
+        "why": "Prevents muddled models",
+        "reminder": "You storm fully; your bonus is drawing lines",
+        "quote": "Good fences make good neighbors — and good software."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You can sketch a dotted line for a boundary, but must explain",
+          "tokens": [
+            {
+              "id": "dotted-line-token",
+              "name": "Dotted Line Token",
+              "intent": "draw boundary",
+              "description": "draw boundary",
+              "frequency": "unlimited",
+              "limit": null,
+              "ui": {
+                "badge": "🟩",
+                "hint": "🟩 Unlimited"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Spot Boundaries (normal duty)",
+            "description": "The Boundary Builder looks for shifts in language, ownership, or responsibility. When terms or actors change, they propose Bounded Contexts.",
+            "examples": [
+              "'Order Placed' in Sales vs. 'Shipping Request' in Logistics → clear context split."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Dotted Line Token (special, unlimited but must justify)",
+            "description": "They may **draw a dotted boundary line** around groups of stickies — but only if they explain why. This makes invisible team boundaries visible in the model.",
+            "examples": [
+              "Draw dotted line splitting Sales (customer-facing) from Logistics (warehouse)."
+            ],
+            "tokenRef": "dotted-line-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Big Picture – Identify Pivotal Events",
+            "example": "Community terms vs. gamification terms."
+          },
+          {
+            "phase": "Software.StartFromBoundedContext",
+            "description": "Software Design – Start from Bounded Context",
+            "example": "\"Bird Recognition\" vs. \"Community Sharing.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 7,
+        "name": "The Event Gardener",
+        "emoji": "🌱",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "minimalist fullstack dev, tidy and thoughtful",
+        "expectation": "Place stickies, but also tidy vague or duplicate events.",
+        "example": "Replace \"AI Output Generated\" with \"Bird Identification Suggested.\"",
+        "superpower": "Maintain event clarity",
+        "action": "Rename events into meaningful past tense",
+        "why": "Strengthens Ubiquitous Language",
+        "reminder": "You storm broadly; your gift is pruning",
+        "quote": "Words are seeds. Plant them carefully."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You get two \"Rename Stickers\" to fix unclear events",
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.ChaoticExploration",
+            "description": "Big Picture – Chaotic Exploration",
+            "example": "Change \"AI Output\" → \"Bird Identification Suggested.\""
+          },
+          {
+            "phase": "BigPicture.EnforceTimeline",
+            "description": "Big Picture – Enforce Timeline",
+            "example": "\"Observation Logged\" and \"Observation Registered.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 8,
+        "name": "The Flow Mapper",
+        "emoji": "🧩",
+        "roleFamily": "developer"
+      },
+      "profile": {
+        "persona": "energetic process geek, dramatic storyteller",
+        "expectation": "Storm fully, but also trace event flows.",
+        "example": "Notice \"Subscription Expired\" has no follow-up → ask what's next.",
+        "superpower": "See process choreography",
+        "action": "Narrate chains, point out breaks or loops",
+        "why": "Ensures complete flow",
+        "reminder": "You storm broadly; your lens is flow",
+        "quote": "A river without bends is just a pipe."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Once per round, narrate the whole timeline",
+          "tokens": [
+            {
+              "id": "narration-token",
+              "name": "Narration Token",
+              "intent": "narrate full timeline",
+              "description": "narrate full timeline",
+              "frequency": "perRound",
+              "limit": 1,
+              "ui": {
+                "badge": "🟨",
+                "hint": "🟨 Once per round"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Narrate Flows (normal duty)",
+            "description": "The Flow Mapper traces event chains forward and backward. They keep the story continuous, checking for missing steps.",
+            "examples": [
+              "'Order Placed → Payment Processed → Order Shipped'."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Narration Token (special, once per round)",
+            "description": "Once per round, they may **take the floor to narrate the whole timeline/story** aloud. This reveals breaks, loops, or missing events.",
+            "examples": [
+              "User logs in → Browses catalog → Adds to cart → Places order → Payment processed → Shipping initiated."
+            ],
+            "tokenRef": "narration-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.ExplicitWalkthrough",
+            "description": "Big Picture – Explicit Walkthrough",
+            "example": "From \"App Downloaded\" → \"Observation Shared.\""
+          },
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Process Modelling – Backwards Walkthrough",
+            "example": "\"Bird Identified\" must come after \"Photo Uploaded.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 9,
+        "name": "The Storyteller",
+        "emoji": "📖",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "warm, chatty domain veteran",
+        "expectation": "Storm normally, but narrate in coherent past tense.",
+        "example": "Narrate from \"App Downloaded\" to \"Observation Shared.\"",
+        "superpower": "Keep events as a story",
+        "action": "Sequence stickies, retell the process",
+        "why": "Ensures chronological consistency",
+        "reminder": "You storm fully; your gift is narration",
+        "quote": "Those who tell the story rule the storm."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "At checkpoints, retell the story aloud",
+          "tokens": [
+            {
+              "id": "story-baton",
+              "name": "Story Baton",
+              "intent": "control narrative flow during walkthroughs",
+              "description": "control narrative flow during walkthroughs",
+              "frequency": "duringPhase",
+              "limit": null,
+              "ui": {
+                "badge": "🔵",
+                "hint": "🔵 During walkthroughs"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Tell the Story (normal duty)",
+            "description": "The Storyteller phrases events in **past tense** and keeps the flow consistent.",
+            "examples": [
+              "❌ 'Approve Order' ✅ 'Order Approved'"
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Story Baton (special, during walkthroughs)",
+            "description": "The Storyteller holds the Story Baton (marker or card). Only the Baton-holder may narrate during walkthroughs. They can **pass the baton** to hand narration to others. This ensures the story stays coherent and not interrupted by multiple narrators.",
+            "examples": [
+              "Controls narrative flow, can pass baton to others when appropriate."
+            ],
+            "tokenRef": "story-baton"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.ExplicitWalkthrough",
+            "description": "Big Picture – Explicit Walkthrough",
+            "example": "\"First, the app was downloaded, then the user registered, then shared an observation.\""
+          },
+          {
+            "phase": "BigPicture.ReverseNarrative",
+            "description": "Big Picture – Reverse Narrative",
+            "example": "\"If the bird was identified, how did we get the photo first?\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 10,
+        "name": "The Problem Spotter",
+        "emoji": "🚨",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "operations manager, blunt but practical",
+        "expectation": "Storm broadly, but highlight pain points.",
+        "example": "Add hotspot at \"Photo Uploaded\" → bad connectivity.",
+        "superpower": "Detect weak spots",
+        "action": "Add red hotspots at pain points",
+        "why": "Surfaces bottlenecks and failures",
+        "reminder": "You storm like everyone else; your gift is friction detection",
+        "quote": "A chain breaks at its weakest link — find it."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Limited red hotspots — choose carefully!",
+          "tokens": [
+            {
+              "id": "hotspot-tokens",
+              "name": "Hotspot Tokens",
+              "intent": "mark pain points with red stickies",
+              "description": "mark pain points with red stickies",
+              "frequency": "unlimited",
+              "limit": null,
+              "ui": {
+                "badge": "🔵",
+                "hint": "🔵 Limited pool (3-5)"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Spot Problems (normal duty)",
+            "description": "The Problem Spotter flags pain points with red Hotspots. They must frame issues as outcomes, not blame.",
+            "examples": [
+              "'Shipment Delayed → Customer Refund Issued'."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Hotspot Tokens (special, limited use)",
+            "description": "They have only a few red stickies (e.g., 3–5) to use in a session. They must choose the **most critical issues**.",
+            "examples": [
+              "They can't mark every sticky — only the biggest bottlenecks (like 'Payment Gateway Failed')."
+            ],
+            "tokenRef": "hotspot-tokens"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.ChaoticExploration",
+            "description": "Big Picture – Chaotic Exploration",
+            "example": "\"Uploads fail in forests with weak internet.\""
+          },
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Big Picture – Identify Problems & Opportunities",
+            "example": "\"Duplicate bird entries cause confusion.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 11,
+        "name": "The Opportunity Finder",
+        "emoji": "💡",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "optimistic product owner, future-focused",
+        "expectation": "Storm fully, but turn problems into ideas.",
+        "example": "Suggest \"Offline Sync\" after hotspot on uploads.",
+        "superpower": "Turn pain into opportunity",
+        "action": "Add green opportunity stickies",
+        "why": "Encourages innovation",
+        "reminder": "You storm broadly; your gift is improvement",
+        "quote": "Every crack is a doorway for light."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Every hotspot you see must inspire at least one opportunity",
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Big Picture – Identify Problems & Opportunities",
+            "example": "\"Upload fails often\" → \"Add offline sync mode.\""
+          },
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Big Picture – Arrow Voting",
+            "example": "Push for \"Gamified Sharing\" to increase engagement."
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 12,
+        "name": "The Rule Revealer",
+        "emoji": "📜",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "compliance officer, calm but strict",
+        "expectation": "Contribute fully, but phrase hidden rules explicitly.",
+        "example": "\"Whenever subscription expires, block premium but preserve history.\"",
+        "superpower": "Reveal hidden rules",
+        "action": "Add lilac policies with clear conditions",
+        "why": "Makes decision logic explicit",
+        "reminder": "You storm broadly; your lens is rules",
+        "quote": "Rules are the skeleton of reality — ignore them, and things collapse."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Every policy must be spoken aloud to the group",
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Process.ApplyGrammar",
+            "description": "Process Modelling – Apply Grammar",
+            "example": "\"Whenever subscription expires → block premium features.\""
+          },
+          {
+            "phase": "Process.RefineIterate",
+            "description": "Process Modelling – Refine and Iterate",
+            "example": "\"Flagged photos must be manually approved by admin.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 13,
+        "name": "The Story Anchor",
+        "subtitle": "Canon Keeper",
+        "emoji": "📚",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "biology + CS minor, passionate birdwatcher; carries the official app story and treats it as the single source of truth",
+        "expectation": "Storm fully like everyone else and keep the model aligned with the Birdspot App Story. When the group invents features/rules, check the canon first: \"Is this in the story? If not, do we add it, or mark it as a future idea?\"",
+        "example": "When someone adds \"Auto-publish identified photos,\" Iris points at the story: \"Canon says: validation may be required; rare species get blurred unless user opts in.\" She then adds the correct policy and a hotspot if there's a conflict.",
+        "superpower": "Canon recall. Instantly map story sentences to Events/Policies/Commands and correct gaps",
+        "action": "Quote → Sticky: Turn story clauses into stickies with precise wording. Canon Check: When a sticky conflicts with the story, add a red Hotspot + a note. Delta Log: Use white stickies labeled \"Out of Canon\" for ideas not in the story",
+        "why": "The story already encodes domain expectations. Treating it as canon avoids fantasy features, preserves ethical rules, and makes the model consistent and teachable",
+        "reminder": "Call the sticky, not the person. Partner with Storyteller (narration), Language Custodian (wording), Rule Revealer (turn canon into policies), and Reality Checker (field constraints)",
+        "quote": "We don't guess the domain; we read it."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You hold the \"Canon Card.\" You may play it 3 times to: (a) quote the canon and correct a sticky, (b) add a Canon Policy/Event/Command the group missed, or (c) tag an Out-of-Canon idea. Each play must include a verbatim canon snippet on a tiny note (max 10 words)",
+          "tokens": [
+            {
+              "id": "canon-cards",
+              "name": "Canon Cards",
+              "intent": "Quote, Add, or Tag",
+              "description": "Quote, Add, or Tag",
+              "frequency": "perSession",
+              "limit": 3,
+              "ui": {
+                "badge": "🟥",
+                "hint": "🟥 3 per session"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Keep Canon (normal duty)",
+            "description": "The Story Anchor checks stickies against the official story. They ensure the model stays aligned with 'Het Verhaal van de App'.",
+            "examples": [
+              "Cross-reference stickies with the canonical story to maintain consistency."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Canon Cards (special, 3 per game)",
+            "description": "They can play one of 3 Canon Cards: **1. Quote Canon** - Correct a sticky using ≤10 words from story. **2. Add Canon Sticky** - Add missing event/command/policy from story. **3. Tag Out-of-Canon** - Label made-up sticky as 'not from story'.",
+            "examples": [
+              "Quote: Replace 'Photo Uploaded' with 'Photo Sent to AI Service'. Add: 'Location Permission Requested'. Tag: 'Bird Trading Marketplace' as Out of Canon."
+            ],
+            "tokenRef": "canon-cards"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 14,
+        "name": "The Language Custodian",
+        "emoji": "🗣️",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "witty linguist-analyst, slightly pedantic",
+        "expectation": "Storm fully, but ensure consistent terminology.",
+        "example": "Replace \"Observation Logged\" and \"Record Bird Sighting\" → \"Observation Registered.\"",
+        "superpower": "Guard Ubiquitous Language",
+        "action": "Flag mismatches, propose glossary items",
+        "why": "Prevents miscommunication",
+        "reminder": "You storm broadly; your gift is wordsmithing",
+        "quote": "Words build worlds."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You may \"ring the bell\" whenever duplicate terms appear",
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.ChaoticExploration",
+            "description": "Big Picture – Chaotic Exploration",
+            "example": "\"Register Bird\" → \"Bird Registered.\""
+          },
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Big Picture – Swimlanes / Actors & Systems",
+            "example": "\"Birdwatcher\" instead of \"End User.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 15,
+        "name": "The Reality Checker",
+        "emoji": "🛠️",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "field worker, pragmatic, no-nonsense",
+        "expectation": "Storm broadly, but ground it in reality.",
+        "example": "Point out poor forest internet makes \"Immediate Upload\" unrealistic.",
+        "superpower": "Compare model vs. real-world practice",
+        "action": "Call out unrealistic events, back with real examples",
+        "why": "Prevents fantasy design",
+        "reminder": "You storm fully; your bonus is realism",
+        "quote": "Reality bats last."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Once per round, veto one sticky — but justify with a story",
+          "tokens": [
+            {
+              "id": "veto-token",
+              "name": "Veto Token",
+              "intent": "remove unrealistic sticky",
+              "description": "remove unrealistic sticky",
+              "frequency": "perRound",
+              "limit": 1,
+              "ui": {
+                "badge": "🟨",
+                "hint": "🟨 Once per round"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Ground in Reality (normal duty)",
+            "description": "The Reality Checker keeps the model practical. They call out unrealistic assumptions with real-world examples.",
+            "examples": [
+              "'Upload always succeeds' → they object: 'No, mobile data drops in the field.'"
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Veto Token (special, once per round)",
+            "description": "Once per round, they may **veto 1 sticky** as unrealistic. But they must justify it with a real-world story.",
+            "examples": [
+              "Veto: 'Upload Instant' → replace with 'Upload Attempted' + 'Upload Failed Notification Received'."
+            ],
+            "tokenRef": "veto-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.ExplicitWalkthrough",
+            "description": "Big Picture – Explicit Walkthrough",
+            "example": "\"Immediate Upload\" is not feasible with poor forest internet."
+          },
+          {
+            "phase": "Process.NonHappyPaths",
+            "description": "Process Modelling – Non-Happy Paths",
+            "example": "\"Observation delayed because ranger must verify manually.\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 16,
+        "name": "The Persona Player",
+        "emoji": "🎭",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "intern, empathetic, playful roleplayer",
+        "expectation": "Storm fully, but roleplay stakeholders.",
+        "example": "After \"Account Blocked,\" ask: \"Would the user get warned first?\"",
+        "superpower": "See events from human eyes",
+        "action": "Step into persona shoes, ask empathy questions",
+        "why": "Keeps user/stakeholder needs in view",
+        "reminder": "You storm fully; your bonus is empathy",
+        "quote": "Walk a mile in their shoes before coding their path."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Once per round, speak only in-character",
+          "tokens": [
+            {
+              "id": "in-character-token",
+              "name": "In-Character Token",
+              "intent": "roleplay stakeholder perspective",
+              "description": "roleplay stakeholder perspective",
+              "frequency": "perRound",
+              "limit": 1,
+              "ui": {
+                "badge": "🟨",
+                "hint": "🟨 Once per round"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Roleplay Stakeholders (normal duty)",
+            "description": "The Persona Player steps into personas — user, admin, sponsor — to expose empathy and trade-offs.",
+            "examples": [
+              "'As a novice birder, I don't understand scientific species codes.'"
+            ]
+          },
+          {
+            "type": "special",
+            "title": "In-Character Token (special, once per round)",
+            "description": "Once per round, they must speak **only in-character** for a few minutes.",
+            "examples": [
+              "Roleplay: 'I'm a field ranger, and I'd be angry if GPS required exact coordinates in a conservation zone.'"
+            ],
+            "tokenRef": "in-character-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "BigPicture.PeopleAndSystems",
+            "description": "Big Picture – Add People & Systems",
+            "example": "\"As a birdwatcher, I'd want immediate feedback before sharing.\""
+          },
+          {
+            "phase": "Process.HumanIntervention",
+            "description": "Process Modelling – Human Intervention",
+            "example": "\"As an admin, would I reject this without explanation?\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 17,
+        "name": "The Detail Diver",
+        "emoji": "🔍",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "meticulous analyst, curious about edge cases",
+        "expectation": "Storm broadly, but investigate ambiguous spots.",
+        "example": "Ask: \"What if two users upload the same photo?\"",
+        "superpower": "Focus on edge cases",
+        "action": "Drill down on specifics and rare conditions",
+        "why": "Captures details that change design",
+        "reminder": "You storm fully; your bonus is precision",
+        "quote": "The devil isn't in the details — the truth is."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "You can \"pause the game\" once to deep-dive into a detail",
+          "tokens": [
+            {
+              "id": "pause-token",
+              "name": "Pause Token",
+              "intent": "stop to deep dive",
+              "description": "stop to deep dive",
+              "frequency": "perSession",
+              "limit": 1,
+              "ui": {
+                "badge": "🟥",
+                "hint": "🟥 Once per session"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Investigate Edge Cases (normal duty)",
+            "description": "The Detail Diver asks precise questions about timing, ownership, and rare scenarios. Micro-script: 1. When exactly does this occur? 2. Who owns the state/data? 3. What if two happen at once?",
+            "examples": [
+              "'What if two users upload the same photo?'"
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Pause Token (special, once per session)",
+            "description": "Once per game, they may 'pause the storm' to deep-dive into a detail. Rule: Pause must end with either a clear decision OR a parking-lot note if unresolved.",
+            "examples": [
+              "Pause: 'What if two users upload at the same time?' → Decision: 'System queues uploads.'"
+            ],
+            "tokenRef": "pause-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Big Picture – Enforce the Timeline",
+            "example": "\"Can an observation really be shared before identification?\""
+          },
+          {
+            "phase": "Process.NonHappyPaths",
+            "description": "Process Modelling – Non-Happy Paths",
+            "example": "\"What if two people upload the same bird photo?\""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 18,
+        "name": "The Archivist",
+        "subtitle": "Event Librarian",
+        "emoji": "🗂️",
+        "roleFamily": "domainExpert"
+      },
+      "profile": {
+        "persona": "historian-type, methodical, loves archives",
+        "expectation": "Storm like others, but later cross-check against an archive list.",
+        "example": "Mid-game, bring up \"User Registered\" missing from board.",
+        "superpower": "Compare to prepared \"event archive\"",
+        "action": "Propose missing events after discussion",
+        "why": "Ensures critical events aren't forgotten",
+        "reminder": "You storm fully; your gift is validation",
+        "quote": "History doesn't repeat, but it rhymes — check the record."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": "Archived events may only be added if the group agrees",
+          "tokens": [
+            {
+              "id": "archive-unlock-token",
+              "name": "Archive Unlock Token",
+              "intent": "access prepared event archive",
+              "description": "access prepared event archive",
+              "frequency": "duringPhase",
+              "limit": null,
+              "ui": {
+                "badge": "🔵",
+                "hint": "🔵 After 1st walkthrough"
+              }
+            }
+          ]
+        },
+        "powers": [
+          {
+            "type": "normal",
+            "title": "Check Against Archive (normal duty)",
+            "description": "The Archivist cross-checks the session against their small 'event archive' list. They ensure no critical events are forgotten.",
+            "examples": [
+              "Cross-reference current stickies with prepared archive list of essential events."
+            ]
+          },
+          {
+            "type": "special",
+            "title": "Archive Unlock Token (special, once per session)",
+            "description": "After the **first Explicit Walkthrough only**, they may unlock the archive. They can then propose up to 5–10 missing events. Rule: each proposed event requires group discussion + approval before adding.",
+            "examples": [
+              "Archive item: 'Account Created' was missing. Archivist: 'The archive shows we need this event — should we add it?'"
+            ],
+            "tokenRef": "archive-unlock-token"
+          }
+        ]
+      },
+      "usage": {
+        "keyMoments": [
+          {
+            "phase": "Refining.AfterFirstPass",
+            "description": "Refining the Model – After First Pass",
+            "example": "Add \"User Registered\" if it's missing from the flow."
+          },
+          {
+            "phase": "Discussion.Trigger",
+            "description": "Discussion Trigger",
+            "example": ""
+          }
+        ]
+      }
+    },
+    {
+      "meta": {
+        "id": 1,
+        "name": "The Navigator",
+        "emoji": "🧭",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "calm and collected, loves maps, pragmatic leader",
+        "expectation": "Keeps the group on track and oriented in the timeline when discussions drift",
+        "superpower": "Keeps the group on track and oriented in the timeline when discussions drift",
+        "quote": "If you don't know where you're going, every sticky will take you there."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 2,
+        "name": "The Energizer",
+        "emoji": "🔥",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "high-energy, extroverted, thrives on group dynamics",
+        "expectation": "Brings fun and energy when the group slows down, injects games or energizers",
+        "superpower": "Brings fun and energy when the group slows down, injects games or energizers",
+        "quote": "Storming without energy is just raining."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 3,
+        "name": "The Questioner",
+        "emoji": "🧐",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "philosopher type, loves asking \"why\"",
+        "expectation": "Challenges assumptions, keeps asking deeper questions to reveal hidden truths",
+        "superpower": "Challenges assumptions, keeps asking deeper questions to reveal hidden truths",
+        "quote": "Every answer is just the start of the next question."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 4,
+        "name": "The Visualizer",
+        "emoji": "🎨",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "creative, sketchbook always at hand, loves visuals",
+        "expectation": "Draws diagrams, icons, or quick doodles to help the group see connections",
+        "superpower": "Draws diagrams, icons, or quick doodles to help the group see connections",
+        "quote": "If you can't see it, you can't align on it."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 5,
+        "name": "The Timekeeper",
+        "emoji": "🕰️",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "organized, punctual, disciplined",
+        "expectation": "Manages timeboxes and keeps the group moving forward without rushing too much",
+        "superpower": "Manages timeboxes and keeps the group moving forward without rushing too much",
+        "quote": "A storm without limits becomes a hurricane."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 6,
+        "name": "The Joker",
+        "emoji": "🤡",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "comedian spirit, loves wordplay, breaks tension with humor",
+        "expectation": "Lightens up heated discussions, makes boring parts fun with jokes and exaggerations",
+        "superpower": "Lightens up heated discussions, makes boring parts fun with jokes and exaggerations",
+        "quote": "If we can laugh at it, we can fix it."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 7,
+        "name": "The Diplomat",
+        "emoji": "🤝",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "empathetic, calm negotiator, mediator of conflicts",
+        "expectation": "Resolves tension between participants, makes sure all voices are heard",
+        "superpower": "Resolves tension between participants, makes sure all voices are heard",
+        "quote": "Every voice adds a note to the storm's music."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    },
+    {
+      "meta": {
+        "id": 8,
+        "name": "The Sage",
+        "emoji": "🧙",
+        "roleFamily": "moderator"
+      },
+      "profile": {
+        "persona": "wise, experienced, tells stories from past projects",
+        "expectation": "Shares wisdom at the right time, uses parables and metaphors to clarify complexity",
+        "superpower": "Shares wisdom at the right time, uses parables and metaphors to clarify complexity",
+        "quote": "The storm passes, but the lessons remain."
+      },
+      "mechanics": {
+        "gameRules": {
+          "mechanic": null,
+          "tokens": []
+        },
+        "powers": []
+      },
+      "usage": {
+        "keyMoments": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Storming Rulebook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/fullcards.css">
+</head>
+
+<body class="text-gray-800">
+
+    <!-- Hamburger Menu Button -->
+    <button id="menu-btn" class="fixed top-4 left-4 z-50 p-3 bg-white rounded-full text-gray-700 hover:bg-gray-100 transition-colors shadow-lg border border-gray-200">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+    </button>
+
+    <!-- Slide-in Menu -->
+    <div id="side-menu" class="fixed top-0 left-0 h-full w-72 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[60] p-6 flex flex-col border-r border-gray-200">
+         <div class="flex items-center justify-between mb-8">
+            <h3 class="font-bold text-gray-800 text-xl">Navigation</h3>
+            <button id="close-btn" class="p-2 text-gray-500 hover:text-gray-800">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <nav>
+            <ul class="space-y-2" id="nav-links">
+                <li><a href="#" data-load="rules.html" class="nav-link block p-3 rounded-lg hover:bg-gray-100 font-medium text-gray-700 transition-colors">📋 Rules</a></li>
+                <li><a href="#" data-load="roles.html" class="nav-link block p-3 rounded-lg hover:bg-gray-100 font-medium text-gray-700 transition-colors">🎭 Roles</a></li>
+                <li><a href="#" data-load="story.html" class="nav-link block p-3 rounded-lg hover:bg-gray-100 font-medium text-gray-700 transition-colors">📖 Story</a></li>
+                <li><a href="#" data-load="bounded-context.html" class="nav-link block p-3 rounded-lg hover:bg-gray-100 font-medium text-gray-700 transition-colors">🏗️ Bounded Context</a></li>
+                <li><a href="#" data-load="cheatsheet.html" class="nav-link block p-3 rounded-lg hover:bg-gray-100 font-medium text-gray-700 transition-colors">📝 Cheatsheet</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"></div>
+
+    <div class="max-w-screen-xl mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight">
+                Event Storming Rulebook
+            </h1>
+            <p class="mt-4 text-lg text-gray-600">Your guide to mastering collaborative domain discovery.</p>
+        </header>
+
+        <div class="flex justify-end mb-6 no-print">
+            <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg shadow hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4"></path>
+                    <path d="M6 13h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"></path>
+                    <path d="M6 17h12"></path>
+                </svg>
+                <span>Print current view</span>
+            </button>
+        </div>
+
+        <main id="content" class="w-full space-y-8">
+            <div class="text-center py-12">
+                <p class="text-lg text-gray-600">Select Rules or Roles from the menu to get started.</p>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="assets/fullcards.js"></script>
+    <script src="assets/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flow Diagram</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1c1c1c;
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+      padding: 2.5rem 3rem;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      max-width: 65ch;
+      line-height: 1.6;
+      color: #3a3a3a;
+    }
+
+    .status {
+      margin-top: 0;
+      font-size: 0.95rem;
+      color: #6b7280;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .controls button {
+      appearance: none;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: #1d4ed8;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: transform 0.15s ease, background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .controls button:hover,
+    .controls button:focus-visible {
+      background: #1e40af;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .controls button:active {
+      transform: translateY(0);
+    }
+
+    .diagram-wrapper {
+      position: relative;
+      overflow: auto;
+      background: #fdfaf5;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      min-height: 800px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .diagram-inner {
+      display: inline-block;
+    }
+
+    .diagram-wrapper svg {
+      width: 100%;
+      min-width: 1000px;
+      height: auto;
+      max-width: none;
+    }
+
+    pre#diagram {
+      margin: 0;
+      min-width: 1000px;
+      font-size: 1.1rem;
+      display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+
+      pre#diagram {
+        min-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Flow Overview</h1>
+    <p>
+      This page renders <code>flow.mmd</code> using Mermaid so you can review the actor → command → system → event
+      interactions in context. Use the buttons to adjust the zoom if you need the diagram larger or smaller.
+    </p>
+    <p class="status" id="status" aria-live="polite">Loading diagram…</p>
+    <div class="controls" role="group" aria-label="Diagram zoom controls">
+      <button type="button" id="zoom-in">Zoom in</button>
+      <button type="button" id="zoom-out">Zoom out</button>
+      <button type="button" id="zoom-reset">Reset</button>
+    </div>
+    <div class="diagram-wrapper" role="region" aria-label="Flow diagram">
+      <div class="diagram-inner">
+        <pre id="diagram" class="mermaid"></pre>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+    const statusEl = document.getElementById("status");
+    const diagramEl = document.getElementById("diagram");
+    const zoomInBtn = document.getElementById("zoom-in");
+    const zoomOutBtn = document.getElementById("zoom-out");
+    const zoomResetBtn = document.getElementById("zoom-reset");
+
+    let currentScale = 0.54;
+
+    function applyScale() {
+      const svg = diagramEl.querySelector("svg");
+      if (!svg) return;
+      svg.style.transformOrigin = "top left";
+      svg.style.transform = `scale(${currentScale})`;
+    }
+
+    function setScale(nextScale) {
+      currentScale = Math.min(4, Math.max(0.5, Number(nextScale)));
+      applyScale();
+    }
+
+    async function renderDiagram() {
+      try {
+        const response = await fetch("./flow.mmd", { cache: "no-cache" });
+        if (!response.ok) {
+          throw new Error(`Request failed: ${response.status}`);
+        }
+
+        const definition = await response.text();
+        diagramEl.textContent = definition;
+
+        await mermaid.run({ nodes: [diagramEl] });
+
+        const svg = diagramEl.querySelector("svg");
+        if (svg) {
+          svg.setAttribute("role", "img");
+          svg.setAttribute("aria-label", "Actor, command, system and event flow diagram");
+          svg.style.fontSize = "26px";
+        }
+
+        applyScale();
+        statusEl.textContent = "Diagram loaded. Use the zoom controls to adjust size.";
+      } catch (error) {
+        console.error("Mermaid render failed", error);
+        statusEl.textContent = "Could not load the diagram. Check the console for details.";
+      }
+    }
+
+    zoomInBtn?.addEventListener("click", () => setScale(currentScale + 0.2));
+    zoomOutBtn?.addEventListener("click", () => setScale(currentScale - 0.2));
+    zoomResetBtn?.addEventListener("click", () => setScale(0.54));
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "forest",
+      securityLevel: "strict",
+      fontFamily: "Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+      themeVariables: {
+        fontSize: "26px",
+        lineHeight: "34px",
+        noteFontSize: "24px",
+        actorTextSize: "26px",
+        clusterBkg: "#fdf1df"
+      },
+      flowchart: {
+        nodeSpacing: 120,
+        rankSpacing: 140,
+        padding: 28,
+        useMaxWidth: false,
+        htmlLabels: true
+      }
+    });
+
+    renderDiagram();
+  </script>
+</body>
+</html>

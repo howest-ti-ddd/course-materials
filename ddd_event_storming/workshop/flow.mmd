@@ -1,0 +1,21 @@
+flowchart TB
+    Actor["Actor"] --> Command1["Do Something"] --> System["System"] -- "1 or more events" --> Event["Something Happened"]
+    ReadModel1["Read Model (to Actor)"] -. "0 or more read models" .-> Actor
+    Event -- "0 or more policies" --> Policy1["Policy A"]
+    ReadModel1 <-. "0 or more updated read models" .- Event
+    Policy1 --> Command1
+    Policy1 --> Actor
+    System -.-> Aggregate["Aggregate"]
+    
+    %% Force Aggregate above Event
+    Aggregate -- "1 or more events" --> Event
+
+    %% Style overrides
+    style Actor fill:#ffff66,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
+    style Command1 fill:#66b3ff,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
+    style System fill:#ff99cc,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
+    style Event fill:#ffa500,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
+    style ReadModel1 fill:#90ee90,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
+
+    style Policy1 fill:#cc99ff,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
+    style Aggregate fill:#ffffcc,stroke:#333,stroke-width:2px,color:#000,rx:10,ry:10
