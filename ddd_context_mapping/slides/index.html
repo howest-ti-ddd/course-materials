@@ -202,6 +202,14 @@
             </svg>
         </button>
         <span id="slide-counter" class="mx-4 text-gray-300 font-medium w-16 text-center">1 / 65</span>
+
+        <!-- ADJUSTED: direct slide navigation (GO button removed) -->
+        <div class="flex items-center gap-2 mr-3">
+            <input id="slide-input" type="number" min="1" step="1" placeholder="Go to" aria-label="Go to slide number"
+                   class="w-20 px-2 py-1 rounded-md text-sm bg-slate-700/60 text-slate-200 border border-slate-600 focus:outline-none" />
+            <!-- Go button removed -->
+        </div>
+
         <button id="next-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -1119,7 +1127,7 @@
             title: 'Combining OHS/PL with Relationship Types',
             headers: ['Relationship', 'Typical Combo', 'When It Fits', 'Watch Out'],
             rows: [
-                ['Customer–Supplier', 'OHS + PL', 'Upstream serves multiple consumers; can prioritize needs', 'PL governance and versioning overhead'],
+                ['Customer–Supplier', '', 'Upstream serves multiple consumers; can prioritize needs', 'PL governance and versioning overhead'],
                 ['Conformist', 'Adopt upstream PL as-is', 'Devices/validators or public token formats; tight performance constraints', 'Model pollution; hard to switch providers'],
                 ['ACL', 'Upstream OHS+PL + local ACL', 'Upstream semantics don\'t fit; isolate churn', 'Translation cost and maintenance'],
                 ['Partnership', 'Co-design PL or small SK', 'Tightly co-developed features across contexts', 'High coordination; avoid large shared surface'],
@@ -1127,16 +1135,16 @@
             ]
         },
         // Scenario: Other useful patterns
-        {
-            type: 'standard',
-            title: 'Other Useful Scenarios',
-            points: [
-                '<strong>External Legacy Upstream → New Core:</strong> Prefer ACL over Conformist to protect the Ubiquitous Language.',
-                '<strong>Core → Vendor Mobile App:</strong> OHS + PL; treat vendor as external; avoid shared kernel.',
-                '<strong>Wallet/Validators:</strong> Conformist to a simple, public token format while keeping broader OHS consumer-friendly.',
-                '<strong>Shared Kernel:</strong> Only for tiny, stable value objects (e.g., Money); never share aggregates.'
-            ]
-        },
+        // {
+        //     type: 'standard',
+        //     title: 'Other Useful Scenarios',
+        //     points: [
+        //         '<strong>External Legacy Upstream → New Core:</strong> Prefer ACL over Conformist to protect the Ubiquitous Language.',
+        //         '<strong>Core → Vendor Mobile App:</strong> OHS + PL; treat vendor as external; avoid shared kernel.',
+        //         '<strong>Wallet/Validators:</strong> Conformist to a simple, public token format while keeping broader OHS consumer-friendly.',
+        //         '<strong>Shared Kernel:</strong> Only for tiny, stable value objects (e.g., Money); never share aggregates.'
+        //     ]
+        // },
         // SLIDE 55: Anti-Patterns
         {
             type: 'hook',
@@ -1174,6 +1182,7 @@
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const slideCounter = document.getElementById('slide-counter');
+    const slideInput = document.getElementById('slide-input');
     const progressBar = document.getElementById('progress-bar');
     let currentSlide = 0;
     let slides = [];
@@ -1227,8 +1236,7 @@
                     <li class="flex items-start">
                         <svg class="h-8 w-8 text-emerald-400 mr-4 mt-1 flex-shrink-0" fill="none" viewBox="00 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         <span class="text-xl text-slate-300">${obj}</span>
-                    </li>
-                               `).join('');
+                    </li>`).join('');
                  slideEl.innerHTML = `
                     <div class="w-full px-12">
                         <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
@@ -1418,7 +1426,7 @@
             
             case 'lab_assignment':
                 let capabilitiesHtml = slideData.capabilities.map(cap => `<li>${cap}</li>`).join('');
-                let labTasksHtml = slideData.tasks.map(task => `<li class="flex items-start text-lg mb-3"><svg class="w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg><span>${task}</span></li>`).join('');
+                let labTasksHtml = slideData.tasks.map(task => `<li class="flex items-start text-lg mb-3"><svg class="w-6 h-6 mr-3 text-cyan-400 flex-shrink-0 mt-1" fill="none" viewBox="00 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg><span>${task}</span></li>`).join('');
 
                 slideEl.innerHTML = `
                     <div class="w-full px-8">
@@ -1582,6 +1590,11 @@
             presentationContainer.appendChild(slide);
             return slide;
         });
+        // ensure input max is set after slides are known
+        if (slideInput) {
+            slideInput.max = slidesData.length;
+            slideInput.value = currentSlide + 1;
+        }
     }
 
     let previousSlide = 0;
@@ -1599,6 +1612,12 @@
         progressBar.style.width = `${((index + 1) / slidesData.length) * 100}%`;
         updateNavButtons();
         
+        // keep numeric input in sync and enforce max
+        if (slideInput) {
+            slideInput.max = slidesData.length;
+            slideInput.value = index + 1;
+        }
+
         if (slidesData[index].type === 'context_map_simple') {
             drawSimpleMap();
         }
@@ -1621,6 +1640,35 @@
         }
     });
     
+    // ADJUSTED: slide input handling — remove Go button wiring, navigate on input and Enter
+    // Go-to-slide helper
+    function goToInputSlide() {
+        if (!slideInput) return;
+        const v = parseInt(slideInput.value, 10);
+        if (Number.isNaN(v)) return;
+        const safe = Math.max(1, Math.min(v, slidesData.length));
+        showSlide(safe - 1);
+    }
+
+    // wire input: navigate immediately on input, and also on Enter
+    if (slideInput) {
+        slideInput.addEventListener('input', () => {
+            // navigate when the typed value is a valid positive integer
+            const val = parseInt(slideInput.value, 10);
+            if (!Number.isNaN(val) && val >= 1) {
+                const safe = Math.max(1, Math.min(val, slidesData.length));
+                // only call showSlide if the target differs to avoid redundant re-renders
+                if (safe - 1 !== currentSlide) showSlide(safe - 1);
+            }
+        });
+        slideInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                goToInputSlide();
+            }
+        });
+    }
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ') {
             e.preventDefault();
@@ -1730,6 +1778,8 @@
     renderSlides();
     showSlide(0);
     initRemoteControl();
+   // populate input now that first slide is shown
+   if (slideInput) slideInput.value = 1;
 </script>
 </body>
 </html>
