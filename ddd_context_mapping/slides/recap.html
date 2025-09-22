@@ -6,6 +6,24 @@
     <title>DDD Recap: Strategic Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                nodeSpacing: 120,
+                rankSpacing: 120,
+                padding: 32,
+                curve: 'basis'
+            },
+            themeVariables: {
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '22px'
+            }
+        });
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -46,6 +64,59 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card.mermaid-card {
+            padding: 2.5rem;
+        }
+
+        .mermaid-diagram {
+            width: 100%;
+            max-width: 1300px;
+            min-height: 360px;
+            margin: 0 auto;
+        }
+
+        .small-diagram {
+            max-width: 200px;
+            min-height: 270px;
+        }
+
+        .medium-diagram {
+            max-width: 780px;
+        }
+
+        .mermaid-diagram svg {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .mermaid-card svg .node rect,
+        .mermaid-card svg .node polygon {
+            rx: 18px;
+            ry: 18px;
+            stroke-width: 2.5px;
+        }
+
+        .mermaid-card svg .node text {
+            font-size: 22px !important;
+        }
+
+        .mermaid-card svg .edgeLabel text {
+            font-size: 20px !important;
+            fill: currentColor;
+        }
+
+        .mermaid-card svg .edgeLabel {
+            color: #E2E8F0;
+        }
+
+        body.theme-light .mermaid-card svg .edgeLabel {
+            color: #0F172A;
+        }
+
+        .mermaid-card svg .edgePath path {
+            stroke-width: 2.5px;
         }
 
         .legend-item {
@@ -211,6 +282,48 @@
     </svg>
 
 <script>
+    const flowchartLayoutConfig = {
+        useMaxWidth: false,
+        htmlLabels: true,
+        nodeSpacing: 160,
+        rankSpacing: 160,
+        padding: 40,
+        curve: 'basis'
+    };
+
+    const mermaidThemeConfigs = {
+        dark: {
+            theme: 'dark',
+            themeVariables: {
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '22px',
+                primaryColor: '#1F2937',
+                primaryBorderColor: '#6366F1',
+                primaryTextColor: '#E2E8F0',
+                secondaryColor: '#273449',
+                tertiaryColor: '#1E293B',
+                lineColor: '#7DD3FC',
+                edgeLabelBackground: '#0F172A',
+                nodeTextColor: '#E2E8F0'
+            }
+        },
+        light: {
+            theme: 'default',
+            themeVariables: {
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '22px',
+                primaryColor: '#EFF6FF',
+                primaryBorderColor: '#312E81',
+                primaryTextColor: '#0F172A',
+                secondaryColor: '#E0E7FF',
+                tertiaryColor: '#F8FAFC',
+                lineColor: '#2563EB',
+                edgeLabelBackground: '#FFFFFF',
+                nodeTextColor: '#0F172A'
+            }
+        }
+    };
+
     // Recap slides content
     const slidesData = [
         { type: 'title', title: 'Recap Strategic DDD', subtitle: 'Domain, Bounded Context & Context Mapping', author: '' },
@@ -223,6 +336,30 @@
                 '<span class="text-gray-300 font-semibold">Context Maps</span>: flows and <span class="text-amber-300">relationship patterns</span>',
                 '<span class="text-gray-300 font-semibold">Quick knowledge checks</span> to reinforce understanding',
                 '<span class="text-gray-300 font-semibold">Mini-labs</span>: jump right in'
+            ]
+        },
+        {
+            type: 'standard',
+            title: 'Context Mapping: Goal, What, How, Who',
+            subtitle: 'A collaborative strategic conversation starter',
+            points: [
+                '<span class="text-emerald-300 font-semibold">Goal</span>: Make the invisible boundaries and power dynamics between contexts visible so <span class="text-emerald-300 font-semibold">architecture matches reality</span>.',
+                '<span class="text-sky-300 font-semibold">What</span>: A strategic map of <span class="text-sky-300 font-semibold">bounded contexts</span> plus upstream/downstream relationships and patterns like Customer-Supplier, ACL, OHS/PL. <em><span class="text-sky-300 font-semibold">It\'s a lightweight, active document</span>—not a boring static architectural document!</em>',
+                '<span class="text-amber-300 font-semibold">How</span>: Capture the <span class="text-amber-300 font-semibold">as-is landscape</span> together, sketch it on a whiteboard, note <span class="text-amber-300 font-semibold">U/D arrows</span>, contracts, and <span class="text-amber-300 font-semibold">governance</span>, then iterate as insights emerge.',
+                '<span class="text-fuchsia-300 font-semibold">Who</span>: <span class="text-fuchsia-300 font-semibold">Domain experts</span>, <span class="text-fuchsia-300 font-semibold">tech leads</span>, product and ops reps from each context—anyone owning a contract or dependency participates.',
+                '<span class="text-indigo-300 font-semibold">When</span>: Revisit at <span class="text-indigo-300 font-semibold">roadmap checkpoints</span> or after major domain and team shifts; treat the map as a <span class="text-indigo-300 font-semibold">living socio-technical artifact</span>.'
+            ]
+        },
+        {
+            type: 'standard',
+            title: 'Context Mapping: Benefits',
+            subtitle: 'Why teams keep the map visible',
+            points: [
+                '<span class="text-emerald-300 font-semibold">Surfaces hidden assumptions</span>: Forces conversations about expectations—Conformist versus Customer-Supplier, ACL needs, roadmap influence.',
+                '<span class="text-blue-300 font-semibold">Builds shared language</span>: Anchors discussions with precise terms like upstream/downstream, ACL, OHS/PL so stakeholders stay aligned.',
+                '<span class="text-amber-300 font-semibold">Guides integration choices</span>: Highlights where to invest in partnership, isolate with ACLs, or intentionally take Separate Ways.',
+                '<span class="text-indigo-300 font-semibold">Supports planning and governance</span>: Makes ownership, contracts, SLAs, and acceptance-test responsibilities visible for portfolio decisions.',
+                '<span class="text-fuchsia-300 font-semibold">Keeps risks visible</span>: Maintained maps reveal coupling hot spots and inform sequencing of changes or reverse-Conway moves.'
             ]
         },
         { type: 'legend', title: 'Context Map Relationships: The Legend' },
@@ -250,16 +387,6 @@
             ]
         },
         // Quiz 2 (why DDD)
-        {
-            type: 'quiz',
-            title: 'Knowledge Check',
-            question: 'Domain-Driven Design was created primarily to address what kind of problem?',
-            options: [
-                { text: 'Slow database performance.', correct: false, feedback: 'DDD is not a perf tuning approach.' },
-                { text: 'The complexity and communication gap between business experts and developers.', correct: true, feedback: 'Exactly. It tackles complexity via shared models and language.' },
-                { text: 'A lack of standardized UI frameworks.', correct: false, feedback: 'UI is separate from DDD\'s intent.' }
-            ]
-        },
         // Quiz 3 (core domain)
         {
             type: 'quiz',
@@ -326,8 +453,8 @@
             options: [
                 { text: 'The Conformist pattern is used for downstream systems, while ACL is for upstream systems.', correct: false, feedback: 'Both patterns address how a downstream team relates to an upstream system. The difference lies in how they handle the model translation.' },
                 { text: 'The Conformist pattern accepts the upstream model as-is, while an ACL translates between models.', correct: true, feedback: 'Correct! A Conformist adopts the upstream model without translation (simpler but compromises your model), while an ACL isolates your model by translating to/from the upstream model (more work but preserves your model).' },
-                { text: 'The Conformist pattern is always preferred when the upstream system is unchangeable.', correct: false, feedback: 'Just because an upstream system is unchangeable doesn\'t mean Conformist is preferred. If the upstream model is poorly designed, an ACL might be necessary despite the extra work.' },
-                { text: 'The Conformist pattern requires the upstream team\'s cooperation, while an ACL doesn\'t.', correct: false, feedback: 'Neither pattern requires cooperation from the upstream team - that\'s what makes them useful when dealing with systems or teams you can\'t influence.' }
+                { text: 'The Conformist pattern requires the upstream team\'s cooperation, while an ACL doesn\'t.', correct: false, feedback: 'Neither pattern requires cooperation from the upstream team - that\'s what makes them useful when dealing with systems or teams you can\'t influence.' },
+                { text: 'The Conformist pattern is always preferred when the upstream system is unchangeable.', correct: false, feedback: 'Just because an upstream system is unchangeable doesn\'t mean Conformist is preferred. If the upstream model is poorly designed, an ACL might be necessary despite the extra work.' }
             ]
         },
         // New Quiz - OHS & PL
@@ -342,17 +469,140 @@
                 { text: 'A Partnership with the most important consumer.', correct: false, feedback: 'While you might form a Partnership with one critical consumer, this approach doesn\'t address the needs of multiple consumers effectively.' }
             ]
         },
-        // Final slide: removing lab slide and replacing with a conclusion
+        // HowestPrime focus slides
+        {
+            type: 'mermaid',
+            title: 'Identity Upstream & Downstream',
+            subtitle: 'HowestPrime contexts at a glance',
+            diagram: `graph LR
+    Movies[Movies]
+    Ticketing[Ticketing]
+    Movies --- Ticketing`,
+            caption: 'Two bounded contexts with a shared integration line awaiting policy decisions.'
+        },
+        {
+            type: 'mermaid',
+            title: 'What was the pattern(s) used?',
+            subtitle: 'Marking upstream and downstream responsibilities',
+            diagram: `
+            graph LR
+    Movies["Movies (U)"]
+    Ticketing["(D) Ticketing"]
+    Movies --> Ticketing`,
+            caption: 'Movies acts upstream; Ticketing consumes downstream.'
+        },
+        {
+            type: 'mermaid',
+            title: 'Patterns In Play',
+            subtitle: 'Zooming in on the HowestPrime integration',
+            diagram: `
+            graph LR
+    Movies["Movies"]
+    Ticketing["Ticketing"]
+    
+    Movies -->|"(U) OHS/PL, ACL (D)"| Ticketing`,
+            caption: 'Movies offers a stable contract (OHS + Published Language); Ticketing shields itself with an ACL.'
+        },
+        {
+            type: 'title',
+            title: 'Impact of Choices',
+            subtitle: 'How the integration patterns shape our costs'
+        },
         {
             type: 'standard',
-            title: 'Ready to Apply Your Knowledge',
-            subtitle: 'Key takeaways for effective context mapping',
+            title: 'ACL: Cost Trade-Offs?',
+            subtitle: 'What questions should Ticketing ask before adding an Anticorruption Layer?',
             points: [
-                'Context maps reflect both <span class="font-bold text-indigo-400">team organization</span> and <span class="font-bold text-indigo-400">technical architecture</span>.',
-                'Choose relationship patterns that match both your <span class="font-bold text-amber-300">technical needs</span> and <span class="font-bold text-amber-300">organizational realities</span>.',
-                'Start mapping what <span class="font-bold text-emerald-400">IS</span>, not what you wish existed. Make the implicit explicit.',
-                'Context maps evolve as your understanding and system mature. Revisit them regularly.'
+                '<span class="text-amber-300 font-semibold">Development Cost?</span> Will building a translation layer slow our delivery pace?',
+                '<span class="text-cyan-300 font-semibold">Team Interaction Cost?</span> Does the ACL change how tightly we must coordinate with Movies?'
             ]
+        },
+        {
+            type: 'standard',
+            title: 'ACL: Impact on Costs',
+            subtitle: 'Ticketing embracing an Anticorruption Layer',
+            points: [
+                '<span class="text-red-400 font-semibold">Development Cost increases</span>: Building and evolving the translation layer requires sustained engineering effort.',
+                '<span class="text-green-400 font-semibold">Team Interaction Cost decreases</span>: The ACL lets Ticketing move independently without synchronising every change with Movies.'
+            ]
+        },
+        {
+            type: 'mermaid',
+            title: 'Where and how is the ACL implemented?',
+            subtitle: 'Mapping the Anticorruption Layer onto Clean architecture layers',
+            diagramClass: 'small-diagram',
+            diagram: `
+            graph TD
+    Infrastructure["Infrastructure"]
+    Application["Application"]
+    Domain["Domain"]
+
+    Infrastructure --> Application
+    Application --> Domain`
+        },
+        {
+            type: 'standard',
+            title: 'Conformist: Cost Trade-Offs?',
+            subtitle: 'What changes if Ticketing mirrors the upstream model as-is?',
+            points: [
+                '<span class="text-amber-300 font-semibold">Development Cost?</span> How much do we save by reusing Movies\' model?',
+                '<span class="text-cyan-300 font-semibold">Team Interaction Cost?</span> Does tighter coupling force more cross-team coordination?'
+            ]
+        },
+        {
+            type: 'standard',
+            title: 'Conformist: Impact on Costs',
+            subtitle: 'Ticketing adopting the upstream model as-is',
+            points: [
+                '<span class="text-green-400 font-semibold">Development Cost decreases</span>: Minimal translation work keeps delivery lightweight and fast.',
+                '<span class="text-red-400 font-semibold">Team Interaction Cost increases</span>: Teams must stay closely aligned with Movies to avoid breaking changes.'
+            ]
+        },
+        {
+            type: 'standard',
+            title: 'Conformist Pattern Blast Radius',
+            subtitle: 'Tracing how far the influence travels',
+            points: [
+                '<span class="text-indigo-300 font-semibold">Domain Model</span>: No impact, protected by the application layer.',
+                '<span class="text-sky-300 font-semibold">Application Services</span>: Service contracts and workflows replicate upstream assumptions and ordering.',
+                '<span class="text-emerald-300 font-semibold">Interfaces & APIs</span>: External contracts and UI copy echo the upstream vocabulary, pushing the model to the edges.'
+            ]
+        },
+        {
+            type: 'mermaid',
+            title: 'What model propagation could occur?',
+            diagramClass: 'medium-diagram',
+            diagram: `
+            graph TD
+    A["System A (BBOM)"]
+    D("Bounded Context D")
+    B("Bounded Context B")
+    C("Bounded Context C")
+
+    A -- "U: Open Host Service <br> D: Anti-Corruption Layer" --> D
+    A -- "U: Open Host Service <br> D: Conformist" --> B
+    B -- "Shared Kernel" --> C
+            `
+        },
+        {
+            type: 'mermaid',
+            title: 'this C/S relationship starts to get a lot of customers?',
+            diagramClass: 'medium-diagram',
+            diagram: `
+            graph TD
+    SUP["Supplier (U)"]
+    CUS1["Customer 1 (D)"]
+    CUS2["Customer 2 (D)"]
+    CUS3["Customer 3 (D)"]
+
+    CUS1 -- "Customer" --> SUP
+    CUS2 -- "Customer" --> SUP
+    CUS3 -- "Customer" --> SUP
+            `
+        },
+        {
+            type: 'title',
+            title: 'Ready to Apply Your Knowledge',
         }
     ];
 
@@ -367,7 +617,7 @@
     function createSlide(slideData, index) {
         const slideEl = document.createElement('div');
         slideEl.className = `slide p-8 flex-col items-center justify-center text-slate-800`;
-        slideEl.style.maxWidth = '1200px';
+        slideEl.style.maxWidth = '1380px';
         slideEl.style.maxHeight = '750px';
         slideEl.style.aspectRatio = '16/10';
 
@@ -385,7 +635,7 @@
                 slideEl.innerHTML = `
                     <div class="text-center">
                         <h1 class="text-7xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 leading-tight pb-2">${slideData.title}</h1>
-                        <p class="mt-6 text-4xl font-semibold text-slate-300 leading-relaxed pb-2">${slideData.subtitle}</p>
+                        ${slideData.subtitle ? `<p class="mt-6 text-4xl font-semibold text-slate-300 leading-relaxed pb-2">${slideData.subtitle}</p>` : ''}
                         ${slideData.author ? `<p class="mt-12 text-lg text-slate-400">${slideData.author}</p>` : ''}
                     </div>
                 `;
@@ -401,6 +651,25 @@
                         </ul>
                     </div>
                 `;
+                break;
+            case 'mermaid':
+                slideEl.innerHTML = `
+                    <div class="w-full max-w-5xl text-center mx-auto">
+                        <h2 class="text-4xl font-bold mb-4 text-gray-200">${slideData.title}</h2>
+                        ${slideData.subtitle ? `<p class="text-2xl text-slate-400 mb-8">${slideData.subtitle}</p>` : ''}
+                        <div class="glass-card mermaid-card rounded-2xl overflow-x-auto">
+                            <div class="mermaid-diagram${slideData.diagramClass ? ' ' + slideData.diagramClass : ''}" id="mermaid-${index}"></div>
+                            ${slideData.caption ? `<p class="mt-6 text-slate-400 text-lg">${slideData.caption}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+                {
+                    const diagramContainer = slideEl.querySelector(`#mermaid-${index}`);
+                    if (diagramContainer) {
+                        diagramContainer.dataset.diagram = slideData.diagram;
+                        diagramContainer.dataset.rendered = 'false';
+                    }
+                }
                 break;
             case 'context_map_simple':
                 slideEl.innerHTML = `
@@ -632,6 +901,59 @@
         });
     }
 
+    function setMermaidTheme(theme) {
+        if (!window.mermaid) {
+            setTimeout(() => setMermaidTheme(theme), 100);
+            return;
+        }
+        const themeKey = theme === 'light' ? 'light' : 'dark';
+        const themeConfig = mermaidThemeConfigs[themeKey] || mermaidThemeConfigs.dark;
+        try {
+            window.mermaid.initialize({
+                startOnLoad: false,
+                theme: themeConfig.theme,
+                flowchart: { ...flowchartLayoutConfig },
+                themeVariables: { ...themeConfig.themeVariables }
+            });
+        } catch (error) {
+            console.error('Mermaid initialization failed', error);
+        }
+    }
+
+    function resetMermaidDiagrams() {
+        document.querySelectorAll('.mermaid-diagram').forEach(wrapper => {
+            wrapper.dataset.rendered = 'false';
+            wrapper.classList.remove('mermaid');
+            wrapper.removeAttribute('data-processed');
+            wrapper.innerHTML = '';
+        });
+    }
+
+    async function renderMermaidSlide(slideEl) {
+        if (!slideEl) return;
+        if (!window.mermaid) {
+            setTimeout(() => renderMermaidSlide(slideEl), 100);
+            return;
+        }
+        const wrappers = slideEl.querySelectorAll('.mermaid-diagram');
+        for (const wrapper of Array.from(wrappers)) {
+            const definition = (wrapper.dataset.diagram || '').trim();
+            if (!definition) continue;
+            if (wrapper.dataset.rendered === 'true') continue;
+            try {
+                wrapper.classList.add('mermaid');
+                wrapper.textContent = definition;
+                wrapper.removeAttribute('data-processed');
+                await window.mermaid.run({ nodes: [wrapper] });
+                wrapper.dataset.rendered = 'true';
+            } catch (error) {
+                console.error('Mermaid render error', error);
+                wrapper.classList.remove('mermaid');
+                wrapper.removeAttribute('data-processed');
+            }
+        }
+    }
+
     let previousSlide = 0;
     function showSlide(index) {
         slides[previousSlide]?.classList.remove('active');
@@ -649,6 +971,9 @@
         
         if (slidesData[index].type === 'context_map_simple') {
             drawSimpleMap();
+        }
+        if (slidesData[index].type === 'mermaid') {
+            requestAnimationFrame(() => renderMermaidSlide(slides[index]));
         }
     }
 
@@ -753,6 +1078,11 @@
             themeLabel.textContent = 'Light';
         }
         try { localStorage.setItem('slides-theme', theme); } catch (e) {}
+        setMermaidTheme(theme);
+        resetMermaidDiagrams();
+        if (slides[currentSlide]) {
+            requestAnimationFrame(() => renderMermaidSlide(slides[currentSlide]));
+        }
     }
 
     const savedTheme = (function(){ try { return localStorage.getItem('slides-theme'); } catch(e) { return null; } })() || 'dark';
@@ -785,4 +1115,16 @@
     }
 </script>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const slideNumber = urlParams.get('slide');
+        if (slideNumber) {
+            const slideIndex = parseInt(slideNumber, 10) - 1;
+            if (slideIndex >= 0 && slideIndex < slidesData.length) {
+                showSlide(slideIndex);
+            }
+        }
+    });
+</script>
 </html>
