@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DDD Context Map: Campus Ticketing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background:#0F172A; color:#D1D5DB; }
+    .glass { background:rgba(30,41,59,.5); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.08); }
+    .mermaid { background:rgba(15,23,42,.6); border-radius:.75rem; padding:1rem; overflow-x:auto; }
+    .tag { font-size:.75rem; padding:.125rem .375rem; border-radius:.375rem; border:1px solid rgba(255,255,255,.12); }
+    /* Center mermaid SVG content */
+    .mermaid > svg {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* Optional: limit max width for better centering on large screens */
+    .mermaid {
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <header class="text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400">DDD Context Mapping:</br> Campus Ticketing</h1>
+      <p class="text-lg text-slate-300 mt-3">Relationships shown <em>only</em> where the core context participates.</p>
+    </header>
+
+    <!-- Diagram -->
+    <section class="glass p-6 rounded-xl mb-10">
+      <h2 class="text-2xl font-bold text-indigo-300 mb-4">Context Map</h2>
+      <div class="mermaid">
+      graph TD
+        %% Nodes (7 total)
+        Sales["Sales & Reservations\n(Core)"]
+        Catalog["Event Catalog\n(Supporting)"]
+        Payments["Payments & Student Accounts\n(Supporting)"]
+        Wallet["Ticket Wallet & Validation\n(Supporting)"]
+        Reporting["Reporting & Analytics\n(Supporting)"]
+        Platform["Platform Services (IAM + Notifications)\n(Generic)"]
+        Legacy["Legacy Accounting\n(External)"]
+
+        %% Relationships (ONLY those involving the Core)
+        Catalog -->|"U→D  C/S + ACL in Sales"| Sales
+        Payments -->|"U→D  C/S + ACL in Sales"| Sales
+        Legacy -->|"U→D  ACL"| Sales
+        Platform -->|"U→D  OHS + PL (Auth/Notify)
++ ACL in Sales"| Sales
+        Sales -->|"U→D  OHS + PL (Sales), Conformist"| Wallet
+        Sales -->|"U→D  OHS + PL (Sales), Conformist"| Reporting
+
+        %% Styling by type
+        classDef core fill:#0b0b0b,stroke:#6366f1,stroke-width:3px,color:#fff;
+        classDef supporting fill:#0b0b0b,stroke:#94A3B8,stroke-width:2px,color:#fff;
+        classDef generic fill:#0b0b0b,stroke:#22c55e,stroke-width:2px,color:#fff;
+        classDef external fill:#0b0b0b,stroke:#ef4444,stroke-width:2px,color:#fff;
+
+        class Sales core;
+        class Catalog,Payments,Wallet,Reporting supporting;
+        class Platform generic;
+        class Legacy external;
+      </div>
+      <p class="text-sm text-slate-400 mt-3">Legend: C/S = Customer–Supplier · OHS = Open Host Service · PL = Published Language · ACL = Anti-corruption Layer.</p>
+    </section>
+
+    <!-- Legend Cards -->
+    <section class="grid md:grid-cols-4 gap-4 mb-10">
+      <div class="glass p-4 rounded-lg"><div class="tag">Core</div><div class="mt-2 text-slate-300">Central differentiator owned by Phoenix team.</div></div>
+      <div class="glass p-4 rounded-lg"><div class="tag">Supporting</div><div class="mt-2 text-slate-300">Enables core but not the differentiator.</div></div>
+      <div class="glass p-4 rounded-lg"><div class="tag">Generic</div><div class="mt-2 text-slate-300">Commodity capability (IAM/Notify).</div></div>
+      <div class="glass p-4 rounded-lg"><div class="tag">External</div><div class="mt-2 text-slate-300">Outside our control (legacy cadence, politics).</div></div>
+    </section>
+
+    <!-- Relationship Defenses (expanded, more readable) -->
+    <section class="space-y-8">
+      <h2 class="text-2xl font-bold text-indigo-300">Relationship Defenses</h2>
+
+      <!-- 1. Catalog -> Sales -->
+      <div class="glass p-6 rounded-xl space-y-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Event Catalog → Sales & Reservations</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Catalog ↑ · Sales ↓</span>
+            <span class="tag">Relationship: Customer–Supplier</span>
+            <span class="tag">Integration: ACL in Sales (no OHS/PL)</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Schema drift leaking into Sales</li>
+              <li>Tight coupling to Catalog’s internal model</li>
+              <li>Coordination overhead on minor shape changes</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Decision</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Sales acts as <em>customer</em> and owns the ACL</li>
+              <li>Catalog focuses on its internal model; Sales reshapes data at the boundary</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-lg text-sm leading-relaxed">
+          <span class="font-semibold text-indigo-200">Why :</span> Catalog evolves quickly but cannot promise a stable OHS or published language. By owning an ACL, Sales absorbs upstream changes, keeps checkout terminology (“sellable slots”, “holds”) intact, and prevents Catalog’s churn from leaking downstream. Customer–Supplier still clarifies adaptation, but the ACL keeps responsibility local to Sales without waiting for Catalog to harden interfaces.
+        </div>
+      </div>
+
+      <!-- 2. Payments -> Sales -->
+      <div class="glass p-6 rounded-xl space-y-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Payments & Student Accounts → Sales</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Payments ↑ · Sales ↓</span>
+            <span class="tag">Relationship: Customer–Supplier</span>
+            <span class="tag">Integration: ACL in Sales (no OHS/PL)</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>PSP volatility and vendor churn</li>
+              <li>Error modality mismatches polluting order model</li>
+              <li>Fraud/chargeback semantics leaking into Sales</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Decision</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Sales owns translation via ACL</li>
+              <li>Payments can maintain internal adapters for PSPs</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-lg text-sm leading-relaxed">
+          <span class="font-semibold text-indigo-200">Why :</span> Payment providers evolve quickly and differ wildly. With no dependable OHS or published language, Sales keeps the ACL to normalize PSP quirks while still expressing domain intent (“reserve then capture on scan”). Payments can continue to swap or reconfigure providers, and Sales adapts the surface it consumes without reworking its core pipeline. The boundary stays testable, failure handling stays clear, and PSP churn no longer ripples through the checkout.
+        </div>
+      </div>
+
+      <!-- 3. Legacy -> Sales -->
+      <div class="glass p-6 rounded-xl space-y-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Legacy Accounting → Sales</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Legacy ↑ · Sales ↓</span>
+            <span class="tag">Relationship: ACL (anti‑corruption)</span>
+            <span class="tag">Integration: APIs and/or batch</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Polluting core with ledger terminology</li>
+              <li>Quarterly cadence blocking releases</li>
+              <li>Political control outside Phoenix team</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Decision</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Translator layer isolates semantics</li>
+              <li>Error quarantine without stopping Sales</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-lg text-sm leading-relaxed">
+          <span class="font-semibold text-indigo-200">Why :</span> The legacy team is siloed, slow, and unlikely to adapt. Conforming would warp the Sales model around GL constructs (periods, subledgers, batch statuses). An ACL keeps our Ubiquitous Language intact and localizes complexity (currency rounding, tax codes, cost centers) to a boundary we can test and evolve independently.
+        </div>
+      </div>
+
+      <!-- 4. Platform Services → Sales -->
+      <div class="glass p-6 rounded-xl space-y-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Platform Services (IAM + Notifications) → Sales</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Platform ↑ · Sales ↓</span>
+            <span class="tag">Relationship: Service Provider</span>
+            <span class="tag">Integration: OHS + Published Language</span>
+            <span class="tag">Downstream ACL in Sales</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Auth or notification provider lock‑in</li>
+              <li>Platform semantics bleeding into Sales</li>
+              <li>Security and delivery quirks polluting the core model</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Decision</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Platform exposes OHS/PL for identity and notification payloads</li>
+              <li>Sales maintains an ACL to project only domain‑relevant claims and intents</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-lg text-sm leading-relaxed">
+          <span class="font-semibold text-indigo-200">Why :</span> Platform Services evolves independently to support new providers, channels, and security features. The ACL inside Sales shields checkout flows from upstream churn while still consuming the published language. Sales stays in control of its ubiquitous language while platform teams adjust integrations without rippling changes downstream.
+        </div>
+      </div>
+
+      <!-- 5. Sales -> Ticket Wallet & Validation -->
+      <div class="glass p-6 rounded-xl space-y-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Sales → Ticket Wallet & Validation</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Sales ↑ · Wallet ↓</span>
+            <span class="tag">Relationship: Conformist</span>
+            <span class="tag">Integration: OHS/PL contract</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Divergent interpretations of the admission contract</li>
+              <li>Runtime breaks when validators parse evolving payloads</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Decision</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Sales publishes a versioned admission OHS/PL</li>
+              <li>Wallet accepts a Conformist posture, mirroring Sales semantics</li>
+              <li>No downstream ACL; devices ingest the contract as-is</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-lg text-sm leading-relaxed">
+          <span class="font-semibold text-indigo-200">Why :</span> The Conformist relationship keeps gate software lean: Platform devices simply implement the Sales-owned OHS/PL without translation. That contract documents claims, caching rules, and versions so validators stay fast while Sales evolves its internals safely upstream.
+        </div>
+      </div>
+
+      <!-- 6. Sales -> Reporting -->
+      <div class="glass p-6 rounded-xl space-y-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Sales → Reporting & Analytics</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Sales ↑ · Analytics ↓</span>
+            <span class="tag">Relationship: OHS/PL (Sales) · Conformist (Reporting)</span>
+            <span class="tag">Integration: OHS/PL events + Conformist ingest</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Reporting inventing its own transaction dialects</li>
+              <li>Ad hoc ETL bridges that bypass published events</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-400">Decision</p>
+            <ul class="list-disc pl-5 text-sm text-slate-300 space-y-1">
+              <li>Sales curates a versioned transactional OHS/PL with replay support</li>
+              <li>Reporting stays Conformist and reshapes data inside its boundary</li>
+              <li>Contracts and versioning replace bespoke downstream pulls</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 p-4 rounded-lg text-sm leading-relaxed">
+          <span class="font-semibold text-indigo-200">Why :</span> The asymmetric relationship keeps ownership explicit: Sales publishes the canonical OHS/PL, while Reporting conforms and builds projections without negotiating new interfaces. Integration remains resilient because changes flow through documented versions instead of fragile ETL glue.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad:true, theme:'dark', themeVariables:{ primaryColor:'#1E293B', primaryTextColor:'#E2E8F0', primaryBorderColor:'#475569', lineColor:'#94A3B8', secondaryColor:'#334155', tertiaryColor:'#1E293B' } });
+  </script>
+</body>
+</html>

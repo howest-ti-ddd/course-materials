@@ -202,6 +202,41 @@
             transition: opacity 0.3s ease-in;
         }
 
+        /* Interactive Tradeoffs */
+        .tradeoff-card {
+            perspective: 1000px;
+            height: 200px;
+        }
+        .tradeoff-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .tradeoff-card.flipped .tradeoff-card-inner {
+            transform: rotateY(180deg);
+        }
+        .tradeoff-card-front, .tradeoff-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        .tradeoff-card-front {
+            cursor: pointer;
+        }
+        .tradeoff-card-back {
+            transform: rotateY(180deg);
+        }
+
         /* Light Theme Overrides */
         body.theme-light {
             background-color: #ffffff;
@@ -259,6 +294,14 @@
             </svg>
         </button>
         <span id="slide-counter" class="mx-4 text-gray-300 font-medium w-16 text-center">1 / 10</span>
+
+        <!-- ADJUSTED: direct slide navigation (GO button removed) -->
+        <div class="flex items-center gap-2 mr-3">
+            <input id="slide-input" type="number" min="1" step="1" placeholder="Go to" aria-label="Go to slide number"
+                   class="w-20 px-2 py-1 rounded-md text-sm bg-slate-700/60 text-slate-200 border border-slate-600 focus:outline-none" />
+            <!-- Go button removed -->
+        </div>
+
         <button id="next-btn" class="p-2 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -509,12 +552,20 @@
             subtitle: 'How the integration patterns shape our costs'
         },
         {
-            type: 'standard',
-            title: 'ACL: Cost Trade-Offs?',
-            subtitle: 'What questions should Ticketing ask before adding an Anticorruption Layer?',
-            points: [
-                '<span class="text-amber-300 font-semibold">Development Cost?</span> Will building a translation layer slow our delivery pace?',
-                '<span class="text-cyan-300 font-semibold">Team Interaction Cost?</span> Does the ACL change how tightly we must coordinate with Movies?'
+            type: 'interactive_tradeoffs',
+            title: '<span class="text-red-400">ACL:</span> Cost Trade-Offs?',
+            subtitle: 'Weighing the investment versus the payoff. Click cards to reveal.',
+            tradeoffs: [
+                {
+                    question: 'Development Cost?',
+                    answer: 'Higher initial effort',
+                    color: 'amber'
+                },
+                {
+                    question: 'Team Interaction Cost?',
+                    answer: 'Lower coordination overhead',
+                    color: 'cyan'
+                }
             ]
         },
         {
@@ -541,12 +592,20 @@
     Application --> Domain`
         },
         {
-            type: 'standard',
-            title: 'Conformist: Cost Trade-Offs?',
-            subtitle: 'What changes if Ticketing mirrors the upstream model as-is?',
-            points: [
-                '<span class="text-amber-300 font-semibold">Development Cost?</span> How much do we save by reusing Movies\' model?',
-                '<span class="text-cyan-300 font-semibold">Team Interaction Cost?</span> Does tighter coupling force more cross-team coordination?'
+            type: 'interactive_tradeoffs',
+            title: '<span class="text-yellow-400">Conformist:</span> Cost Trade-Offs?',
+            subtitle: 'What changes if Ticketing mirrors the upstream model as-is? Click cards to reveal.',
+            tradeoffs: [
+                {
+                    question: 'Development Cost?',
+                    answer: 'Lower initial effort',
+                    color: 'green'
+                },
+                {
+                    question: 'Team Interaction Cost?',
+                    answer: 'Higher coordination overhead',
+                    color: 'red'
+                }
             ]
         },
         {
@@ -586,7 +645,7 @@
         },
         {
             type: 'mermaid',
-            title: 'this C/S relationship starts to get a lot of customers?',
+            title: 'Customer / Supplier',
             diagramClass: 'medium-diagram',
             diagram: `
             graph TD
@@ -610,6 +669,7 @@
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const slideCounter = document.getElementById('slide-counter');
+    const slideInput = document.getElementById('slide-input');
     const progressBar = document.getElementById('progress-bar');
     let currentSlide = 0;
     let slides = [];
@@ -649,6 +709,30 @@
                         <ul class="list-disc pl-8 space-y-4 marker:text-indigo-400">
                             ${pointsHtml}
                         </ul>
+                    </div>
+                `;
+                break;
+            case 'interactive_tradeoffs':
+                let tradeoffsHtml = slideData.tradeoffs.map(t => `
+                    <div class="tradeoff-card w-full md:w-1/2 p-4">
+                        <div class="tradeoff-card-inner">
+                            <div class="tradeoff-card-front bg-slate-800/50 border border-slate-700 shadow-lg flex items-center justify-center p-6 rounded-xl">
+                                <h3 class="text-3xl font-bold text-${t.color}-300">${t.question}</h3>
+                            </div>
+                            <div class="tradeoff-card-back bg-slate-800 border border-slate-600 shadow-xl flex items-center justify-center p-6 rounded-xl">
+                                <p class="text-3xl font-semibold text-white">${t.answer}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                slideEl.innerHTML = `
+                    <div class="w-full px-12 text-center">
+                        <h2 class="text-5xl font-extrabold mb-4 text-gray-200">${slideData.title}</h2>
+                        <p class="text-2xl text-slate-400 mb-10">${slideData.subtitle}</p>
+                        <div class="flex flex-wrap justify-center">
+                            ${tradeoffsHtml}
+                        </div>
                     </div>
                 `;
                 break;
@@ -715,7 +799,9 @@
                 {
                     const colorClasses = ['text-yellow-400', 'text-green-400', 'text-red-400', 'text-blue-400'];
                     const optionsHtml = slideData.options.map((opt, i) => `
-                        <button class=\"quiz-option w-full text-left p-4 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-lg\" data-correct=\"${opt.correct}\" data-feedback=\"${opt.feedback}\">\n                            <span class=\"${colorClasses[i % colorClasses.length]} text-2xl font-bold\">${opt.text}</span>\n                        </button>
+                        <button class=\"quiz-option w-full text-left p-4 rounded-lg border border-slate-600 bg-slate-700/50 text-slate-300 text-lg\" data-correct=\"${opt.correct}\" data-feedback=\"${opt.feedback}\">
+                            <span class=\" ${colorClasses[i % colorClasses.length]} text-2xl font-bold\">${opt.text}</span>
+                        </button>
                     `).join('');
                     slideEl.innerHTML = `
                         <div class="w-full max-w-4xl text-center">
@@ -814,7 +900,7 @@
         startY = fromCenterY + (fromRect.height / 2) * Math.sin(angle);
         
         // This is a simplification; a true intersection with a rect is more complex
-        // For simplicity, let's connect from edge to edge based on general direction
+        // For simplicity, let\'s connect from edge to edge based on general direction
         if (dx > Math.abs(dy)) { // more horizontal
             startX = fromRect.right - containerRect.left;
             endX = toRect.left - containerRect.left;
@@ -849,6 +935,8 @@
         if (!option) return;
 
         const container = option.closest('.quiz-options-container');
+        container.classList.add('answered');
+        container.dataset.answered = 'true';
         const options = container.querySelectorAll('.quiz-option');
         const feedbackContainer = container.nextElementSibling;
         
@@ -886,6 +974,13 @@
         // Removed the auto-transition to next slide
     }
 
+    function handleTradeoffCardClick(e) {
+        const card = e.target.closest('.tradeoff-card');
+        if (card) {
+            card.classList.toggle('flipped');
+        }
+    }
+
     function renderSlides() {
         presentationContainer.innerHTML = '';
         slides = slidesData.map((slideData, index) => {
@@ -896,9 +991,18 @@
                 // Restyle options to use color-coded labels consistent with interactive cards
                 try { restyleQuizOptions(optionsContainer); } catch (e) {}
             }
+            if (slideData.type === 'interactive_tradeoffs') {
+                slide.addEventListener('click', handleTradeoffCardClick);
+            }
             presentationContainer.appendChild(slide);
             return slide;
         });
+
+        // ensure input max is set after slides are known
+        if (slideInput) {
+            slideInput.max = slidesData.length;
+            slideInput.value = currentSlide + 1;
+        }
     }
 
     function setMermaidTheme(theme) {
@@ -969,6 +1073,12 @@
         progressBar.style.width = `${((index + 1) / slidesData.length) * 100}%`;
         updateNavButtons();
         
+        // keep numeric input in sync and enforce max
+        if (slideInput) {
+            slideInput.max = slidesData.length;
+            slideInput.value = index + 1;
+        }
+
         if (slidesData[index].type === 'context_map_simple') {
             drawSimpleMap();
         }
@@ -977,56 +1087,82 @@
         }
     }
 
+    function isCurrentQuizAnswered() {
+        const slideData = slidesData[currentSlide];
+        if (!slideData || slideData.type !== 'quiz') {
+            return true;
+        }
+        const slideEl = slides[currentSlide];
+        if (!slideEl) {
+            return true;
+        }
+        const container = slideEl.querySelector('.quiz-options-container');
+        if (!container) {
+            return true;
+        }
+        return container.dataset.answered === 'true';
+    }
+
+    function goToNextSlide({ force = false } = {}) {
+        if (currentSlide >= slidesData.length - 1) {
+            return false;
+        }
+        if (!force && !isCurrentQuizAnswered()) {
+            return false;
+        }
+        showSlide(currentSlide + 1);
+        return true;
+    }
+
+    function goToPrevSlide() {
+        if (currentSlide <= 0) {
+            return false;
+        }
+        showSlide(currentSlide - 1);
+        return true;
+    }
+
     function updateNavButtons() {
         prevBtn.disabled = currentSlide === 0;
         nextBtn.disabled = currentSlide === slidesData.length - 1;
     }
     
+    // ADJUSTED: slide input handling — remove Go button wiring, navigate on input and Enter
+    // Go-to-slide helper
+    function goToInputSlide() {
+        if (!slideInput) return;
+        const v = parseInt(slideInput.value, 10);
+        if (Number.isNaN(v)) return;
+        const safe = Math.max(1, Math.min(v, slidesData.length));
+        showSlide(safe - 1);
+    }
+
+    // wire input: navigate immediately on input, and also on Enter
+    if (slideInput) {
+        slideInput.addEventListener('input', () => {
+            // navigate when the typed value is a valid positive integer
+            const val = parseInt(slideInput.value, 10);
+            if (!Number.isNaN(val) && val >= 1) {
+                const safe = Math.max(1, Math.min(val, slidesData.length));
+                // only call showSlide if the target differs to avoid redundant re-renders
+                if (safe - 1 !== currentSlide) showSlide(safe - 1);
+            }
+        });
+        slideInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                goToInputSlide();
+            }
+        });
+    }
+
     prevBtn.addEventListener('click', () => {
-        if (currentSlide > 0) {
-            showSlide(currentSlide - 1);
-        }
+        goToPrevSlide();
     });
 
     nextBtn.addEventListener('click', () => {
-        if (currentSlide < slidesData.length - 1) {
-            showSlide(currentSlide + 1);
-        }
+        goToNextSlide({ force: true });
     });
-    
-    // Remote Control Logic
-    function initRemoteControl() {
-        // Listen for keyboard remote events
-        document.addEventListener('keydown', (e) => {
-            // Standard keyboard navigation is already handled
-            
-            // Add support for additional remote control codes
-            // Common remote control codes: PageDown/PageUp for many remotes
-            if (e.key === 'PageDown') {
-                e.preventDefault();
-                nextBtn.click();
-            } else if (e.key === 'PageUp') {
-                e.preventDefault();
-                prevBtn.click();
-            }
-        });
-        
-        // Check if the browser supports the Presentation API (for dedicated presentation remotes)
-        if (window.PresentationRequest) {
-            console.log('Presentation API supported - remote control ready');
-        }
-        
-        // Listen for custom remote control events
-        window.addEventListener('remotecontrol', function(e) {
-            if (e.detail && e.detail.action === 'next') {
-                nextBtn.click();
-            } else if (e.detail && e.detail.action === 'prev') {
-                prevBtn.click();
-            }
-        });
-        
-        console.log('Remote control initialized');
-    }
     
     // Sample function to trigger from remote control
     window.triggerRemoteAction = function(action) {
@@ -1037,23 +1173,26 @@
     };
     
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
             e.preventDefault();
-            // Do not advance if a quiz is unanswered
-            const currentSlideData = slidesData[currentSlide];
-            const currentSlideEl = slides[currentSlide];
-            if(currentSlideData.type === 'quiz') {
-                const firstOption = currentSlideEl.querySelector('.quiz-option');
-                if(!firstOption || !firstOption.disabled) {
-                    return;
-                }
-            }
-            nextBtn.click();
-        } else if (e.key === 'ArrowLeft') {
+            goToNextSlide({ force: true });
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
             e.preventDefault();
-            prevBtn.click();
+            goToPrevSlide();
         }
     });
+
+    function initRemoteControl() {
+        window.addEventListener('remotecontrol', (e) => {
+            const action = e.detail?.action;
+            if (action === 'next') {
+                goToNextSlide({ force: true });
+            } else if (action === 'prev') {
+                goToPrevSlide();
+            }
+        });
+        console.log('Remote control initialized');
+    }
 
     // Theme toggle + persistence
     const themeToggleBtn = document.getElementById('theme-toggle');
@@ -1096,6 +1235,8 @@
     // Initial render
     renderSlides();
     showSlide(0);
+    // populate input now that first slide is shown
+   if (slideInput) slideInput.value = 1;
     initRemoteControl();
 </script>
 <script>

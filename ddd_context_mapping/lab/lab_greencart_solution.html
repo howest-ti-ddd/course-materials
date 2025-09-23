@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DDD Context Map: GreenCart E‑Commerce</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif; background:#0F172A; color:#E5E7EB; }
+    .glass { background: rgba(30,41,59,.55); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.08); }
+    .mermaid { background: rgba(15,23,42,.6); border-radius: .75rem; padding: 1rem; overflow: auto; display:flex; justify-content:center; align-items:center; }
+    .tag { font-size:.75rem; padding:.125rem .5rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.12); white-space:nowrap }
+    .kicker { letter-spacing:.2em; font-size:.75rem; color:#A5B4FC }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <header class="text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400">DDD Context Mapping:</br> GreenCart E-Commerce</h1>
+      <p class="text-lg text-slate-300 mt-3">Relationships shown <em>only</em> where the core context participates.</p>
+    </header>
+    <!-- Context Map (focused: edges touching Core only) -->
+    <section class="glass p-6 rounded-xl mb-8">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
+        <h2 class="text-2xl font-bold text-indigo-300">Context Map</h2>
+      </div>
+      <div class="mermaid">
+flowchart TB
+  %% Nodes (focused on Core + direct neighbors)
+  Identity["Identity & Accounts\n«Generic • U»"]
+  Marketplace["Marketplace & Catalog\n«Core • D/U»"]
+  Orders["Checkout & Orders\n«Supporting • D»"]
+  Content["Content & Community\n«Supporting • D»"]
+
+  %% Edges touching Core only
+  Identity -->|"U at Identity / D at Marketplace\nRelationship: Conformist\nIntegration: OHS + PL"| Marketplace
+  Marketplace -->|"U at Marketplace / D at Orders\nRelationship: Customer–Supplier\n"| Orders
+  Marketplace -->|"U at Marketplace / D at Content\nRelationship: Conformist\n"| Content
+
+  %% Styling
+  classDef core fill:#0f172a,stroke:#6366f1,stroke-width:3px,color:#e5e7eb;
+  classDef supporting fill:#0f172a,stroke:#94a3b8,stroke-width:2px,color:#e5e7eb;
+  classDef generic fill:#0f172a,stroke:#22c55e,stroke-width:2px,color:#e5e7eb;
+  class Marketplace core;
+  class Orders,Content supporting;
+  class Identity generic;
+      </div>
+    </section>
+
+    <!-- Notes / Legend -->
+    <section class="grid md:grid-cols-3 gap-4">
+      <article class="glass p-4 rounded-lg">
+        <div class="tag">Core</div>
+        <p class="mt-2 text-slate-300">Marketplace & Catalog — strategic differentiator (owned by Atlas team).</p>
+      </article>
+      <article class="glass p-4 rounded-lg">
+        <div class="tag">Supporting</div>
+        <p class="mt-2 text-slate-300">Checkout/Orders & Content enable the Core flows.</p>
+      </article>
+      <article class="glass p-4 rounded-lg">
+        <div class="tag">Generic / External</div>
+        <p class="mt-2 text-slate-300">Identity, Payments (generic). Logistics 3PL (external, integrated via ACL to Orders when needed). Not drawn on the main map to keep focus on Core.</p>
+      </article>
+    </section>
+    <!-- Relationship Cards (tightened; clear Relationship vs Integration) -->
+    <section class="space-y-6 mb-10">
+      <h2 class="text-2xl font-bold text-indigo-300">Relationship Defenses</h2>
+
+      <!-- Identity → Marketplace -->
+      <article class="glass p-6 rounded-xl space-y-3">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Identity & Accounts → Marketplace & Catalog</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Identity ↑ · Marketplace ↓</span>
+            <span class="tag">Relationship: <strong>Conformist</strong></span>
+            <span class="tag">Integration: <strong>OHS + PL</strong></span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 text-sm">
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+              <li>Provider model drift leaking into Core language</li>
+              <li>Duplicated auth/profile logic across services</li>
+              <li>Bespoke contracts for commodity IAM</li>
+            </ul>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Decision</p>
+            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+              <li>Marketplace conforms to provider’s identity dialect via OHS</li>
+              <li>Consume minimal PL: userId, roles, entitlements</li>
+            </ul>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Why</p>
+            <p class="text-slate-300">IAM is generic; conformity avoids needless ACL and keeps Core focused on offers/catalog while enabling provider swaps without refactoring Core flows. WARNING be very sure IAM is a well-known solution otherwise adapt ACL.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Marketplace → Orders -->
+      <article class="glass p-6 rounded-xl space-y-3">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Marketplace & Catalog → Checkout & Orders</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Marketplace ↑ · Orders ↓</span>
+            <span class="tag">Relationship: <strong>Customer–Supplier</strong></span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 text-sm">
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+              <li>Schema drift breaking cart/checkout</li>
+              <li>Tight coupling to Marketplace internals</li>
+              <li>High coordination cost for minor field changes</li>
+            </ul>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Decision</p>
+            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+              <li>Orders acts as customer; prioritizes requirements in supplier backlog</li>
+              <li>Marketplace publishes versioned offer/price/availability PL</li>
+            </ul>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Why</p>
+            <p class="text-slate-300">Orders needs consumer‑optimized projections and change notices. A negotiated contract lets Marketplace evolve internally while guaranteeing stable consumer shapes.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Marketplace → Content -->
+      <article class="glass p-6 rounded-xl space-y-3">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <h3 class="text-lg font-semibold text-indigo-200">Marketplace & Catalog → Content & Community</h3>
+          <div class="flex gap-2 flex-wrap">
+            <span class="tag">U/D: Marketplace ↑ · Content ↓</span>
+            <span class="tag">Relationship: <strong>Conformist</strong></span>
+            <span class="tag">Integration: <strong>Read API</strong></span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 text-sm">
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Risks mitigated</p>
+            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+              <li>Duplicated product representations in CMS</li>
+              <li>Unnecessary ACL/ETL for read‑mostly use cases</li>
+            </ul>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Decision</p>
+            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+              <li>Content conforms to Marketplace’s existing read models</li>
+              <li>Use read‑optimized endpoints (images, SEO fields) via lightweight API</li>
+            </ul>
+          </div>
+          <div>
+            <p class="uppercase tracking-wide text-slate-400 text-xs">Why</p>
+            <p class="text-slate-300">Display‑oriented, low‑coupling consumer: direct reuse of Marketplace read endpoints keeps the source of truth without introducing dedicated OHS/PL overhead.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Required micro‑map defense: Orders ↔ Logistics needs an ACL -->
+    <section class="glass p-6 rounded-xl mb-10">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-3">
+        <h2 class="text-2xl font-bold text-indigo-300">Why Orders ↔ Logistics requires an <span class="font-semibold">ACL</span> (not Conformist)</h2>
+        <div class="flex gap-2 flex-wrap text-sm">
+          <span class="tag">Relationship not on context map.</span>
+        </div>
+      </div>
+      <div class="mermaid">
+flowchart LR
+  Shiplark["Logistics (3PL) ‘Shiplark’\n«External • Upstream»"] -->|"OHS (rigid API)\nPL: ShipmentRequests, InventoryLevels"| ACL((("ACL in Orders")))
+  ACL --> Orders2["Checkout & Orders\n«Supporting • Downstream»"]
+
+  classDef external fill:#0f172a,stroke:#ef4444,stroke-width:2px,color:#e5e7eb;
+  classDef supporting fill:#0f172a,stroke:#94a3b8,stroke-width:2px,color:#e5e7eb;
+  class Shiplark external;
+  class Orders2 supporting;
+      </div>
+      <div class="grid md:grid-cols-3 gap-4 mt-4 text-sm">
+        <div>
+          <p class="uppercase tracking-wide text-slate-400 text-xs">Context</p>
+          <p class="text-slate-300">3PL exposes provider‑centric concepts (manifests, carrier codes, windowing) and volatile fields that don’t fit checkout/order language.</p>
+        </div>
+        <div>
+          <p class="uppercase tracking-wide text-slate-400 text-xs">Decision</p>
+          <ul class="list-disc pl-5 text-slate-300 space-y-1">
+            <li>Orders translates <em>outbound</em> to 3PL PL (shipment requests)</li>
+            <li>Orders translates <em>inbound</em> webhooks/feeds to local events</li>
+            <li>Shield Core order model from 3PL churn</li>
+          </ul>
+        </div>
+        <div>
+          <p class="uppercase tracking-wide text-slate-400 text-xs">Why not Conformist?</p>
+          <p class="text-slate-300">Downstream Orders contains core‑adjacent logic (pricing, promises). Conforming to a rigid, external 3PL would pollute language and force frequent refactors. ACL localizes translation cost and preserves model integrity.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad:true, theme:'dark', themeVariables:{ primaryColor:'#1E293B', primaryTextColor:'#E2E8F0', primaryBorderColor:'#475569', lineColor:'#94A3B8', secondaryColor:'#334155', tertiaryColor:'#1E293B' } });
+  </script>
+</body>
+</html>
