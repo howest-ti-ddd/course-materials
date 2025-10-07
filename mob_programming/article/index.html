@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preparing for Your Mob Programming Lab Session</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --page-bg: #f3f6fb;
+        --card-bg: #ffffff;
+        --text-main: #1f2a37;
+        --text-muted: #4b5563;
+        --accent: #2563eb;
+        --accent-soft: rgba(37, 99, 235, 0.12);
+        --border: rgba(15, 23, 42, 0.08);
+        --shadow: 0 18px 35px -24px rgba(15, 23, 42, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: var(--page-bg);
+        color: var(--text-main);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 3.75rem 1.75rem 5rem;
+      }
+
+      .hero {
+        background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0)) var(--card-bg);
+        border-radius: 28px;
+        padding: 3rem clamp(1.5rem, 4vw, 3rem);
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.16), transparent 55%);
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--accent);
+      }
+
+      h1 {
+        margin: 1.2rem 0 1.4rem;
+        font-size: clamp(2.2rem, 4vw, 3.1rem);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+      }
+
+      .hero p {
+        font-size: clamp(1.05rem, 2vw, 1.2rem);
+        max-width: 45rem;
+        color: rgba(31, 42, 55, 0.86);
+      }
+
+      .hero-meta {
+        margin-top: 2.4rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 0;
+        list-style: none;
+      }
+
+      .hero-meta li {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.85rem 1.1rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        font-weight: 600;
+        color: var(--text-muted);
+        backdrop-filter: blur(6px);
+      }
+
+      .icon-bubble {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--accent-soft);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+      }
+
+      .icon-bubble svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .toc {
+        margin-top: 2.8rem;
+        padding: 1.75rem clamp(1.25rem, 3vw, 2rem);
+        background: var(--card-bg);
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.5);
+      }
+
+      .toc strong {
+        display: block;
+        font-size: 1.05rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--accent);
+        margin-bottom: 1rem;
+      }
+
+      .toc ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .toc a {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 0.55rem 0.75rem;
+        border-radius: 14px;
+        transition: background 0.25s, transform 0.25s;
+      }
+
+      .toc a:hover {
+        background: rgba(37, 99, 235, 0.08);
+        transform: translateX(4px);
+      }
+
+      section {
+        margin-top: 3rem;
+        background: var(--card-bg);
+        border-radius: 26px;
+        padding: clamp(1.75rem, 3.4vw, 2.75rem);
+        border: 1px solid var(--border);
+        box-shadow: 0 22px 52px -32px rgba(15, 23, 42, 0.5);
+      }
+
+      section + section {
+        margin-top: 2.5rem;
+      }
+
+      section h2 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        font-size: clamp(1.75rem, 3vw, 2.2rem);
+        letter-spacing: -0.01em;
+      }
+
+      section h2 .icon-bubble {
+        width: 42px;
+        height: 42px;
+      }
+
+      section h2 .icon-bubble svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      p {
+        margin: 0 0 1.1rem;
+        color: var(--text-main);
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      .quote {
+        margin: 1.5rem 0;
+        padding: 1.4rem 1.6rem;
+        border-left: 4px solid var(--accent);
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: 18px;
+        color: var(--text-main);
+        font-weight: 600;
+      }
+
+      .roles-grid,
+      .tips-grid,
+      .callout-grid {
+        display: grid;
+        gap: 1.35rem;
+      }
+
+      @media (min-width: 720px) {
+        .roles-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .tips-grid,
+        .callout-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .role-card,
+      .tip-card,
+      .callout-card {
+        border: 1px solid rgba(37, 99, 235, 0.12);
+        border-radius: 22px;
+        padding: 1.75rem;
+        background: rgba(248, 250, 255, 0.88);
+        backdrop-filter: blur(6px);
+      }
+
+      .role-card h3,
+      .tip-card h3,
+      .callout-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin: 0 0 0.8rem;
+        font-size: 1.25rem;
+      }
+
+      .inline-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.15);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+      }
+
+      .inline-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      ul.checklist {
+        list-style: none;
+        padding: 0;
+        margin: 1.4rem 0;
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      ul.checklist li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+        padding: 0.9rem 1rem;
+        border-radius: 16px;
+        background: rgba(37, 99, 235, 0.07);
+      }
+
+      ul.checklist li strong {
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+
+      .references {
+        list-style: none;
+        padding: 0;
+        margin: 1.4rem 0 0;
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .references li {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+      }
+
+      .references li span {
+        font-weight: 600;
+        color: var(--accent);
+        min-width: 2rem;
+      }
+
+      footer {
+        margin-top: 3.2rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="hero-content">
+          <div class="badge">
+            <span class="icon-bubble" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20c3.866 0 7-3.134 7-7S15.866 6 12 6 5 9.134 5 13c0 1.59.52 3.058 1.4 4.25L6 20l2.75-.4C9.94 20.48 11.41 21 13 21Z" />
+              </svg>
+            </span>
+            Mob Programming Lab
+          </div>
+          <h1>Preparing for Your Mob Programming Lab Session</h1>
+          <p>
+            Bring your whole team together around a single screen for two hours of deliberate, high-bandwidth collaboration.
+            This guide walks you through the roles, rotations, collaboration habits, productivity tactics, and common hurdles
+            so you can make the most of every minute in your mob programming lab.
+          </p>
+          <ul class="hero-meta">
+            <li>
+              <span class="icon-bubble" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+                  <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+                </svg>
+              </span>
+              Whole-team practice
+            </li>
+            <li>
+              <span class="icon-bubble" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 7v5l3 1.5" />
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              </span>
+              Designed for a 2-hour lab
+            </li>
+            <li>
+              <span class="icon-bubble" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7h18" />
+                  <path d="M21 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7" />
+                  <path d="m3 7 3-4h12l3 4" />
+                </svg>
+              </span>
+              Collaboration &amp; learning focus
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <nav class="toc" aria-labelledby="table-of-contents">
+        <strong id="table-of-contents">Table of Contents</strong>
+        <ul>
+          <li><a href="#why">What is Mob Programming and Why Do It?</a></li>
+          <li><a href="#roles">Key Roles in a Mob</a></li>
+          <li><a href="#setup">Setting Up the Space and Tools</a></li>
+          <li><a href="#rotation">Rotating Roles Effectively</a></li>
+          <li><a href="#collaboration">Collaboration, Communication, and Kindness</a></li>
+          <li><a href="#productivity">Staying Productive as a Team</a></li>
+          <li><a href="#challenges">Handling Common Challenges</a></li>
+          <li><a href="#wrap-up">Putting It All Together</a></li>
+          <li><a href="#references">References</a></li>
+        </ul>
+      </nav>
+
+      <section id="why">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14" />
+              <path d="m5 12 7-7 7 7" />
+              <path d="M19 16v3H5v-3" />
+            </svg>
+          </span>
+          What is Mob Programming and Why Do It?
+        </h2>
+        <p>
+          Mob programming is a collaborative style of development where the whole team works together on the same thing,
+          at the same time, in the same space, using a single computer. In essence, it's like pair programming but with the
+          entire team. This approach was popularized by Woody Zuill, who described it as “all the brilliant people working
+          on the same thing, at the same time, in the same space, on the same computer.” Rather than splitting up tasks among
+          individuals, everyone focuses on one problem together.
+        </p>
+        <div class="quote">
+          “All the brilliant people working on the same thing, at the same time, in the same space, on the same computer.”
+          — Woody Zuill
+        </div>
+        <p>
+          Teams that have tried mob programming report a number of benefits. Because communication and learning increase,
+          many problems that typically plague solo or siloed work “just melted away.” The constant face-to-face collaboration
+          means questions get answered immediately and misunderstandings are caught early, instead of festering in long email
+          threads. In a mob, mistakes are often detected the moment they occur – someone on the team will catch the error or ask
+          a clarifying question right away. This just-in-time feedback prevents small issues from turning into big bugs.
+        </p>
+        <p>
+          The benefits go beyond code quality. Mobs experience “organic knowledge sharing all the time” – not just passing around
+          facts, but sharing the thinking process that leads to solutions. Over time, everyone on the team grows their skills
+          together, and nobody is left stuck on a problem alone. Perhaps best of all, teams often find they become happier and
+          more cohesive when mob programming. Working closely together can be challenging at first, but it tends to build a strong
+          team bond and a supportive learning environment.
+        </p>
+      </section>
+
+      <section id="roles">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z" />
+              <path d="M5 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" />
+              <path d="M17 8.5a2.5 2.5 0 1 1 2 4" />
+              <path d="M7 8.5a2.5 2.5 0 1 0-2 4" />
+            </svg>
+          </span>
+          Key Roles in a Mob
+        </h2>
+        <p>
+          When your group of students sits down to mob program, people will take on different roles. These roles rotate frequently,
+          but at any given time each person plays a specific part. Understanding the responsibilities makes each rotation smoother.
+        </p>
+        <div class="roles-grid">
+          <article class="role-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 21v-5a5 5 0 0 1 10 0v5" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </span>
+              Driver
+            </h3>
+            <p>
+              The driver is the person at the keyboard, acting as the team's hands. The driver’s job is to listen to the team's ideas
+              and type them into the code. In mob programming, “the driver is the typist” and should be doing no thinking at the keyboard.
+              That means the driver is not making design decisions or solving problems solo. Instead, they trust the navigators’ guidance
+              and focus on translating the team’s thinking into code. Picture the driver as someone following a navigator’s GPS: no detours,
+              just faithfully steering where the mob directs.
+            </p>
+          </article>
+          <article class="role-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 19V5" />
+                  <path d="m7 10 5-5 5 5" />
+                </svg>
+              </span>
+              Navigator
+            </h3>
+            <p>
+              The navigator is the main person speaking and guiding the team at the moment. They are the problem-solver for the current task,
+              describing out loud what needs to be done next. The navigator thinks at a higher level: “Let's iterate over this array and calculate
+              the total,” rather than dictating every keystroke. Navigators take ideas from the whole mob, but they have the final call on the next
+              steps during their turn. Beginners may guide with very detailed instructions and that’s okay. As the team gains rhythm, navigators can
+              speak more abstractly and trust the driver plus mob to fill in the details.
+            </p>
+          </article>
+          <article class="role-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z" />
+                  <path d="M20 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z" />
+                  <path d="M8 13c-3.314 0-6 1.686-6 3.764V19h12v-2.236C14 14.686 11.314 13 8 13Z" />
+                  <path d="M20 13c-2.52 0-4.8 1.02-5.998 2.606" />
+                  <path d="M14 19h10v-2.236C24 14.686 21.314 13 18 13" />
+                </svg>
+              </span>
+              Mob
+            </h3>
+            <p>
+              Everyone else who is not currently the driver or designated navigator is still actively involved – this is the mob. The mob pays close
+              attention, reviews what’s happening, and contributes ideas or feedback when appropriate. Think of the mob as additional navigators:
+              spotting errors, suggesting improvements, and answering questions. Stay engaged because roles will swap quickly. Support the navigator,
+              offer insights, and coordinate the conversation so only one voice is guiding at a time.
+            </p>
+          </article>
+          <article class="role-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 5h16" />
+                  <path d="M6 7v10" />
+                  <path d="M18 7v10" />
+                  <path d="M4 19h16" />
+                  <path d="M9 11h6" />
+                  <path d="M12 8v6" />
+                </svg>
+              </span>
+              Facilitator
+            </h3>
+            <p>
+              Some sessions include a coach, instructor, or appointed team member acting as a facilitator. They sit slightly apart from the coding action
+              and don’t rotate through driver or navigator roles. Instead, they observe collaboration, keep time, remind the team of guidelines, and help
+              resolve stuck situations. A facilitator can briefly step into a role (usually not as driver) to unstick the team, enforce timing, and uphold
+              agreements like “no thinking at the keyboard.”
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="setup">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="13" rx="2" />
+              <path d="M8 21h8" />
+              <path d="M10 17l-2 4" />
+              <path d="M14 17l2 4" />
+            </svg>
+          </span>
+          Setting Up the Space and Tools
+        </h2>
+        <p>
+          One key to a successful mob programming lab is a thoughtful workspace setup. Since everyone shares one machine, make the environment
+          comfortable and visible for the whole group.
+        </p>
+        <div class="tips-grid">
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="13" rx="2" />
+                  <path d="M8 21h8" />
+                </svg>
+              </span>
+              Screen
+            </h3>
+            <p>
+              Use the largest screen or projector available so everyone can clearly see the code. Position chairs in a semicircle with the driver
+              front-and-center. The Agile Alliance notes that you look at code – packed with tiny details – so higher resolution and good sight lines
+              matter.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16v6H4z" />
+                  <path d="M9 14h6l-1 6h-4z" />
+                </svg>
+              </span>
+              Keyboard &amp; Mouse
+            </h3>
+            <p>
+              Provide an external keyboard and mouse for the driver. Closing the laptop and relying on an external display keeps everyone focused on the
+              shared screen and prevents side work on a small panel no one else can see.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 5h16" />
+                  <path d="M4 9h16" />
+                  <path d="M4 13h10" />
+                  <path d="M4 17h7" />
+                </svg>
+              </span>
+              Editor Settings
+            </h3>
+            <p>
+              Turn on line numbers, bump the font size, and keep the layout simple. Being able to say “Look at line 42” speeds up collaboration.
+              Avoid obscure key bindings or complex plugin setups that only one person understands.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 8v4l3 1" />
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              </span>
+              Mob Timer
+            </h3>
+            <p>
+              Keep a phone or stopwatch handy to enforce rotations. A 4–5 minute timer keeps turns short and energy high. Choose an audible but pleasant
+              alarm and make sure everyone knows to wrap up and rotate when it rings.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="rotation">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 10h7V3" />
+              <path d="m5.5 4.5 4 4" />
+              <path d="M20 14h-7v7" />
+              <path d="m18.5 19.5-4-4" />
+              <path d="M3 15a9 9 0 0 1 9-9" />
+              <path d="M21 9a9 9 0 0 1-9 9" />
+            </svg>
+          </span>
+          Rotating Roles Effectively
+        </h2>
+        <p>
+          Regular rotation keeps everyone engaged and ensures shared understanding of the code. In a two-hour lab you will rotate often, so make the
+          handoffs deliberate.
+        </p>
+        <div class="callout-grid">
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 1.5" />
+                </svg>
+              </span>
+              Frequency
+            </h3>
+            <p>
+              For beginners, rotate roughly every four minutes. Short turns prevent anyone from monopolizing the keyboard and keep fresh eyes on the
+              problem. If four minutes feels too tight, five or ten is acceptable, but shorter cadences sustain momentum.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+              Rotation Order
+            </h3>
+            <p>
+              Typically the navigator becomes the next driver, the driver slides into the mob, and a mob member steps up as navigator. Stand, stretch,
+              and shuffle seats instead of passing a laptop around. Save your work if needed, but aim for a seamless flow.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 12h16" />
+                  <path d="M8 16h8" />
+                  <path d="M9 19h6" />
+                </svg>
+              </span>
+              Continuity
+            </h3>
+            <p>
+              Rotation should not disrupt the flow. Practice verbalizing what you are doing so the incoming driver knows the current task. The previous
+              navigator can give a quick status update – “We just finished writing the function; next we’ll run the tests” – before sliding to the keyboard.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v18" />
+                  <path d="M5 9h14" />
+                  <path d="M5 15h14" />
+                </svg>
+              </span>
+              Facilitator’s Role
+            </h3>
+            <p>
+              Facilitators often keep the timer, prompt rotations, and guard the process. They may call “Time’s up, everyone rotate!” while allowing a
+              sentence or two to finish. Resist stretching turns; the value of mobbing is that no task belongs to one person for long.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="collaboration">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Z" />
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <path d="M16 3.13a4 4 0 1 1 4.87 4.87" />
+              <path d="M19.5 21V19a3.5 3.5 0 0 0-2.61-3.38" />
+            </svg>
+          </span>
+          Collaboration, Communication, and Kindness
+        </h2>
+        <p>
+          Mob programming is as much about people as it is about code. Since you’ll work so closely, cultivate a respectful, inclusive atmosphere.
+          A common guideline is “We will treat everyone with kindness, consideration, and respect.” Every idea is heard, every person is valued, and
+          interactions remain courteous.
+        </p>
+        <ul class="checklist">
+          <li>
+            <span class="inline-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            <div>
+              <strong>Listen to everyone.</strong>
+              Mob programming works best when all members contribute. Avoid letting a few voices dominate while others stay quiet. Navigators should watch
+              for people who want to speak and invite them in — “Hey, what do you think about this approach?” If you’re in the mob and have an insight,
+              speak up (politely) or signal to the navigator that you have something to add. Facilitators or teammates can prompt quieter members to share.
+              Ulrika Malmgren notes that softly spoken ideas can be overlooked, so draw them out and help everyone find their moments.
+            </div>
+          </li>
+          <li>
+            <span class="inline-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M12 4h9" />
+                <path d="M12 12h9" />
+                <path d="M3 4h.01" />
+                <path d="M3 12h.01" />
+                <path d="M3 20h.01" />
+              </svg>
+            </span>
+            <div>
+              <strong>Adopt a “Yes, and…” attitude.</strong>
+              Build on each other’s ideas rather than shutting them down. Acknowledge the current solution (“yes”) before suggesting improvements (“and”).
+              Falco and Pyhäjärvi emphasize not deleting a previous navigator’s work outright — continuous forward progress keeps morale high.
+            </div>
+          </li>
+          <li>
+            <span class="inline-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-7" />
+                <path d="M20 8V3" />
+                <path d="M4 21V3" />
+                <path d="M4 3h16" />
+                <path d="M4 21h16" />
+              </svg>
+            </span>
+            <div>
+              <strong>Lead with kindness and respect.</strong>
+              Critique ideas, not people. Maaret Pyhäjärvi highlights that treating each other kindly helps the team gel and even like each other more.
+              Approach mistakes gently — for instance, “Let’s take a second look at this part; I think there might be a bug,” beats “Who wrote this? It’s all
+              wrong.” Assume good intent; the person who wrote the code before you likely did the best they could. Avoid jokes that make someone feel foolish;
+              instead, create a safe space for questions and uncertainty, and encourage teammates who are struggling.
+            </div>
+          </li>
+          <li>
+            <span class="inline-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M12 4h9" />
+                <path d="M3 4h.01" />
+                <path d="M3 12h.01" />
+                <path d="M3 20h.01" />
+              </svg>
+            </span>
+            <div>
+              <strong>Handle disagreements constructively.</strong>
+              It’s natural to disagree on solutions. Let alternative ideas shine, try an experiment, and learn together. As the guidebook suggests, “allow other
+              people to shine” — you don’t always need to show how much you know. Try another person’s approach first; you can improve or revert later. If
+              debates heat up, take a short breather or let the facilitator mediate. The goal is the team’s success, not winning a personal argument.
+            </div>
+          </li>
+          <li>
+            <span class="inline-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M4.93 4.93 7.76 7.76" />
+                <path d="M16.24 16.24 19.07 19.07" />
+                <path d="M1 12h3" />
+                <path d="M20 12h3" />
+                <path d="M4.93 19.07 7.76 16.24" />
+                <path d="M16.24 7.76 19.07 4.93" />
+              </svg>
+            </span>
+            <div>
+              <strong>Maintain focus and inclusion.</strong>
+              Stay mentally present. Avoid side conversations or device distractions. Some facilitators even arrange the room so there are no extra chairs or
+              tables for solo laptop work. Frequent rotations and an inclusive tone keep everyone engaged. If you’re not driving or navigating, support those who
+              are. If you lose the thread, ask for a recap — chances are someone else needs it too.
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="productivity">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h3" />
+              <path d="M12 3v3" />
+              <path d="M18 12h3" />
+              <path d="M12 18v3" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+          </span>
+          Staying Productive as a Team
+        </h2>
+        <p>
+          Mob programming can feel intense. Use deliberate habits to keep progress steady and make sure every turn moves the work forward.
+        </p>
+        <div class="callout-grid">
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 8v4l3 1" />
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              </span>
+              Use timers and small tasks
+            </h3>
+            <p>
+              The rotation timer injects rhythm. Aim to complete something each turn — write a test, make it pass, clarify the next step. Ask, “How long since
+              we got feedback from the code?” If it’s been a while, you may be taking too large a bite. Run the program frequently, save often, make frequent
+              small commits (they prevent massive merge conflicts and make backtracking easy), and favor many tiny wins over a risky hour-long gamble.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="M5 16h6" />
+                  <path d="M5 8h10" />
+                </svg>
+              </span>
+              Write intentional code
+            </h3>
+            <p>
+              Before diving into implementation, discuss and jot down the intent. A quick comment like “// check if the input list is empty and handle it” gives
+              everyone the same mental model. Writing the solution in human language first exposes unclear thinking, aligns the mob, and makes the code cleaner.
+              After building that slice, remove or refine the comment so the code stays intentional.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12h3" />
+                  <path d="M12 3v3" />
+                  <path d="M18 12h3" />
+                  <path d="M12 18v3" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </span>
+              Keep a steady pace
+            </h3>
+            <p>
+              Mobbing is a marathon relay, not a sprint. Rushing only causes rework when someone gets lost. Use the group to answer questions quickly, share
+              syntax knowledge, and perform focused research — even a quick internet search with the whole team watching — without vanishing into tangents.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3h6v6H3z" />
+                  <path d="M9 15h6v6H9z" />
+                  <path d="M15 3h6v6h-6z" />
+                  <path d="M3 15h6v6H3z" />
+                </svg>
+              </span>
+              Take breaks as needed
+            </h3>
+            <p>
+              Rotations keep minds active, but short rest breaks reset energy. Pause for five minutes to stretch or hydrate if the team fades. Coordinate breaks
+              at natural stopping points so work resumes with fresh attention. The lab is time-boxed, so breaks will be brief, but even a short pause prevents
+              burnout when many minds are concentrating together.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="challenges">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 1-7.07 2.93A10 10 0 0 1 12 2Z" />
+              <path d="M12 16h.01" />
+              <path d="M12 8v4" />
+            </svg>
+          </span>
+          Handling Common Challenges
+        </h2>
+        <p>
+          Mob programming is rewarding, but challenges are normal — especially when you’re new. Anticipate the tricky moments and respond as a team.
+        </p>
+        <div class="callout-grid">
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12h3" />
+                  <path d="M18 12h3" />
+                  <path d="M12 18v3" />
+                  <path d="M12 3v3" />
+                  <path d="M9 12a3 3 0 1 1 3 3" />
+                </svg>
+              </span>
+              When no one knows what to do
+            </h3>
+            <p>
+              Group confusion happens. Pause to brainstorm or research together. As the Mob Programming Guidebook suggests, facilitators (or any teammate)
+              can ask guiding questions such as “What’s the first thing our code needs to do?” or “Does the code compile?” Identifying one small next step is
+              often enough to regain traction. If needed, request outside help as a team so everyone learns.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3Z" />
+                  <path d="M21 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                </svg>
+              </span>
+              Knowledge gaps and varying experience
+            </h3>
+            <p>
+              Different experience levels become an advantage in a mob. If you’re out of your depth, say so — it’s a safe space to ask, “Can someone explain this?”
+              Share knowledge continuously so everyone understands the code. As practitioners observe, mobs end up “not just sharing the knowledge, but sharing
+              the thinking that led to the knowledge.” Over two hours you might pick up a debugging trick from one teammate and a coding idiom from another.
+              Experienced members should teach with patience and keep explanations concise. Remember: team success matters more than who knew what at the start.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3Z" />
+                  <path d="M2 20a6 6 0 0 1 10-4.472A6 6 0 0 1 22 20" />
+                </svg>
+              </span>
+              Dominant voices or uneven participation
+            </h3>
+            <p>
+              Strong personalities might steer every discussion. If that’s you, practice yielding the floor. If you’re quiet, commit to contributing at least once
+              each rotation. Facilitators can draw out quieter members — “Let’s hear from someone who hasn’t spoken in a while” — and remind the group to
+              let others shine. New perspectives often catch issues experts miss.
+            </p>
+          </article>
+          <article class="callout-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2.5a9.5 9.5 0 1 1-6.28 2.32" />
+                  <path d="m2 2 3.5 1 1 3.5" />
+                </svg>
+              </span>
+              Keeping on track without retrospectives
+            </h3>
+            <p>
+              In short labs you may not have time for formal retrospectives, so adjust on the fly. If you notice recurring issues — interruptions, infrequent test
+              runs, dueling navigators — pause for 30 seconds to course-correct. Focus on improvements and “turn up the good” instead of blaming individuals.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="wrap-up">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m5 12 5 5L20 7" />
+              <path d="M2 12a10 10 0 1 1 10 10" />
+            </svg>
+          </span>
+          Putting It All Together
+        </h2>
+        <p>
+          Mob programming might be a new experience, but with the understanding and tips above you’re ready to dive in. The goal of your two-hour lab
+          is not only to implement multiple features; it is to practice effective teamwork in code. By understanding the roles, setting up your space thoughtfully,
+          rotating regularly, communicating kindly, and helping each other out, you will get the most from the session.
+        </p>
+        <p>
+          Many students find mob programming intense yet incredibly fun — it can make programming feel like a team sport. Embrace the chance to learn from
+          your peers. As you collaborate, you’ll likely discover that problems get solved faster (and with fewer headaches) than when working alone, and you’ll
+          pick up new skills along the way. Good luck, and enjoy the mob programming lab!
+        </p>
+      </section>
+
+      <section id="references">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 3h16" />
+              <path d="M4 7h16" />
+              <path d="M8 3v18" />
+              <path d="M16 3v18" />
+              <path d="M4 21h16" />
+            </svg>
+          </span>
+          References
+        </h2>
+        <ul class="references">
+          <li>
+            <span>[1]</span>
+            <a href="https://agilealliance.org/glossary/mob-programming/">What is Mob Programming? | Agile Alliance</a>
+          </li>
+          <li>
+            <span>[2]</span>
+            <span>Mob Programming Guidebook (mobprogrammingguidebook.pdf)</span>
+          </li>
+          <li>
+            <span>[3]</span>
+            <span>Local resource: file://file-86TDpZxV9Uz9kQ3XVeMP8a</span>
+          </li>
+          <li>
+            <span>[4]</span>
+            <a href="https://www.jfokus.se/jfokus24-preso/Half-a-decade-of-mob-programming.pdf">Half a Decade of Mob Programming Software Teaming</a>
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        Preparing for Your Mob Programming Lab Session · Built as a web article from the original PDF guidance.
+      </footer>
+    </div>
+  </body>
+</html>
