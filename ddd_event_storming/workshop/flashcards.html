@@ -46,7 +46,7 @@
     .nav-btn--accent:hover { background: #1A1A1A; border-color: #1A1A1A; color: #FFFFFF; box-shadow: 0 20px 38px -22px rgba(26, 26, 26, 0.5); }
     .nav-btn--subtle { background: #FFFFFF; border-color: #E5E7EB; box-shadow: 0 10px 24px -24px rgba(26, 26, 26, 0.5); }
     .nav-btn--subtle:hover { background: #44C8F5; color: #000000; border-color: #44C8F5; box-shadow: 0 16px 32px -26px rgba(68, 200, 245, 0.5); }
-    .accent-text { color: #44C8F5; }
+    .accent-text { color: #44C8F5; transition: color 0.25s ease; }
     .stage { min-height: 60vh; }
     .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; background: #44C8F5; }
     .label { color: rgba(26, 26, 26, 0.65); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
@@ -159,68 +159,71 @@
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
-    const cards = [
-      { q: 'What is Event Storming?', a: 'A <strong>collaborative workshop</strong> created by Alberto Brandolini to explore complex domains by mapping events that happen in the business.' },
-      { q: 'What does an orange sticky note represent?', a: '<strong>Domain Event</strong> – something that happened that the business cares about.' },
-      { q: 'What does a red sticky note signify?', a: '<strong>Hotspot</strong> – a problem, open question, or area needing clarification.' },
-      { q: 'What is a Command sticky?', a: '<strong>Blue</strong> sticky that represents an action taken by a user or system that triggers a change.' },
-      { q: 'What does a purple sticky note mean?', a: '<strong>Policy</strong> – a rule or reaction that triggers actions when certain events occur.' },
-      { q: 'What are Aggregates represented by?', a: '<strong>Yellow stickies</strong> placed on a pink system sticky, indicating the aggregate inside that system.' },
-      { q: 'What is the goal of Chaotic Exploration?', a: 'Generate as many domain events as possible quickly, focusing on breadth rather than accuracy.' },
-      { q: 'Why limit discussion during Chaotic Exploration?', a: 'To maintain momentum and ensure events are captured before debating details.' },
-      { q: 'What happens during Conflict Resolution?', a: 'The group clarifies disagreements, aligns understanding, and merges duplicate events.' },
-      { q: 'What is the role of Chaptering?', a: 'Organize the timeline into <strong>logical chapters</strong> to tame complexity and show phases.' },
-      { q: 'What do green stickies represent?', a: '<strong>External systems</strong> or actors interacting with your domain.' },
-      { q: 'Why use a timeline in Event Storming?', a: 'It reveals <strong>cause and effect</strong> and highlights dependencies between events.' },
-      { q: 'What is Big Picture Event Storming?', a: 'A large-scale workshop to map an entire domain with many stakeholders, discovering hotspots and opportunities.' },
-      { q: 'What is Process-Level Event Storming?', a: 'A focused workshop on a specific flow to design or improve a process, often leading to software solutions.' },
-      { q: 'What is Design-Level Event Storming?', a: 'A deep dive into implementation details, linking events to commands, aggregates, and policies.' },
-      { q: 'What is the facilitator’s main job?', a: 'Guide the flow, maintain energy, ensure everyone participates, and capture insights without driving the solution.' },
-      { q: 'Why include diverse participants?', a: 'Brings multiple perspectives, uncovers tacit knowledge, and surfaces hidden constraints.' },
-      { q: 'What does a cluster of red stickies signal?', a: 'A concentrated problem area needing attention or a hotspot for discovery.' },
-      { q: 'What is a brown sticky?', a: '<strong>Read model</strong> or information the system needs to display or provide.' },
-      { q: 'How do you identify a bounded context on the board?', a: 'Look for clusters of events and commands that share language and rules; draw boundaries around them.' },
-      { q: 'What does a Command-Event pair indicate?', a: 'A <strong>cause-effect chain</strong> where a command leads to an event.' },
-      { q: 'Why capture questions as hotspots?', a: 'Prevents losing unresolved issues and provides a backlog for follow-up.' },
-      { q: 'What should you do when the board gets messy?', a: 'Step back, reorganize via chaptering or timeboxing, and restate the flow to regain clarity.' },
-      { q: 'What is Chapter Sorting?', a: 'Grouping related events into chapters to simplify discussion and highlight flow segments.' },
-      { q: 'What is the purpose of color conventions?', a: 'Creates a <strong>shared notation</strong> so people can quickly understand the meaning of each sticky.' },
-      { q: 'Why are sticky notes ideal for Event Storming?', a: 'They are <strong>easy to move</strong> and encourage experimentation without attachment.' },
-      { q: 'How long should Chaotic Exploration last?', a: 'Usually 15–20 minutes; short enough to stay energetic but long enough to cover the domain.' },
-      { q: 'What does a feedback loop on the board indicate?', a: 'A cycle where events trigger commands that eventually lead back to a similar event—points to reinforcing or balancing loops.' },
-      { q: 'What happens if the timeline has gaps?', a: 'It reveals missing knowledge or inconsistent understanding—prompt questions to fill the gaps.' },
-      { q: 'What is a Policy in Event Storming?', a: 'A rule (purple sticky) that reacts to events and triggers commands or other actions.' },
-      { q: 'When should you use Big Picture Event Storming?', a: 'When alignment is missing, the domain is unclear, or new teams need shared understanding.' },
-      { q: 'What is a Key Event?', a: 'A pivotal domain event central to the business process; often used as an anchor in the timeline.' },
-      { q: 'How does Event Storming support DDD?', a: 'It helps discover <strong>bounded contexts, ubiquitous language,</strong> and critical aggregates.' },
-      { q: 'What color represents user roles?', a: '<strong>Light blue stickies</strong> typically represent personas or actors.' },
-      { q: 'What outcome should you expect from Big Picture sessions?', a: 'Shared understanding, prioritized hotspots, and candidates for bounded contexts or follow-up workshops.' },
-      { q: 'What outcome should you expect from Process-Level sessions?', a: 'Clear flow of events, policies, and commands that can guide software design or optimization.' },
-      { q: 'What outcome should you expect from Design-Level sessions?', a: 'Detailed command-event relationships, aggregate boundaries, and notes for implementation.' },
-      { q: 'Why timebox hotspot discussions?', a: 'To avoid getting bogged down and defer deep dives to focused sessions.' },
-      { q: 'What’s a typical flow after Big Picture?', a: 'Identify hotspots → run process-level or design-level workshops → distill into bounded contexts.' },
-      { q: 'Why do we invite domain experts?', a: 'They carry tacit knowledge that developers and analysts need but might not document.' },
-      { q: 'What does a pink sticky note represent?', a: '<strong>System/Software component</strong> where aggregates or policies reside.' },
-      { q: 'How do you keep energy high in the room?', a: 'Encourage standing, fast flow, use music, rotate scribes, and celebrate insights.' },
-      { q: 'Why is documenting insights important?', a: 'Whiteboard/summary photos help create artifacts for follow-up and preserve shared understanding.' },
-      { q: 'What is a scenario walk-through?', a: 'Replaying the story across the board to validate flow and uncover missing steps.' },
-      { q: 'How do you handle conflicting opinions?', a: 'Capture both as hotspots, continue mapping, then revisit with the right stakeholders.' },
-      { q: 'What is the facilitator NOT responsible for?', a: 'Deciding solutions. They guide the process, not the content outcomes.' },
-      { q: 'What is a “narrative arc” in Event Storming?', a: 'The story told by the sequence of events; good boards let you retell the process out loud.' },
-      { q: 'When do you snapshot the board?', a: 'After major phases (chaotic exploration, conflict resolution, chaptering) to preserve state.' },
-      { q: 'Why are opportunities highlighted?', a: 'To capture ideas for improvement alongside hotspots so teams can act on wins, not just problems.' },
-      { q: 'What preparation is essential for the space?', a: 'Large wall or roll of paper, enough stickies/markers, comfortable standing space, and no tables blocking movement.' },
-      { q: 'How do you plan follow-up?', a: 'Summarize insights, assign owners to hotspots, schedule next workshops (process or design level).' }
+    const rawCards = [
+      { owner: 'fundamentals', q: 'What is Event Storming?', a: 'A <strong>collaborative workshop</strong> created by Alberto Brandolini to explore complex domains by mapping events that happen in the business.' },
+      { owner: 'fundamentals', q: 'What does an orange sticky note represent?', a: '<strong>Domain Event</strong> – something that happened that the business cares about.' },
+      { owner: 'fundamentals', q: 'What does a red sticky note signify?', a: '<strong>Hotspot</strong> – a problem, open question, or area needing clarification.' },
+      { owner: 'model', q: 'What is a Command sticky?', a: '<strong>Blue</strong> sticky that represents an action taken by a user or system that triggers a change.' },
+      { owner: 'model', q: 'What does a purple sticky note mean?', a: '<strong>Policy</strong> – a rule or reaction that triggers actions when certain events occur.' },
+      { owner: 'model', q: 'What are Aggregates represented by?', a: '<strong>Yellow stickies</strong> placed on a pink system sticky, indicating the aggregate inside that system.' },
+      { owner: 'flow', q: 'What is the goal of Chaotic Exploration?', a: 'Generate as many domain events as possible quickly, focusing on breadth rather than accuracy.' },
+      { owner: 'flow', q: 'Why limit discussion during Chaotic Exploration?', a: 'To maintain momentum and ensure events are captured before debating details.' },
+      { owner: 'flow', q: 'What happens during Conflict Resolution?', a: 'The group clarifies disagreements, aligns understanding, and merges duplicate events.' },
+      { owner: 'flow', q: 'What is the role of Chaptering?', a: 'Organize the timeline into <strong>logical chapters</strong> to tame complexity and show phases.' },
+      { owner: 'fundamentals', q: 'What do green stickies represent?', a: '<strong>External systems</strong> or actors interacting with your domain.' },
+      { owner: 'flow', q: 'Why use a timeline in Event Storming?', a: 'It reveals <strong>cause and effect</strong> and highlights dependencies between events.' },
+      { owner: 'fundamentals', q: 'What is Big Picture Event Storming?', a: 'A large-scale workshop to map an entire domain with many stakeholders, discovering hotspots and opportunities.' },
+      { owner: 'fundamentals', q: 'What is Process-Level Event Storming?', a: 'A focused workshop on a specific flow to design or improve a process, often leading to software solutions.' },
+      { owner: 'model', q: 'What is Design-Level Event Storming?', a: 'A deep dive into implementation details, linking events to commands, aggregates, and policies.' },
+      { owner: 'facilitation', q: 'What is the facilitator’s main job?', a: 'Guide the flow, maintain energy, ensure everyone participates, and capture insights without driving the solution.' },
+      { owner: 'facilitation', q: 'Why include diverse participants?', a: 'Brings multiple perspectives, uncovers tacit knowledge, and surfaces hidden constraints.' },
+      { owner: 'flow', q: 'What does a cluster of red stickies signal?', a: 'A concentrated problem area needing attention or a hotspot for discovery.' },
+      { owner: 'model', q: 'What is a brown sticky?', a: '<strong>Read model</strong> or information the system needs to display or provide.' },
+      { owner: 'model', q: 'How do you identify a bounded context on the board?', a: 'Look for clusters of events and commands that share language and rules; draw boundaries around them.' },
+      { owner: 'model', q: 'What does a Command-Event pair indicate?', a: 'A <strong>cause-effect chain</strong> where a command leads to an event.' },
+      { owner: 'flow', q: 'Why capture questions as hotspots?', a: 'Prevents losing unresolved issues and provides a backlog for follow-up.' },
+      { owner: 'flow', q: 'What should you do when the board gets messy?', a: 'Step back, reorganize via chaptering or timeboxing, and restate the flow to regain clarity.' },
+      { owner: 'flow', q: 'What is Chapter Sorting?', a: 'Grouping related events into chapters to simplify discussion and highlight flow segments.' },
+      { owner: 'fundamentals', q: 'What is the purpose of color conventions?', a: 'Creates a <strong>shared notation</strong> so people can quickly understand the meaning of each sticky.' },
+      { owner: 'fundamentals', q: 'Why are sticky notes ideal for Event Storming?', a: 'They are <strong>easy to move</strong> and encourage experimentation without attachment.' },
+      { owner: 'flow', q: 'How long should Chaotic Exploration last?', a: 'Usually 15–20 minutes; short enough to stay energetic but long enough to cover the domain.' },
+      { owner: 'model', q: 'What does a feedback loop on the board indicate?', a: 'A cycle where events trigger commands that eventually lead back to a similar event—points to reinforcing or balancing loops.' },
+      { owner: 'flow', q: 'What happens if the timeline has gaps?', a: 'It reveals missing knowledge or inconsistent understanding—prompt questions to fill the gaps.' },
+      { owner: 'model', q: 'What is a Policy in Event Storming?', a: 'A rule (purple sticky) that reacts to events and triggers commands or other actions.' },
+      { owner: 'fundamentals', q: 'When should you use Big Picture Event Storming?', a: 'When alignment is missing, the domain is unclear, or new teams need shared understanding.' },
+      { owner: 'fundamentals', q: 'What is a Key Event?', a: 'A pivotal domain event central to the business process; often used as an anchor in the timeline.' },
+      { owner: 'model', q: 'How does Event Storming support DDD?', a: 'It helps discover <strong>bounded contexts, ubiquitous language,</strong> and critical aggregates.' },
+      { owner: 'fundamentals', q: 'What color represents user roles?', a: '<strong>Light blue stickies</strong> typically represent personas or actors.' },
+      { owner: 'fundamentals', q: 'What outcome should you expect from Big Picture sessions?', a: 'Shared understanding, prioritized hotspots, and candidates for bounded contexts or follow-up workshops.' },
+      { owner: 'flow', q: 'What outcome should you expect from Process-Level sessions?', a: 'Clear flow of events, policies, and commands that can guide software design or optimization.' },
+      { owner: 'model', q: 'What outcome should you expect from Design-Level sessions?', a: 'Detailed command-event relationships, aggregate boundaries, and notes for implementation.' },
+      { owner: 'facilitation', q: 'Why timebox hotspot discussions?', a: 'To avoid getting bogged down and defer deep dives to focused sessions.' },
+      { owner: 'facilitation', q: 'What’s a typical flow after Big Picture?', a: 'Identify hotspots → run process-level or design-level workshops → distill into bounded contexts.' },
+      { owner: 'facilitation', q: 'Why do we invite domain experts?', a: 'They carry tacit knowledge that developers and analysts need but might not document.' },
+      { owner: 'model', q: 'What does a pink sticky note represent?', a: '<strong>System/Software component</strong> where aggregates or policies reside.' },
+      { owner: 'facilitation', q: 'How do you keep energy high in the room?', a: 'Encourage standing, fast flow, use music, rotate scribes, and celebrate insights.' },
+      { owner: 'facilitation', q: 'Why is documenting insights important?', a: 'Whiteboard/summary photos help create artifacts for follow-up and preserve shared understanding.' },
+      { owner: 'flow', q: 'What is a scenario walk-through?', a: 'Replaying the story across the board to validate flow and uncover missing steps.' },
+      { owner: 'facilitation', q: 'How do you handle conflicting opinions?', a: 'Capture both as hotspots, continue mapping, then revisit with the right stakeholders.' },
+      { owner: 'facilitation', q: 'What is the facilitator NOT responsible for?', a: 'Deciding solutions. They guide the process, not the content outcomes.' },
+      { owner: 'flow', q: 'What is a “narrative arc” in Event Storming?', a: 'The story told by the sequence of events; good boards let you retell the process out loud.' },
+      { owner: 'flow', q: 'When do you snapshot the board?', a: 'After major phases (chaotic exploration, conflict resolution, chaptering) to preserve state.' },
+      { owner: 'facilitation', q: 'Why are opportunities highlighted?', a: 'To capture ideas for improvement alongside hotspots so teams can act on wins, not just problems.' },
+      { owner: 'facilitation', q: 'What preparation is essential for the space?', a: 'Large wall or roll of paper, enough stickies/markers, comfortable standing space, and no tables blocking movement.' },
+      { owner: 'facilitation', q: 'How do you plan follow-up?', a: 'Summarize insights, assign owners to hotspots, schedule next workshops (process or design level).' }
     ];
 
-    const allCards = cards;
-    const allCardOwners = cards.map((card) => {
-      const q = card.q.toLowerCase();
-      if (/\bchaotic|chapter|timeline|walk-through|snapshot\b/.test(q)) return 'flow';
-      if (/\bcommand|event|aggregate|policy|bounded context|ddd|design\b/.test(q)) return 'model';
-      if (/\bfacilitator|participants|energy|preparation|follow-up|workshop\b/.test(q)) return 'facilitation';
-      return 'fundamentals';
-    });
+    const allCards = [];
+    const allCardOwners = [];
+    const seen = new Set();
+
+    for (const card of rawCards) {
+      const key = card.q.replace(/\s+/g, ' ').trim().toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      allCards.push({ q: card.q, a: card.a });
+      allCardOwners.push(card.owner);
+    }
 
     const icons = {
       all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l-5 3 1.9-5.9L4 10h6l2-6 2 6h6l-4.9 4.1L17 20z"/></svg>',
@@ -315,11 +318,14 @@
       cardEl.style.color = bodyText;
 
       accentStrip.style.backgroundColor = baseColor;
-      headerAccent.style.backgroundColor = baseColor;
+      headerAccent.style.backgroundColor = currentCategoryKey === 'all' ? '#44C8F5' : baseColor;
       qLabel.style.color = baseColor;
       aLabel.style.color = baseColor;
       qSubEl.style.color = muted;
       aEl.style.color = bodyText;
+      document.querySelectorAll('.accent-text').forEach((el) => {
+        el.style.color = currentCategoryKey === 'all' ? '#44C8F5' : baseColor;
+      });
     }
 
     function shuffle() {
@@ -338,3 +344,68 @@
     }
 
     function prev() {
+      const deck = currentDeck();
+      idx = (idx - 1 + deck.length) % deck.length;
+      render();
+    }
+
+    function setCategory(key) {
+      currentCategoryKey = key;
+      const deck = currentDeck();
+      order = deck.map((_, i) => i);
+      idx = 0;
+      render();
+      paintCategoryBar();
+    }
+
+    function paintCategoryBar() {
+      categoryBar.innerHTML = '';
+      for (const cat of categories) {
+        const btn = document.createElement('button');
+        const active = cat.key === currentCategoryKey;
+        btn.className = 'category-btn';
+        if (active) {
+          btn.classList.add('active');
+          btn.style.backgroundColor = cat.color;
+          btn.style.color = cat.text || '#1A1A1A';
+          btn.style.borderColor = cat.color;
+          btn.style.boxShadow = '0 16px 38px -24px rgba(26,26,26,0.45)';
+        } else {
+          btn.style.backgroundColor = '#FFFFFF';
+          btn.style.boxShadow = 'none';
+          btn.style.color = 'rgba(26,26,26,0.75)';
+          btn.style.borderColor = '#E5E7EB';
+        }
+        const count = cat.cards.length;
+        const badgeBg = active ? '#FFFFFF' : '#F5F5F5';
+        const badgeColor = active ? '#1A1A1A' : 'rgba(26,26,26,0.7)';
+        const iconColor = active ? (cat.text || '#1A1A1A') : cat.color;
+        btn.innerHTML = `
+          <span class="flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full" style="color:${iconColor};">${cat.icon}</span>
+            <span>${cat.label}</span>
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${badgeBg}; color: ${badgeColor}; border: 1px solid #E5E7EB;">${count}</span>
+          </span>`;
+        btn.addEventListener('click', () => setCategory(cat.key));
+        categoryBar.appendChild(btn);
+      }
+    }
+
+    cardEl.addEventListener('click', () => setFlipped(!flipped));
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    flipBtn.addEventListener('click', () => setFlipped(!flipped));
+    shuffleBtn.addEventListener('click', shuffle);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') { e.preventDefault(); setFlipped(!flipped); return; }
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    paintCategoryBar();
+    render();
+
+  </script>
+</body>
+</html>
