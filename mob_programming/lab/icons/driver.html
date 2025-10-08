@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mob Programming Driver Handout</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --accent: #44C8F5;
+      --accent-soft: rgba(68, 200, 245, 0.12);
+      --text: #1A1A1A;
+      --muted: #5f6b76;
+      --border: #E5E7EB;
+      --highlight: #E6007E;
+      --warning: #FFFF00;
+      --radius: 16px;
+    }
+    @page {
+      margin: 18mm;
+    }
+    @media print {
+      body {
+        background: #FFFFFF;
+      }
+      .sheet {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        max-width: 100%;
+        padding: 0;
+      }
+      .driver-icon {
+        border-color: #000000;
+        border-width: 3px;
+        background: #E0F7FF;
+        box-shadow: none;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      header {
+        border-bottom-color: #000000;
+        border-bottom-width: 2px;
+      }
+      header h1 {
+        background: #44C8F5;
+        color: #FFFFFF;
+        border: 2px solid #000000;
+        box-shadow: none;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      header span {
+        background: #E0F7FF;
+        color: #006B8F;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .tagline {
+        color: #C0005E;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .intro {
+        background: #E0F7FF;
+        border-color: #000000;
+        border-width: 1px;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .intro h2 {
+        color: #006B8F;
+      }
+      .section h3 {
+        color: #006B8F;
+      }
+      .badge {
+        background: #E0F7FF;
+        border-color: #000000;
+        color: #006B8F;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .callout {
+        background: #FFF0F7;
+        border-left-color: #C0005E;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      footer {
+        color: #1A1A1A;
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: #F5F5F5;
+    }
+    .sheet {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 40px 48px;
+      background: #FFFFFF;
+      border-radius: var(--radius);
+      border: 2px solid var(--border);
+      box-shadow: none;
+    }
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      margin-bottom: 28px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .driver-icon {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(68, 200, 245, 0.15);
+      border: 4px solid var(--accent);
+      box-shadow: none;
+      display: grid;
+      place-items: center;
+      font-size: 64px;
+      line-height: 1;
+    }
+    .driver-icon::before {
+      content: "🚗";
+      display: block;
+      filter: none;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      padding: 16px 40px;
+      background: var(--accent);
+      color: #FFFFFF;
+      border-radius: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      box-shadow: none;
+      border: 2px solid var(--accent);
+    }
+    header span {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1.4px;
+    }
+    .tagline {
+      margin-top: 8px;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--highlight);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: none;
+      padding: 0;
+      background: none;
+      border-radius: 0;
+    }
+    .intro {
+      margin-bottom: 26px;
+      padding: 20px 24px;
+      background: rgba(68, 200, 245, 0.08);
+      border-radius: calc(var(--radius) - 4px);
+      border: 1px solid var(--border);
+    }
+    .intro h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+    }
+    .intro p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .section {
+      margin-bottom: 28px;
+    }
+    .section h3 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+    .section ul {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      row-gap: 10px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      background: rgba(68, 200, 245, 0.07);
+    }
+    .callout {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--highlight);
+      background: rgba(230, 0, 126, 0.05);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    footer {
+      margin-top: 36px;
+      text-align: center;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <div class="driver-icon" aria-hidden="true"></div>
+      <h1>DRIVER</h1>
+      <span>Mob Programming</span>
+      <p class="tagline">Deliver clarity — one line at a time.</p>
+    </header>
+
+    <section class="intro">
+      <h2>You Drive &amp; They Navigate</h2>
+      <p>Type exactly what the mob agrees upon. Keep your hands on the keyboard, your ears open, and your pace steady. The navigator guides; your craft brings ideas to life.</p>
+    </section>
+
+    <section class="section">
+      <h3>Focus</h3>
+      <ul>
+        <li>Stay synchronized with the navigator’s voice—ask for clarity before you type.</li>
+        <li>Maintain clean, readable code; pause if the mob needs to refactor.</li>
+        <li>Keep the team rhythm: no solo problem-solving, no personal shortcuts.</li>
+      </ul>
+      <div class="callout">
+        <strong>Tip:</strong> Read code aloud as you type. It keeps the mob aligned and surfaces misunderstandings early.
+      </div>
+    </section>
+
+    <section class="section">
+      <h3>Communication</h3>
+      <ul>
+        <li>Invite the mob’s voice: “Ready for the next step?”</li>
+        <li>Surface blockers fast—your voice keeps flow unbroken.</li>
+        <li>Celebrate clarity and call out confusion with respect.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h3>Cadence</h3>
+      <ul>
+        <li>Switch on schedule. Give the next driver a smooth handover.</li>
+        <li>Summarize the current state before the rotation ends.</li>
+        <li>Reset posture, screen, and editor for the incoming driver.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mob Programming Mob Handout</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --accent: #FFFF00;
+      --accent-dark: #E6E600;
+      --accent-soft: rgba(255, 255, 0, 0.15);
+      --text: #1A1A1A;
+      --muted: #5f6b76;
+      --border: #E5E7EB;
+      --highlight: #44C8F5;
+      --secondary: #E6007E;
+      --radius: 16px;
+    }
+    @page {
+      margin: 18mm;
+    }
+    @media print {
+      body {
+        background: #FFFFFF;
+      }
+      .sheet {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        max-width: 100%;
+        padding: 0;
+      }
+      .mob-icon {
+        border-color: #000000;
+        border-width: 3px;
+        background: #FFFEF0;
+        box-shadow: none;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      header {
+        border-bottom-color: #000000;
+        border-bottom-width: 2px;
+      }
+      header h1 {
+        background: #FFFF00;
+        color: #1A1A1A;
+        border: 2px solid #000000;
+        box-shadow: none;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      header span {
+        background: #FFFEF0;
+        color: #B8B800;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .tagline {
+        color: #44C8F5;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .intro {
+        background: #FFFEF0;
+        border-color: #000000;
+        border-width: 1px;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .intro h2 {
+        color: #B8B800;
+      }
+      .section h3 {
+        color: #B8B800;
+      }
+      .badge {
+        background: #FFFEF0;
+        border-color: #000000;
+        color: #B8B800;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .callout {
+        background: #E0F7FF;
+        border-left-color: #44C8F5;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      footer {
+        color: #1A1A1A;
+      }
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: #F5F5F5;
+    }
+    .sheet {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 40px 48px;
+      background: #FFFFFF;
+      border-radius: var(--radius);
+      border: 2px solid var(--border);
+      box-shadow: none;
+    }
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      margin-bottom: 28px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .mob-icon {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      border: 4px solid var(--accent-dark);
+      box-shadow: none;
+      display: grid;
+      place-items: center;
+      font-size: 64px;
+      line-height: 1;
+    }
+    .mob-icon::before {
+      content: "👥";
+      display: block;
+      filter: none;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      padding: 16px 40px;
+      background: var(--accent);
+      color: var(--text);
+      border-radius: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      box-shadow: none;
+      border: 2px solid var(--accent-dark);
+    }
+    header span {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1.4px;
+    }
+    .tagline {
+      margin-top: 8px;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--highlight);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: none;
+      padding: 0;
+      background: none;
+      border-radius: 0;
+    }
+    .intro {
+      margin-bottom: 26px;
+      padding: 20px 24px;
+      background: var(--accent-soft);
+      border-radius: calc(var(--radius) - 4px);
+      border: 1px solid var(--border);
+    }
+    .intro h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+    }
+    .intro p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .section {
+      margin-bottom: 28px;
+    }
+    .section h3 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-dark);
+    }
+    .section ul {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      row-gap: 10px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent-dark);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      background: var(--accent-soft);
+    }
+    .callout {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--highlight);
+      background: rgba(68, 200, 245, 0.05);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    footer {
+      margin-top: 36px;
+      text-align: center;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <div class="mob-icon" aria-hidden="true"></div>
+      <h1>The Mob</h1>
+      <span>Mob Programming</span>
+      <p class="tagline">Think together — code together — learn together.</p>
+    </header>
+
+    <section class="intro">
+      <h2>You Collaborate &amp; They Execute</h2>
+      <p>Engage actively. Question assumptions. Contribute ideas. The collective wisdom of the mob drives the quality of the work—your voice matters.</p>
+    </section>
+
+    <section class="section">
+      <h3>Focus</h3>
+      <ul>
+        <li>Stay present and engaged—distraction weakens the entire mob.</li>
+        <li>Listen actively to the navigator and driver—build on their ideas.</li>
+        <li>Challenge respectfully when you see a better path forward.</li>
+      </ul>
+      <div class="callout">
+        <strong>Tip:</strong> If you're lost, speak up immediately. "Can we pause and clarify?" helps everyone.
+      </div>
+    </section>
+
+    <section class="section">
+      <h3>Communication</h3>
+      <ul>
+        <li>Ask clarifying questions: "Why are we choosing this approach?"</li>
+        <li>Offer suggestions with humility: "What if we considered...?"</li>
+        <li>Celebrate insights and learning moments as a team.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h3>Cadence</h3>
+      <ul>
+        <li>Prepare mentally for your turn as navigator or driver.</li>
+        <li>Respect rotation timing—smooth transitions keep momentum.</li>
+        <li>Reflect on what you learned after each session.</li>
+      </ul>
+    </section>
+
+  </main>
+</body>
+</html>
