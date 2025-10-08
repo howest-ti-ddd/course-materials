@@ -7,14 +7,16 @@
     <style>
       :root {
         color-scheme: light;
-        --page-bg: #f3f6fb;
+        --page-bg: #f5f5f5;
         --card-bg: #ffffff;
-        --text-main: #1f2a37;
-        --text-muted: #4b5563;
-        --accent: #2563eb;
-        --accent-soft: rgba(37, 99, 235, 0.12);
-        --border: rgba(15, 23, 42, 0.08);
-        --shadow: 0 18px 35px -24px rgba(15, 23, 42, 0.6);
+        --text-main: #1a1a1a;
+        --text-muted: rgba(26, 26, 26, 0.7);
+        --accent: #44c8f5;
+        --accent-soft: rgba(68, 200, 245, 0.18);
+        --accent-yellow: #ffff00;
+        --accent-magenta: #e6007e;
+        --border: #e5e7eb;
+        --shadow: 0 18px 35px -24px rgba(0, 0, 0, 0.3);
       }
 
       * {
@@ -30,35 +32,57 @@
       }
 
       a {
-        color: inherit;
+        color: var(--accent);
+      }
+
+      a:hover {
+        color: var(--accent-magenta);
       }
 
       .page {
-        max-width: 1040px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 3.75rem 1.75rem 5rem;
+        padding: 3.5rem 1.5rem 5rem;
       }
 
       .hero {
-        background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0)) var(--card-bg);
+        background: var(--card-bg);
         border-radius: 28px;
         padding: 3rem clamp(1.5rem, 4vw, 3rem);
         box-shadow: var(--shadow);
         position: relative;
         overflow: hidden;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.16), transparent 55%);
-        pointer-events: none;
+        border: 1px solid var(--border);
+        border-top: 8px solid var(--accent);
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+        align-items: flex-start;
       }
 
       .hero-content {
         position: relative;
         z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 48rem;
+      }
+
+      .hero-art {
+        align-self: center;
+        margin: 0;
+      }
+
+      .hero-art svg {
+        width: clamp(220px, 36vw, 320px);
+        height: auto;
+        display: block;
+      }
+
+      .highlight {
+        color: var(--accent-magenta);
+        font-weight: 600;
       }
 
       .badge {
@@ -71,8 +95,8 @@
         font-weight: 600;
         padding: 0.4rem 0.9rem;
         border-radius: 999px;
-        background: rgba(37, 99, 235, 0.12);
-        color: var(--accent);
+        background: var(--accent-magenta);
+        color: #ffffff;
       }
 
       h1 {
@@ -80,12 +104,13 @@
         font-size: clamp(2.2rem, 4vw, 3.1rem);
         line-height: 1.1;
         letter-spacing: -0.01em;
+        color: var(--accent);
       }
 
       .hero p {
         font-size: clamp(1.05rem, 2vw, 1.2rem);
         max-width: 45rem;
-        color: rgba(31, 42, 55, 0.86);
+        color: rgba(26, 26, 26, 0.85);
       }
 
       .hero-meta {
@@ -102,9 +127,9 @@
         align-items: center;
         gap: 0.65rem;
         padding: 0.85rem 1.1rem;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.92);
         border-radius: 16px;
-        border: 1px solid rgba(37, 99, 235, 0.12);
+        border: 1px solid rgba(230, 0, 126, 0.22);
         font-weight: 600;
         color: var(--text-muted);
         backdrop-filter: blur(6px);
@@ -114,11 +139,11 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: var(--accent-soft);
+        background: var(--accent-magenta);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: var(--accent);
+        color: #ffffff;
       }
 
       .icon-bubble svg {
@@ -132,7 +157,7 @@
         background: var(--card-bg);
         border-radius: 24px;
         border: 1px solid var(--border);
-        box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.5);
+        box-shadow: 0 14px 28px -24px rgba(0, 0, 0, 0.2);
       }
 
       .toc strong {
@@ -140,7 +165,7 @@
         font-size: 1.05rem;
         text-transform: uppercase;
         letter-spacing: 0.07em;
-        color: var(--accent);
+        color: var(--accent-magenta);
         margin-bottom: 1rem;
       }
 
@@ -161,11 +186,16 @@
         font-weight: 600;
         padding: 0.55rem 0.75rem;
         border-radius: 14px;
-        transition: background 0.25s, transform 0.25s;
+        transition: background 0.25s, transform 0.25s, color 0.25s;
+      }
+
+      .toc a.active {
+        color: #000000;
+        background: rgba(230, 0, 126, 0.18);
       }
 
       .toc a:hover {
-        background: rgba(37, 99, 235, 0.08);
+        background: rgba(68, 200, 245, 0.12);
         transform: translateX(4px);
       }
 
@@ -175,7 +205,8 @@
         border-radius: 26px;
         padding: clamp(1.75rem, 3.4vw, 2.75rem);
         border: 1px solid var(--border);
-        box-shadow: 0 22px 52px -32px rgba(15, 23, 42, 0.5);
+        box-shadow: 0 22px 52px -32px rgba(0, 0, 0, 0.22);
+        scroll-margin-top: 2rem;
       }
 
       section + section {
@@ -215,7 +246,7 @@
         margin: 1.5rem 0;
         padding: 1.4rem 1.6rem;
         border-left: 4px solid var(--accent);
-        background: rgba(37, 99, 235, 0.08);
+        background: rgba(68, 200, 245, 0.16);
         border-radius: 18px;
         color: var(--text-main);
         font-weight: 600;
@@ -242,10 +273,10 @@
       .role-card,
       .tip-card,
       .callout-card {
-        border: 1px solid rgba(37, 99, 235, 0.12);
+        border: 1px solid rgba(68, 200, 245, 0.18);
         border-radius: 22px;
         padding: 1.75rem;
-        background: rgba(248, 250, 255, 0.88);
+        background: rgba(245, 245, 245, 0.94);
         backdrop-filter: blur(6px);
       }
 
@@ -263,7 +294,7 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: rgba(37, 99, 235, 0.15);
+        background: rgba(68, 200, 245, 0.22);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -289,7 +320,8 @@
         gap: 0.8rem;
         padding: 0.9rem 1rem;
         border-radius: 16px;
-        background: rgba(37, 99, 235, 0.07);
+        background: rgba(255, 255, 0, 0.16);
+        border: 1px solid rgba(255, 255, 0, 0.28);
       }
 
       ul.checklist li strong {
@@ -323,56 +355,225 @@
         color: var(--text-muted);
         font-size: 0.95rem;
       }
+
+      @media (min-width: 960px) {
+        .page {
+          display: grid;
+          grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+          column-gap: clamp(2.25rem, 5vw, 3.5rem);
+        }
+
+        .hero {
+          flex-direction: row;
+          align-items: center;
+          gap: clamp(2rem, 5vw, 3.5rem);
+        }
+
+        .hero-content {
+          flex: 1;
+        }
+
+        .hero-art {
+          flex: 0 0 clamp(220px, 28vw, 320px);
+          align-self: stretch;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .hero-art svg {
+          width: 100%;
+        }
+
+        .page > .hero,
+        .page > footer {
+          grid-column: 1 / -1;
+        }
+
+        .page > .toc {
+          position: sticky;
+          top: 2rem;
+          align-self: start;
+          max-height: calc(100vh - 4rem);
+          overflow: auto;
+          padding-right: 1.25rem;
+        }
+
+        .page > section {
+          grid-column: 2;
+        }
+
+        .toc ul {
+          gap: 0.55rem;
+        }
+      }
+
+      @page {
+        margin: 1in;
+      }
+
+      @media print {
+        body {
+          background: #fff;
+          color: #1a1a1a;
+          font-size: 11pt;
+        }
+
+        .page {
+          max-width: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        .hero,
+        .toc,
+        section,
+        footer {
+          background: transparent !important;
+          border: none;
+          border-radius: 0;
+          box-shadow: none !important;
+          margin-top: 1.5rem;
+          padding: 0;
+        }
+
+        .hero {
+          margin-top: 0;
+        }
+
+        .hero::after {
+          display: none;
+        }
+
+        .hero-content {
+          padding: 0;
+        }
+
+        .badge,
+        .hero-meta li,
+        .role-card,
+        .tip-card,
+        .callout-card,
+        ul.checklist li,
+        .quote {
+          background: transparent !important;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 6px;
+          box-shadow: none;
+        }
+
+        .hero-art {
+          display: none;
+        }
+
+        .highlight {
+          color: inherit;
+        }
+
+        .hero-meta {
+          gap: 0.5rem;
+        }
+
+        .hero-meta li {
+          align-items: flex-start;
+          font-weight: 500;
+        }
+
+        .icon-bubble,
+        .inline-icon {
+          background: none;
+          color: inherit;
+        }
+
+        .icon-bubble svg,
+        .inline-icon svg {
+          height: 16px;
+          width: 16px;
+        }
+
+        .toc {
+          page-break-inside: avoid;
+        }
+
+        .toc ul {
+          gap: 0.4rem;
+        }
+
+        .toc a {
+          padding: 0;
+          text-decoration: underline;
+          transform: none !important;
+        }
+
+        section {
+          page-break-inside: avoid;
+        }
+
+        h2,
+        h3 {
+          page-break-after: avoid;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: underline;
+        }
+
+        a[href^="http"]:not([href^="mailto:"])::after {
+          content: " (" attr(href) ")";
+          font-size: 0.9em;
+          font-weight: 400;
+        }
+
+        .hero-meta,
+        .roles-grid,
+        .tips-grid,
+        .callout-grid {
+          display: block;
+        }
+
+        .role-card,
+        .tip-card,
+        .callout-card,
+        ul.checklist,
+        .references li {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        ul.checklist {
+          margin: 1rem 0;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="page">
       <header class="hero">
+        <figure class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+            <rect x="44" y="36" width="232" height="132" rx="20" style="fill: var(--card-bg); stroke: var(--accent); stroke-width: 6;" />
+            <rect x="64" y="56" width="192" height="92" rx="12" style="fill: var(--accent-soft);" />
+            <path d="M86 86h148" style="stroke: #1a1a1a; stroke-width: 4; stroke-linecap: round;" />
+            <path d="M86 104h92" style="stroke: #1a1a1a; stroke-width: 4; stroke-linecap: round; opacity: 0.65;" />
+            <path d="M86 122h52" style="stroke: #1a1a1a; stroke-width: 4; stroke-linecap: round; opacity: 0.45;" />
+            <rect x="136" y="174" width="48" height="14" rx="7" style="fill: #1a1a1a;" />
+            <circle cx="160" cy="166" r="28" style="fill: var(--accent-magenta);" />
+            <path d="M160 190c30 0 52 18 54 40v14h-108v-14c2-22 24-40 54-40Z" style="fill: var(--accent-magenta); opacity: 0.28;" />
+            <circle cx="112" cy="182" r="22" style="fill: var(--accent);" />
+            <path d="M112 200c24 0 40 12 40 30v14H72v-14c0-18 16-30 40-30Z" style="fill: var(--accent); opacity: 0.24;" />
+            <circle cx="208" cy="182" r="22" style="fill: var(--accent-yellow);" />
+            <path d="M208 200c24 0 40 12 40 30v14h-80v-14c0-18 16-30 40-30Z" style="fill: var(--accent-yellow); opacity: 0.3;" />
+          </svg>
+        </figure>
         <div class="hero-content">
-          <div class="badge">
-            <span class="icon-bubble" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20c3.866 0 7-3.134 7-7S15.866 6 12 6 5 9.134 5 13c0 1.59.52 3.058 1.4 4.25L6 20l2.75-.4C9.94 20.48 11.41 21 13 21Z" />
-              </svg>
-            </span>
-            Mob Programming Lab
-          </div>
-          <h1>Preparing for Your Mob Programming Lab Session</h1>
+          <div class="badge">A.k.a Software Teaming / Ensemble</div>
+          <h1>Mob programming essentials</h1>
           <p>
-            Bring your whole team together around a single screen for two hours of deliberate, high-bandwidth collaboration.
-            This guide walks you through the roles, rotations, collaboration habits, productivity tactics, and common hurdles
+            Bring your <span class="highlight">whole team</span> together around a <span class="highlight">single screen</span> for deliberate, high-bandwidth collaboration.
+            This article walks you through the roles, rotations, collaboration habits, productivity tactics, and common hurdles
             so you can make the most of every minute in your mob programming lab.
           </p>
-          <ul class="hero-meta">
-            <li>
-              <span class="icon-bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
-                  <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-                </svg>
-              </span>
-              Whole-team practice
-            </li>
-            <li>
-              <span class="icon-bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 7v5l3 1.5" />
-                  <circle cx="12" cy="12" r="9" />
-                </svg>
-              </span>
-              Designed for a 2-hour lab
-            </li>
-            <li>
-              <span class="icon-bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 7h18" />
-                  <path d="M21 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7" />
-                  <path d="m3 7 3-4h12l3 4" />
-                </svg>
-              </span>
-              Collaboration &amp; learning focus
-            </li>
-          </ul>
         </div>
       </header>
 
@@ -387,6 +588,7 @@
           <li><a href="#productivity">Staying Productive as a Team</a></li>
           <li><a href="#challenges">Handling Common Challenges</a></li>
           <li><a href="#wrap-up">Putting It All Together</a></li>
+          <li><a href="#bache-insights">Some Advice</a></li>
           <li><a href="#references">References</a></li>
         </ul>
       </nav>
@@ -403,7 +605,7 @@
           What is Mob Programming and Why Do It?
         </h2>
         <p>
-          Mob programming is a collaborative style of development where the whole team works together on the same thing,
+          Mob programming is a <span class="highlight">collaborative style</span> of development where the <span class="highlight">whole team works together</span> on the same thing,
           at the same time, in the same space, using a single computer. In essence, it's like pair programming but with the
           entire team. This approach was popularized by Woody Zuill, who described it as “all the brilliant people working
           on the same thing, at the same time, in the same space, on the same computer.” Rather than splitting up tasks among
@@ -421,7 +623,7 @@
           a clarifying question right away. This just-in-time feedback prevents small issues from turning into big bugs.
         </p>
         <p>
-          The benefits go beyond code quality. Mobs experience “organic knowledge sharing all the time” – not just passing around
+          The benefits go beyond code quality. Mobs experience <span class="highlight">organic knowledge sharing</span> all the time – not just passing around
           facts, but sharing the thinking process that leads to solutions. Over time, everyone on the team grows their skills
           together, and nobody is left stuck on a problem alone. Perhaps best of all, teams often find they become happier and
           more cohesive when mob programming. Working closely together can be challenging at first, but it tends to build a strong
@@ -442,7 +644,7 @@
           Key Roles in a Mob
         </h2>
         <p>
-          When your group of students sits down to mob program, people will take on different roles. These roles rotate frequently,
+          When your group of students sits down to mob program, people will take on <span class="highlight">different roles</span>. These roles <span class="highlight">rotate frequently</span>,
           but at any given time each person plays a specific part. Understanding the responsibilities makes each rotation smoother.
         </p>
         <div class="roles-grid">
@@ -458,7 +660,7 @@
             </h3>
             <p>
               The driver is the person at the keyboard, acting as the team's hands. The driver’s job is to listen to the team's ideas
-              and type them into the code. In mob programming, “the driver is the typist” and should be doing no thinking at the keyboard.
+              and type them into the code. In mob programming, “the driver is the typist” and should be doing <span class="highlight">no thinking at the keyboard</span>.
               That means the driver is not making design decisions or solving problems solo. Instead, they trust the navigators’ guidance
               and focus on translating the team’s thinking into code. Picture the driver as someone following a navigator’s GPS: no detours,
               just faithfully steering where the mob directs.
@@ -476,7 +678,7 @@
             </h3>
             <p>
               The navigator is the main person speaking and guiding the team at the moment. They are the problem-solver for the current task,
-              describing out loud what needs to be done next. The navigator thinks at a higher level: “Let's iterate over this array and calculate
+              <span class="highlight">describing out loud</span> what needs to be done next. The navigator thinks at a higher level: “Let's iterate over this array and calculate
               the total,” rather than dictating every keystroke. Navigators take ideas from the whole mob, but they have the final call on the next
               steps during their turn. Beginners may guide with very detailed instructions and that’s okay. As the team gains rhythm, navigators can
               speak more abstractly and trust the driver plus mob to fill in the details.
@@ -539,7 +741,7 @@
           Setting Up the Space and Tools
         </h2>
         <p>
-          One key to a successful mob programming lab is a thoughtful workspace setup. Since everyone shares one machine, make the environment
+          One key to a successful mob programming workshop is a <span class="highlight">thoughtful workspace setup</span>. Since everyone shares one machine, make the environment
           comfortable and visible for the whole group.
         </p>
         <div class="tips-grid">
@@ -570,7 +772,7 @@
               Keyboard &amp; Mouse
             </h3>
             <p>
-              Provide an external keyboard and mouse for the driver. Closing the laptop and relying on an external display keeps everyone focused on the
+              Provide an external keyboard and mouse for the driver (in the DDD module we will use a different setup). Closing the laptop and relying on an external display keeps everyone focused on the
               shared screen and prevents side work on a small panel no one else can see.
             </p>
           </article>
@@ -624,8 +826,7 @@
           Rotating Roles Effectively
         </h2>
         <p>
-          Regular rotation keeps everyone engaged and ensures shared understanding of the code. In a two-hour lab you will rotate often, so make the
-          handoffs deliberate.
+          Regular rotation keeps everyone engaged and ensures shared understanding of the code.
         </p>
         <div class="callout-grid">
           <article class="callout-card">
@@ -714,7 +915,10 @@
           <li>
             <span class="inline-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12" />
+                <circle cx="18" cy="10" r="3" />
+                <path d="M13 17v-1a4 4 0 0 1 8 0v1" />
+                <circle cx="8" cy="8" r="3" />
+                <path d="M4 17v-1a4 4 0 0 1 6-3.5" />
               </svg>
             </span>
             <div>
@@ -728,12 +932,9 @@
           <li>
             <span class="inline-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9" />
-                <path d="M12 4h9" />
-                <path d="M12 12h9" />
-                <path d="M3 4h.01" />
-                <path d="M3 12h.01" />
-                <path d="M3 20h.01" />
+                <path d="M21 10a6 6 0 0 0-6-6H9a6 6 0 0 0 0 12h1v4l4-4h1a6 6 0 0 0 6-6Z" />
+                <path d="M12 7v6" />
+                <path d="M9 10h6" />
               </svg>
             </span>
             <div>
@@ -745,11 +946,7 @@
           <li>
             <span class="inline-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-7" />
-                <path d="M20 8V3" />
-                <path d="M4 21V3" />
-                <path d="M4 3h16" />
-                <path d="M4 21h16" />
+                <path d="M12 21s-6-4.2-6-9a3.5 3.5 0 0 1 6-2.5A3.5 3.5 0 0 1 18 12c0 4.8-6 9-6 9Z" />
               </svg>
             </span>
             <div>
@@ -763,11 +960,11 @@
           <li>
             <span class="inline-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9" />
-                <path d="M12 4h9" />
-                <path d="M3 4h.01" />
-                <path d="M3 12h.01" />
-                <path d="M3 20h.01" />
+                <path d="m4 12 3-3a3 3 0 0 1 4 0l2 2" />
+                <path d="m12 11 2-2a3 3 0 0 1 4 0l3 3" />
+                <path d="M8 16 10 18a2 2 0 0 0 3 0l2-2" />
+                <path d="M6 9V5h3" />
+                <path d="M18 9V5h-3" />
               </svg>
             </span>
             <div>
@@ -814,7 +1011,7 @@
           Staying Productive as a Team
         </h2>
         <p>
-          Mob programming can feel intense. Use deliberate habits to keep progress steady and make sure every turn moves the work forward.
+          Mob programming can feel intense. Use <span class="highlight">deliberate habits</span> to keep progress steady and make sure every turn moves the work forward.
         </p>
         <div class="callout-grid">
           <article class="callout-card">
@@ -986,7 +1183,7 @@
         </h2>
         <p>
           Mob programming might be a new experience, but with the understanding and tips above you’re ready to dive in. The goal of your two-hour lab
-          is not only to implement multiple features; it is to practice effective teamwork in code. By understanding the roles, setting up your space thoughtfully,
+          is not only to implement multiple features; it is to <span class="highlight">practice effective teamwork</span> in code. By understanding the roles, setting up your space thoughtfully,
           rotating regularly, communicating kindly, and helping each other out, you will get the most from the session.
         </p>
         <p>
@@ -994,6 +1191,111 @@
           your peers. As you collaborate, you’ll likely discover that problems get solved faster (and with fewer headaches) than when working alone, and you’ll
           pick up new skills along the way. Good luck, and enjoy the mob programming lab!
         </p>
+      </section>
+
+      <section id="bache-insights">
+        <h2>
+          <span class="icon-bubble" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 6h16" />
+              <path d="M4 12h16" />
+              <path d="M4 18h6" />
+              <path d="m10 18 3 3 5-5" />
+            </svg>
+          </span>
+          Some Advice
+        </h2>
+        <p>
+          Here are some common ensemble pitfalls and how to avoid them.
+         <br> <a href="https://www.youtube.com/watch?v=qjE1O9Zdm3U">“Avoid These Mob Programming / Ensemble Mistakes.”</a><br> Use the highlights below to prepare your team.
+        </p>
+        <div class="tips-grid">
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7h16" />
+                  <path d="M4 17h16" />
+                  <path d="m7 7 5-5 5 5" />
+                  <path d="m7 17 5 5 5-5" />
+                </svg>
+              </span>
+              Choose an inviting name
+            </h3>
+            <p>
+              “Mob” can intimidate newcomers. Try framing the practice as <span class="highlight">ensemble</span> or <span class="highlight">software teaming</span> to spotlight cooperation.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 5h16" />
+                  <path d="M4 9h12" />
+                  <path d="M4 13h8" />
+                  <path d="M4 17h5" />
+                  <path d="M4 21h2" />
+                </svg>
+              </span>
+              Start small and safe
+            </h3>
+            <p>
+              Skip production code on day one. Use <span class="highlight">code katas</span> so everyone learns the collaboration rhythm without risking critical systems.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 19v-6" />
+                  <circle cx="12" cy="7" r="3" />
+                  <path d="M5 21v-4a4 4 0 0 1 4-4h6" />
+                  <path d="M19 21v-4a4 4 0 0 0-4-4h-3" />
+                </svg>
+              </span>
+              Re-emphasize the roles
+            </h3>
+            <p>
+              The typist follows instructions while the navigator <span class="highlight">speaks the next steps</span>. Rotate frequently so everyone practices guiding and listening.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="M5 16h9" />
+                  <path d="M5 8h6" />
+                  <path d="M9 4h6a4 4 0 0 1 4 4c0 2.3-2.4 4.1-5.5 6.3" />
+                  <path d="M15 20H8a4 4 0 0 1-4-4c0-2 1.9-3.7 4.7-5.6" />
+                </svg>
+              </span>
+              Defuse efficiency worries
+            </h3>
+            <p>
+              Commit to <span class="highlight">short, regular sessions</span>—for example, two hours each iteration—so the team experiences faster feedback and shared learning firsthand.
+            </p>
+          </article>
+          <article class="tip-card">
+            <h3>
+              <span class="inline-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 4h14" />
+                  <path d="M5 20h14" />
+                  <path d="M5 8h4" />
+                  <path d="M5 12h6" />
+                  <path d="M5 16h2" />
+                  <path d="m15 8 2 2 4-4" />
+                  <path d="m15 16 2 2 4-4" />
+                </svg>
+              </span>
+              Keep resources handy
+            </h3>
+            <p>
+              Reinforce momentum with shared materials like Woody Zuill’s <span class="highlight">Software Teaming</span> and the <span class="highlight">Mob Mentality</span> podcast.
+            </p>
+          </article>
+        </div>
       </section>
 
       <section id="references">
@@ -1016,22 +1318,109 @@
           </li>
           <li>
             <span>[2]</span>
-            <span>Mob Programming Guidebook (mobprogrammingguidebook.pdf)</span>
+            <span>Mob Programming Guidebook</span>
           </li>
           <li>
             <span>[3]</span>
-            <span>Local resource: file://file-86TDpZxV9Uz9kQ3XVeMP8a</span>
+            <a href="https://www.youtube.com/watch?v=qjE1O9Zdm3U">Emily Bache — Avoid These Mob Programming / Ensemble Mistakes</a>
           </li>
           <li>
             <span>[4]</span>
             <a href="https://www.jfokus.se/jfokus24-preso/Half-a-decade-of-mob-programming.pdf">Half a Decade of Mob Programming Software Teaming</a>
           </li>
+          <li>
+            <span>[5]</span>
+            <a href="https://leanpub.com/softwareteaming">Software Teaming by Woody Zuill &amp; Kevin Meadows</a>
+          </li>
+          <li>
+            <span>[6]</span>
+            <a href="https://podcasters.spotify.com/pod/show/mobmentalityshow">Mob Mentality Show Podcast</a>
+          </li>
         </ul>
       </section>
-
-      <footer>
-        Preparing for Your Mob Programming Lab Session · Built as a web article from the original PDF guidance.
-      </footer>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const tocLinks = Array.from(document.querySelectorAll(".toc a[href^=\"#\"]"));
+        if (!tocLinks.length) {
+          return;
+        }
+
+        const sections = tocLinks
+          .map((link) => document.getElementById(link.getAttribute("href").slice(1)))
+          .filter(Boolean);
+
+        if (!sections.length) {
+          return;
+        }
+
+        const idForLink = new Map(
+          tocLinks.map((link) => [link.getAttribute("href").slice(1), link])
+        );
+
+        let activeId = null;
+
+        const setActive = (id) => {
+          if (!id || activeId === id) {
+            return;
+          }
+
+          activeId = id;
+          tocLinks.forEach((link) => {
+            const linkId = link.getAttribute("href").slice(1);
+            link.classList.toggle("active", linkId === id);
+          });
+        };
+
+        const updateFromScroll = () => {
+          let currentId = sections[0].id;
+          for (const section of sections) {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 120) {
+              currentId = section.id;
+            } else {
+              break;
+            }
+          }
+          setActive(currentId);
+        };
+
+        updateFromScroll();
+
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) {
+              return;
+            }
+            ticking = true;
+            window.requestAnimationFrame(() => {
+              updateFromScroll();
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+
+        window.addEventListener("resize", updateFromScroll, { passive: true });
+
+        tocLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            const targetId = link.getAttribute("href").slice(1);
+            if (idForLink.has(targetId)) {
+              setActive(targetId);
+            }
+          });
+        });
+
+        if (window.location.hash) {
+          const hashId = window.location.hash.slice(1);
+          if (idForLink.has(hashId)) {
+            setActive(hashId);
+          }
+        }
+      });
+    </script>
   </body>
 </html>
