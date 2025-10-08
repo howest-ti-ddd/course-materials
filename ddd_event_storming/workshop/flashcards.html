@@ -1,224 +1,340 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Storming Flashcards</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4338ca',
-                        secondary: '#3730a3',
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .card-container {
-            perspective: 1000px;
-            width: 100%;
-        }
-        .flashcard {
-            width: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-            cursor: pointer;
-            min-height: 250px;
-        }
-        .flashcard.flipped {
-            transform: rotateY(180deg);
-        }
-        .flashcard-face {
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            line-height: 1.5;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .flashcard-front {
-            background-color: #fff;
-            color: #1f2937;
-        }
-        .flashcard-back {
-            background-color: #4338ca;
-            color: #e0e7ff;
-            transform: rotateY(180deg);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Storming Workshop — Flashcards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #F5F5F5; color: #1A1A1A; }
+    .bg-gradient { background: #F5F5F5; }
+    .glass { background: #FFFFFF; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid #E5E7EB; box-shadow: 0 24px 55px -35px rgba(26, 26, 26, 0.35); }
+    .card-3d { perspective: 1200px; }
+    .card-inner { transform-style: preserve-3d; transition: transform 0.5s ease; }
+    .card-flipped .card-inner { transform: rotateY(180deg); }
+    .card-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: var(--card-bg, #FFFFFF);
+      color: var(--card-fg, #1A1A1A);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .card-back { transform: rotateY(180deg); background: var(--card-back-bg, #FFFFFF); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      cursor: pointer;
+      box-shadow: 0 12px 28px -24px rgba(26, 26, 26, 0.55);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .btn svg { width: 1.2rem; height: 1.2rem; }
+    .btn:hover { transform: translateY(-1px); border-color: #44C8F5; box-shadow: 0 16px 36px -26px rgba(26, 26, 26, 0.6); }
+    .nav-btn--primary { background: #44C8F5; border-color: #44C8F5; color: #000000; box-shadow: 0 18px 36px -24px rgba(68, 200, 245, 0.55); }
+    .nav-btn--primary:hover { background: #FFFF00; border-color: #FFFF00; color: #1A1A1A; box-shadow: 0 20px 38px -24px rgba(26, 26, 26, 0.5); }
+    .nav-btn--accent { background: #E6007E; border-color: #E6007E; color: #FFFFFF; box-shadow: 0 18px 36px -24px rgba(230, 0, 126, 0.55); }
+    .nav-btn--accent:hover { background: #1A1A1A; border-color: #1A1A1A; color: #FFFFFF; box-shadow: 0 20px 38px -22px rgba(26, 26, 26, 0.5); }
+    .nav-btn--subtle { background: #FFFFFF; border-color: #E5E7EB; box-shadow: 0 10px 24px -24px rgba(26, 26, 26, 0.5); }
+    .nav-btn--subtle:hover { background: #44C8F5; color: #000000; border-color: #44C8F5; box-shadow: 0 16px 32px -26px rgba(68, 200, 245, 0.5); }
+    .accent-text { color: #44C8F5; }
+    .stage { min-height: 60vh; }
+    .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; background: #44C8F5; }
+    .label { color: rgba(26, 26, 26, 0.65); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .muted { color: var(--card-muted, rgba(26, 26, 26, 0.65)); }
+    .card-content { display: flex; flex-direction: column; gap: 1.5rem; }
+    .category-bar { gap: 0.75rem; }
+    .category-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      color: rgba(26, 26, 26, 0.75);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    }
+    .category-btn:hover { border-color: #44C8F5; color: #1A1A1A; box-shadow: 0 12px 28px -24px rgba(26, 26, 26, 0.4); }
+    .category-btn.active { border-color: transparent; }
+    #progress { color: rgba(26, 26, 26, 0.6); }
+    #a strong, #a em { color: inherit; }
+    #a { color: inherit; }
+  </style>
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen font-sans">
+<body class="min-h-screen bg-gradient">
+  <div class="min-h-screen flex flex-col">
+    <header class="px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div id="headerAccent" class="w-2 h-8 rounded" style="background: #44C8F5;"></div>
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight"><span class="accent-text">Flashcards :</span> Event Storming Workshop</h1>
+      </div>
+    </header>
 
-    <div class="flex-grow flex items-center justify-center p-4">
-        <main class="w-full max-w-2xl bg-white p-6 rounded-2xl shadow-lg relative">
-
-            <h1 class="text-4xl font-bold text-center text-primary mb-2">Event Storming Flashcards</h1>
-            <p class="text-center text-gray-500 mb-8">Click the card to flip it.</p>
-            
-            <div id="flashcard-container" class="card-container relative">
-                <div id="card" class="flashcard">
-                    <div class="flashcard-face flashcard-front flex-col">
-                        <span class="text-sm font-semibold text-primary">QUESTION</span>
-                        <p id="question-text" class="mt-2 text-xl font-semibold leading-relaxed px-4"></p>
-                    </div>
-                    <div class="flashcard-face flashcard-back flex-col">
-                        <span class="text-sm font-semibold text-white">ANSWER</span>
-                        <p id="answer-text" class="mt-2 text-lg leading-relaxed px-4"></p>
-                    </div>
+    <main class="flex-1 flex flex-col items-center px-4">
+      <div class="stage w-full max-w-5xl grid place-items-center">
+        <div class="w-full max-w-3xl">
+          <div id="card" class="card-3d glass rounded-2xl shadow-xl">
+            <div class="accent-strip" id="accentStrip"></div>
+            <div class="card-inner rounded-2xl">
+              <div class="card-face p-8 sm:p-12">
+                <div class="card-content">
+                  <div id="qLabel" class="label text-sm">Question</div>
+                  <h2 id="q" class="text-2xl sm:text-4xl font-extrabold leading-snug"></h2>
+                  <div id="qSub" class="muted text-lg"></div>
                 </div>
+              </div>
+              <div class="card-face card-back p-8 sm:p-12 absolute inset-0 rounded-2xl">
+                <div class="card-content">
+                  <div id="aLabel" class="label text-sm">Answer</div>
+                  <div id="a" class="prose max-w-none"></div>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="flex justify-center items-center mt-8">
-                <button id="prev-button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full mr-4 hover:bg-gray-300 transition-colors duration-200 disabled:opacity-50" disabled>
-                    Prev
-                </button>
-                <span id="card-index" class="text-sm text-gray-500 font-medium">Card 0 of 0</span>
-                <button id="next-button" class="bg-primary text-white px-4 py-2 rounded-full ml-4 hover:bg-secondary transition-colors duration-200 disabled:opacity-50" disabled>
-                    Next
-                </button>
-            </div>
-        </main>
-    </div>
+      <div class="glass w-full max-w-6xl rounded-2xl p-4 sm:p-6 mt-4 mb-12">
+        <div class="mb-4 px-2">
+          <div id="categoryBar" class="flex flex-wrap justify-center category-bar"></div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button id="prevBtn" class="btn nav-btn nav-btn--primary">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+              Prev
+            </button>
+            <button id="nextBtn" class="btn nav-btn nav-btn--primary">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </button>
+            <button id="flipBtn" class="btn nav-btn nav-btn--accent hidden sm:inline-flex">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v3l4-4-4-4v3C7.03 4 3 8.03 3 13c0 1.85.56 3.56 1.5 5l1.46-1.46A6.98 6.98 0 0 1 5 13c0-3.87 3.13-7 7-7zm7.5 1-1.46 1.46A6.98 6.98 0 0 1 19 13c0 3.87-3.13 7-7 7v-3l-4 4 4 4v-3c4.97 0 9-4.03 9-9 0-1.85-.56-3.56-1.5-5z"/></svg>
+              Flip (Space)
+            </button>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="shuffleBtn" class="btn nav-btn nav-btn--subtle">Shuffle</button>
+            <span id="progress" class="text-sm"></span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-    <footer class="text-center p-4 text-gray-400 text-xs">
-        &copy; 2025 Flashcards Inc. All rights reserved.
-    </footer>
-    <script>
-        // UI Elements
-        const cardContainer = document.getElementById('flashcard-container');
-        const cardElement = document.getElementById('card');
-        const questionText = document.getElementById('question-text');
-        const answerText = document.getElementById('answer-text');
-        const cardIndex = document.getElementById('card-index');
-        const prevButton = document.getElementById('prev-button');
-        const nextButton = document.getElementById('next-button');
+  <script>
+    function normalizeHex(hex) {
+      if (!hex) return null;
+      let value = String(hex).trim();
+      if (value.startsWith('#')) value = value.slice(1);
+      if (value.length === 3) value = value.split('').map((ch) => ch + ch).join('');
+      if (value.length !== 6 || !/^[0-9a-fA-F]{6}$/.test(value)) return null;
+      return value.toUpperCase();
+    }
 
-        let allCards = [];
-        let currentCardIndex = 0;
-        let isFlipped = false;
+    function hexToRgb(hex) {
+      const normalized = normalizeHex(hex);
+      if (!normalized) return { r: 68, g: 200, b: 245 };
+      return {
+        r: parseInt(normalized.slice(0, 2), 16),
+        g: parseInt(normalized.slice(2, 4), 16),
+        b: parseInt(normalized.slice(4, 6), 16)
+      };
+    }
 
-        const initialFlashcards = [
-            { question: "1. What is Event Storming?", answer: "A flexible workshop format, created by Alberto Brandolini, used to collaboratively explore complex business domains." },
-            { question: "2. What does an orange sticky note represent?", answer: "A <b>Domain Event</b>, something that has happened that is relevant to the business." },
-            { question: "3. What does a red sticky note signify?", answer: "A <b>Hotspot</b>, a problem the group is aware of but doesn't yet know how to solve." },
-            { question: "4. What do green sticky notes represent?", answer: "<b>Opportunities</b>, which are ideas or improvements where a solution is already in mind. Or <b>Read models</b> are light green stickies that capture tailored views of data for specific user needs." },
-            { question: "5. What are blue sticky notes with arrows used for?", answer: "<b>Arrow Voting</b>, used to vote on the most urgent problems or opportunities to focus on." },
-            { question: "6. What do yellow sticky notes represent?", answer: "<b>People/Actors</b>, making key roles visible in the process. Or <b>Aggregates</b> are light yellow stickies, which are clusters of domain objects that can be treated as a single unit." },
-            { question: "7. What do pink sticky notes represent?", answer: "<b>External Systems</b> that interact with the process." },
-            { question: "8. What are the three main levels of Event Storming?", answer: "Big Picture, Process Modeling, and Software Design." },
-            { question: "9. What is the primary goal of Big Picture Event Storming?", answer: "To create a shared understanding of a complex business domain and identify critical problems." },
-            { question: "10. What is the primary goal of Process Modeling Event Storming?", answer: "To detail a specific business process from start to finish, mapping the 'happy path' and alternative flows." },
-            { question: "11. What is the purpose of Software Design Event Storming?", answer: "To design the architecture of a software system by extending Process Modeling to include aggregates and bounded contexts." },
-            { question: "12. What is 'chaotic exploration'?", answer: "The initial phase of a Big Picture session where participants write Domain Events on orange sticky notes and place them on the wall simultaneously." },
-            { question: "13. What is the purpose of 'enforcing the timeline'?", answer: "To arrange all Domain Events on a single timeline from left to right to create a chronological flow." },
-            { question: "14. What is a 'Pivotal Event'?", answer: "A key event used as an anchor point to help distribute the flow across the wall." },
-            { question: "15. What is a 'Swimlane'?", answer: "A strategy used to separate roles, departments, or parallel processes visually." },
-            { question: "16. What is the 'Explicit Walkthrough' phase?", answer: "A phase where participants narrate the chain of events along the timeline, with the group challenging and improving the flow." },
-            { question: "17. What is the 'Reverse Narrative'?", answer: "A final pass through the timeline in reverse to reveal any missing events." },
-            { question: "18. What is the 'Arrow Voting' phase used for?", answer: "To vote on the top 2-3 most urgent problems or opportunities to focus on." },
-            { question: "19. What are the key roles needed for an Event Storming workshop?", answer: "A mix of 5-10 people from both business and IT who can ask and answer key questions." },
-            { question: "20. What is the ideal room setup for Event Storming?", answer: "A room where people can stand and move, with at least 8 meters of wall space." },
-            { question: "21. What is a 'Command' sticky note?", answer: "A <b>blue sticky note</b> that represents an action initiated by a user or system." },
-            { question: "22. What is an 'Actor/User' sticky note?", answer: "A small yellow sticky note representing a person who initiates a command." },
-            { question: "23. What is a 'Read Model' sticky note?", answer: "A square <b>green</b> sticky note that represents the data a user needs to make a decision." },
-            { question: "24. What is a 'System' sticky note?", answer: "A large pink sticky note representing an external system that handles an action." },
-            { question: "25. What is a common sticky note pattern in Process Modeling?", answer: "Event → Policy → Command → System → Event." },
-            { question: "26. What's the difference between Big Picture and Process Modeling?", answer: "Big Picture is for broad, chaotic exploration of a domain, while Process Modeling focuses on a detailed, single process." },
-            { question: "27. What is a 'Bounded Context'?", answer: "A software design pattern that defines the boundary within which a particular business domain model applies." },
-            { question: "28. What is an 'Aggregate'?", answer: "A cluster of domain objects that are treated as a single unit for data changes." },
-            { question: "29. Why is an 'Explicit Walkthrough' important?", answer: "It ensures a shared understanding of the entire process and reveals inconsistencies or misunderstandings." },
-            { question: "30. What is the outcome of a successful Big Picture session?", answer: "A shared understanding of the domain, and a prioritized list of problems and opportunities to address." },
-            { question: "31. What is a 'Policy' in Event Storming?", answer: "A purple sticky note that represents a rule or a policy that triggers an action in response to an event." },
-            { question: "32. Why is the timeline critical in Event Storming?", answer: "It enforces a shared understanding of the sequence of events and reveals causality." },
-            { question: "33. How does Event Storming build alignment?", answer: "By bringing people from different departments together to create a visual, shared understanding of the process." },
-            { question: "34. What materials are essential for an Event Storming session?", answer: "Plenty of sticky notes (various colors), black markers, and a large wall." },
-            { question: "35. What is a key benefit of using sticky notes?", answer: "They are easy to move, allowing for flexible and fluid exploration of the domain." },
-            { question: "36. What is the purpose of 'Chapter Sorting'?", answer: "Organizing the timeline into logical chapters or groups of events to simplify a complex flow." },
-            { question: "37. What is the most important benefit of Event Storming for a team?", answer: "It creates a shared understanding of a complex domain, which leads to better communication and faster, more effective problem-solving." },
-            { question: "38. Why is a timebox important for 'Chaotic Exploration'?", answer: "It keeps the session moving and prevents getting stuck on minor details at the beginning." },
-            { question: "39. What pattern signifies a decision point?", answer: "An Event leading to multiple possible Commands or Policies." },
-            { question: "40. What pattern signifies a feedback loop?", answer: "A chain of events that eventually loops back to trigger a previous event or a similar process." },
-            { question: "41. What does a lack of a clear timeline indicate?", answer: "That the group has a poor shared understanding of the process flow." },
-            { question: "42. What does a cluster of red sticky notes often indicate?", answer: "A major area of concern or a 'hotspot' in the business domain that needs immediate attention." },
-            { question: "43. How can you identify a 'bounded context' on the board?", answer: "A bounded context often appears as a cluster of related Domain Events, Commands, and Aggregates." },
-            { question: "44. What is a 'Command-Event' relationship?", answer: "A <b>Command</b> (action) causes a <b>Domain Event</b> (result)." },
-            { question: "45. Why is it important to have diverse participants?", answer: "To get a holistic view of the domain from different perspectives, avoiding blind spots." },
-            { question: "46. What is the 'narrative' of an Event Storm?", answer: "The story of how the business process unfolds, as told by the sticky notes on the wall." },
-            { question: "47. What is the biggest mistake a facilitator can make?", answer: "Forcing a specific solution or outcome instead of allowing for free, collaborative exploration." },
-            { question: "48. What's the difference between a 'Hotspot' and an 'Opportunity'?", answer: "A Hotspot is a known problem without a clear solution, while an Opportunity is an idea with a clear path forward." },
-            { question: "49. What does the 'Big Picture' aim to solve?", answer: "Alignment problems and a lack of shared understanding among stakeholders." },
-            { question: "50. How are Aggregates represented?", answer: "Aggregates are represented as <b>yellow</b> stickies placed on top of a <b>pink</b> system sticky, showing the aggregate inside that system." }
-        ];
+    function withAlpha(hex, alpha = 0.3) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
 
-        function renderCard() {
-            if (allCards.length === 0) {
-                questionText.textContent = 'No cards found.';
-                answerText.textContent = '';
-                prevButton.disabled = true;
-                nextButton.disabled = true;
-                return;
-            }
+    const cards = [
+      { q: 'What is Event Storming?', a: 'A <strong>collaborative workshop</strong> created by Alberto Brandolini to explore complex domains by mapping events that happen in the business.' },
+      { q: 'What does an orange sticky note represent?', a: '<strong>Domain Event</strong> – something that happened that the business cares about.' },
+      { q: 'What does a red sticky note signify?', a: '<strong>Hotspot</strong> – a problem, open question, or area needing clarification.' },
+      { q: 'What is a Command sticky?', a: '<strong>Blue</strong> sticky that represents an action taken by a user or system that triggers a change.' },
+      { q: 'What does a purple sticky note mean?', a: '<strong>Policy</strong> – a rule or reaction that triggers actions when certain events occur.' },
+      { q: 'What are Aggregates represented by?', a: '<strong>Yellow stickies</strong> placed on a pink system sticky, indicating the aggregate inside that system.' },
+      { q: 'What is the goal of Chaotic Exploration?', a: 'Generate as many domain events as possible quickly, focusing on breadth rather than accuracy.' },
+      { q: 'Why limit discussion during Chaotic Exploration?', a: 'To maintain momentum and ensure events are captured before debating details.' },
+      { q: 'What happens during Conflict Resolution?', a: 'The group clarifies disagreements, aligns understanding, and merges duplicate events.' },
+      { q: 'What is the role of Chaptering?', a: 'Organize the timeline into <strong>logical chapters</strong> to tame complexity and show phases.' },
+      { q: 'What do green stickies represent?', a: '<strong>External systems</strong> or actors interacting with your domain.' },
+      { q: 'Why use a timeline in Event Storming?', a: 'It reveals <strong>cause and effect</strong> and highlights dependencies between events.' },
+      { q: 'What is Big Picture Event Storming?', a: 'A large-scale workshop to map an entire domain with many stakeholders, discovering hotspots and opportunities.' },
+      { q: 'What is Process-Level Event Storming?', a: 'A focused workshop on a specific flow to design or improve a process, often leading to software solutions.' },
+      { q: 'What is Design-Level Event Storming?', a: 'A deep dive into implementation details, linking events to commands, aggregates, and policies.' },
+      { q: 'What is the facilitator’s main job?', a: 'Guide the flow, maintain energy, ensure everyone participates, and capture insights without driving the solution.' },
+      { q: 'Why include diverse participants?', a: 'Brings multiple perspectives, uncovers tacit knowledge, and surfaces hidden constraints.' },
+      { q: 'What does a cluster of red stickies signal?', a: 'A concentrated problem area needing attention or a hotspot for discovery.' },
+      { q: 'What is a brown sticky?', a: '<strong>Read model</strong> or information the system needs to display or provide.' },
+      { q: 'How do you identify a bounded context on the board?', a: 'Look for clusters of events and commands that share language and rules; draw boundaries around them.' },
+      { q: 'What does a Command-Event pair indicate?', a: 'A <strong>cause-effect chain</strong> where a command leads to an event.' },
+      { q: 'Why capture questions as hotspots?', a: 'Prevents losing unresolved issues and provides a backlog for follow-up.' },
+      { q: 'What should you do when the board gets messy?', a: 'Step back, reorganize via chaptering or timeboxing, and restate the flow to regain clarity.' },
+      { q: 'What is Chapter Sorting?', a: 'Grouping related events into chapters to simplify discussion and highlight flow segments.' },
+      { q: 'What is the purpose of color conventions?', a: 'Creates a <strong>shared notation</strong> so people can quickly understand the meaning of each sticky.' },
+      { q: 'Why are sticky notes ideal for Event Storming?', a: 'They are <strong>easy to move</strong> and encourage experimentation without attachment.' },
+      { q: 'How long should Chaotic Exploration last?', a: 'Usually 15–20 minutes; short enough to stay energetic but long enough to cover the domain.' },
+      { q: 'What does a feedback loop on the board indicate?', a: 'A cycle where events trigger commands that eventually lead back to a similar event—points to reinforcing or balancing loops.' },
+      { q: 'What happens if the timeline has gaps?', a: 'It reveals missing knowledge or inconsistent understanding—prompt questions to fill the gaps.' },
+      { q: 'What is a Policy in Event Storming?', a: 'A rule (purple sticky) that reacts to events and triggers commands or other actions.' },
+      { q: 'When should you use Big Picture Event Storming?', a: 'When alignment is missing, the domain is unclear, or new teams need shared understanding.' },
+      { q: 'What is a Key Event?', a: 'A pivotal domain event central to the business process; often used as an anchor in the timeline.' },
+      { q: 'How does Event Storming support DDD?', a: 'It helps discover <strong>bounded contexts, ubiquitous language,</strong> and critical aggregates.' },
+      { q: 'What color represents user roles?', a: '<strong>Light blue stickies</strong> typically represent personas or actors.' },
+      { q: 'What outcome should you expect from Big Picture sessions?', a: 'Shared understanding, prioritized hotspots, and candidates for bounded contexts or follow-up workshops.' },
+      { q: 'What outcome should you expect from Process-Level sessions?', a: 'Clear flow of events, policies, and commands that can guide software design or optimization.' },
+      { q: 'What outcome should you expect from Design-Level sessions?', a: 'Detailed command-event relationships, aggregate boundaries, and notes for implementation.' },
+      { q: 'Why timebox hotspot discussions?', a: 'To avoid getting bogged down and defer deep dives to focused sessions.' },
+      { q: 'What’s a typical flow after Big Picture?', a: 'Identify hotspots → run process-level or design-level workshops → distill into bounded contexts.' },
+      { q: 'Why do we invite domain experts?', a: 'They carry tacit knowledge that developers and analysts need but might not document.' },
+      { q: 'What does a pink sticky note represent?', a: '<strong>System/Software component</strong> where aggregates or policies reside.' },
+      { q: 'How do you keep energy high in the room?', a: 'Encourage standing, fast flow, use music, rotate scribes, and celebrate insights.' },
+      { q: 'Why is documenting insights important?', a: 'Whiteboard/summary photos help create artifacts for follow-up and preserve shared understanding.' },
+      { q: 'What is a scenario walk-through?', a: 'Replaying the story across the board to validate flow and uncover missing steps.' },
+      { q: 'How do you handle conflicting opinions?', a: 'Capture both as hotspots, continue mapping, then revisit with the right stakeholders.' },
+      { q: 'What is the facilitator NOT responsible for?', a: 'Deciding solutions. They guide the process, not the content outcomes.' },
+      { q: 'What is a “narrative arc” in Event Storming?', a: 'The story told by the sequence of events; good boards let you retell the process out loud.' },
+      { q: 'When do you snapshot the board?', a: 'After major phases (chaotic exploration, conflict resolution, chaptering) to preserve state.' },
+      { q: 'Why are opportunities highlighted?', a: 'To capture ideas for improvement alongside hotspots so teams can act on wins, not just problems.' },
+      { q: 'What preparation is essential for the space?', a: 'Large wall or roll of paper, enough stickies/markers, comfortable standing space, and no tables blocking movement.' },
+      { q: 'How do you plan follow-up?', a: 'Summarize insights, assign owners to hotspots, schedule next workshops (process or design level).' }
+    ];
 
-            const card = allCards[currentCardIndex];
-            questionText.innerHTML = card.question;
-            answerText.innerHTML = card.answer;
-            cardIndex.textContent = `Card ${currentCardIndex + 1} of ${allCards.length}`;
+    const allCards = cards;
+    const allCardOwners = cards.map((card) => {
+      const q = card.q.toLowerCase();
+      if (/\bchaotic|chapter|timeline|walk-through|snapshot\b/.test(q)) return 'flow';
+      if (/\bcommand|event|aggregate|policy|bounded context|ddd|design\b/.test(q)) return 'model';
+      if (/\bfacilitator|participants|energy|preparation|follow-up|workshop\b/.test(q)) return 'facilitation';
+      return 'fundamentals';
+    });
 
-            // Reset card state
-            isFlipped = false;
-            cardElement.classList.remove('flipped');
-            prevButton.disabled = currentCardIndex === 0;
-            nextButton.disabled = currentCardIndex === allCards.length - 1;
+    const icons = {
+      all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l-5 3 1.9-5.9L4 10h6l2-6 2 6h6l-4.9 4.1L17 20z"/></svg>',
+      fundamentals: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16v2H4V4zm0 14h16v2H4v-2zm0-7h16v2H4v-2z"/></svg>',
+      flow: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 11h7V4h2v7h7v2h-7v7h-2v-7H4z"/></svg>',
+      model: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l7 4v6c0 5-3.5 9.74-7 10-3.5-.26-7-5-7-10V6l7-4z"/></svg>',
+      facilitation: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm-7 8a7 7 0 0 1 14 0H5z"/></svg>'
+    };
+
+    const categories = [
+      { key: 'all', label: 'All', color: '#44C8F5', text: '#000000', icon: icons.all, cards: allCards },
+      { key: 'fundamentals', label: 'Foundations', color: '#FFFF00', text: '#1A1A1A', icon: icons.fundamentals, cards: allCards.filter((_, idx) => allCardOwners[idx] === 'fundamentals') },
+      { key: 'flow', label: 'Flow & Facilitation', color: '#E6007E', text: '#FFFFFF', icon: icons.flow, cards: allCards.filter((_, idx) => allCardOwners[idx] === 'flow') },
+      { key: 'model', label: 'Model & Design', color: '#1A1A1A', text: '#FFFFFF', icon: icons.model, cards: allCards.filter((_, idx) => allCardOwners[idx] === 'model') },
+      { key: 'facilitation', label: 'Team & Follow-up', color: '#44C8F5', text: '#000000', icon: icons.facilitation, cards: allCards.filter((_, idx) => allCardOwners[idx] === 'facilitation') }
+    ];
+
+    let currentCategoryKey = 'all';
+    function currentDeck() { return categories.find((c) => c.key === currentCategoryKey).cards; }
+    let order = currentDeck().map((_, i) => i);
+    let idx = 0;
+    let flipped = false;
+
+    const cardEl = document.getElementById('card');
+    const qEl = document.getElementById('q');
+    const qSubEl = document.getElementById('qSub');
+    const aEl = document.getElementById('a');
+    const qLabel = document.getElementById('qLabel');
+    const aLabel = document.getElementById('aLabel');
+    const accentStrip = document.getElementById('accentStrip');
+    const headerAccent = document.getElementById('headerAccent');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const flipBtn = document.getElementById('flipBtn');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const progress = document.getElementById('progress');
+    const categoryBar = document.getElementById('categoryBar');
+
+    function render() {
+      const deck = currentDeck();
+      if (!deck || deck.length === 0) {
+        qEl.textContent = 'No cards in this category';
+        qSubEl.textContent = '';
+        aEl.innerHTML = '';
+        progress.textContent = '0 / 0';
+        return;
+      }
+      if (idx >= deck.length) idx = 0;
+      if (idx < 0) idx = 0;
+      if (order.length !== deck.length) order = deck.map((_, i) => i);
+      const card = deck[order[idx]];
+      qEl.textContent = card.q;
+      qSubEl.textContent = '';
+      aEl.innerHTML = card.a;
+      progress.textContent = `${idx + 1} / ${deck.length}`;
+      setFlipped(false);
+      applyAccent();
+    }
+
+    function setFlipped(v) {
+      flipped = v;
+      if (flipped) cardEl.classList.add('card-flipped');
+      else cardEl.classList.remove('card-flipped');
+    }
+
+    function applyAccent() {
+      const effectiveCategory = (() => {
+        if (currentCategoryKey !== 'all') {
+          return categories.find((c) => c.key === currentCategoryKey);
         }
-
-        function flipCard() {
-            isFlipped = !isFlipped;
-            if (isFlipped) {
-                cardElement.classList.add('flipped');
-            } else {
-                cardElement.classList.remove('flipped');
-            }
+        const cardIndex = order[idx];
+        const ownerKey = allCardOwners[cardIndex];
+        if (ownerKey) {
+          const owner = categories.find((c) => c.key === ownerKey);
+          if (owner) return owner;
         }
+        return categories.find((c) => c.key === 'all') || categories[0];
+      })();
 
-        function showNextCard() {
-            if (currentCardIndex < allCards.length - 1) {
-                currentCardIndex++;
-                renderCard();
-            }
-        }
+      const category = effectiveCategory || categories[0];
+      const baseColor = category.color || '#44C8F5';
+      const bodyText = '#1A1A1A';
+      const muted = 'rgba(26, 26, 26, 0.65)';
 
-        function showPrevCard() {
-            if (currentCardIndex > 0) {
-                currentCardIndex--;
-                renderCard();
-            }
-        }
-        
-        // Initial setup
-        allCards = initialFlashcards;
-        renderCard();
+      cardEl.style.borderColor = baseColor;
+      cardEl.style.backgroundColor = '#FFFFFF';
+      cardEl.style.boxShadow = `0 0 0 1px ${withAlpha(baseColor, 0.2)}, 0 14px 42px ${withAlpha(baseColor, 0.18)}`;
+      cardEl.style.setProperty('--card-bg', '#FFFFFF');
+      cardEl.style.setProperty('--card-fg', bodyText);
+      cardEl.style.setProperty('--card-back-bg', '#FFFFFF');
+      cardEl.style.setProperty('--card-muted', muted);
+      cardEl.style.color = bodyText;
 
-        // Event listeners
-        cardElement.addEventListener('click', flipCard);
-        nextButton.addEventListener('click', showNextCard);
-        prevButton.addEventListener('click', showPrevCard);
-    </script>
-</body>
-</html>
+      accentStrip.style.backgroundColor = baseColor;
+      headerAccent.style.backgroundColor = baseColor;
+      qLabel.style.color = baseColor;
+      aLabel.style.color = baseColor;
+      qSubEl.style.color = muted;
+      aEl.style.color = bodyText;
+    }
+
+    function shuffle() {
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      idx = 0;
+      render();
+    }
+
+    function next() {
+      const deck = currentDeck();
+      idx = (idx + 1) % deck.length;
+      render();
+    }
+
+    function prev() {

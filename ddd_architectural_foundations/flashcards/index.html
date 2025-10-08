@@ -7,63 +7,98 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #0F172A; color: #D1D5DB; }
-    .bg-gradient { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); }
-    .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+    body { font-family: 'Inter', sans-serif; background: #F5F5F5; color: #1A1A1A; }
+    .bg-gradient { background: #F5F5F5; }
+    .glass { background: #FFFFFF; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid #E5E7EB; box-shadow: 0 24px 55px -35px rgba(26, 26, 26, 0.35); }
     .card-3d { perspective: 1200px; }
     .card-inner { transform-style: preserve-3d; transition: transform 0.5s ease; }
     .card-flipped .card-inner { transform: rotateY(180deg); }
-    .card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-    /* Smooth height change when content varies and ensure positioned context */
-    #card { position: relative; transition: height 220ms ease; will-change: height; }
-    /* Let the entire card grow to fit content */
-    .card-face { overflow: visible; }
-    /* Make inner container fill the card minus the accent strip (6px) so back face covers fully */
-    .card-inner { height: calc(100% - 6px); position: relative; }
-    .card-back { transform: rotateY(180deg); }
-    .btn { @apply px-4 py-2 rounded-lg border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-200 transition; }
-    .accent-text { color: #A78BFA; }
+    .card-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: var(--card-bg, #FFFFFF);
+      color: var(--card-fg, #1A1A1A);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .card-back { transform: rotateY(180deg); background: var(--card-back-bg, #FFFFFF); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      cursor: pointer;
+      box-shadow: 0 12px 28px -24px rgba(26, 26, 26, 0.55);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .btn svg { width: 1.2rem; height: 1.2rem; }
+    .btn:hover { transform: translateY(-1px); border-color: #44C8F5; box-shadow: 0 16px 36px -26px rgba(26, 26, 26, 0.6); }
+    .nav-btn--primary { background: #44C8F5; border-color: #44C8F5; color: #000000; box-shadow: 0 18px 36px -24px rgba(68, 200, 245, 0.55); }
+    .nav-btn--primary:hover { background: #FFFF00; border-color: #FFFF00; color: #1A1A1A; box-shadow: 0 20px 38px -24px rgba(26, 26, 26, 0.5); }
+    .nav-btn--accent { background: #E6007E; border-color: #E6007E; color: #FFFFFF; box-shadow: 0 18px 36px -24px rgba(230, 0, 126, 0.55); }
+    .nav-btn--accent:hover { background: #1A1A1A; border-color: #1A1A1A; color: #FFFFFF; box-shadow: 0 20px 38px -22px rgba(26, 26, 26, 0.5); }
+    .nav-btn--subtle { background: #FFFFFF; border-color: #E5E7EB; box-shadow: 0 10px 24px -24px rgba(26, 26, 26, 0.5); }
+    .nav-btn--subtle:hover { background: #44C8F5; color: #000000; border-color: #44C8F5; box-shadow: 0 16px 32px -26px rgba(68, 200, 245, 0.5); }
+    .accent-text { color: #44C8F5; }
     .stage { min-height: 60vh; }
-    .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
-    .prose :where(p, li) { line-height: 1.5; }
+    .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; background: #44C8F5; }
+    .label { color: rgba(26, 26, 26, 0.65); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .muted { color: var(--card-muted, rgba(26, 26, 26, 0.65)); }
+    .card-content { display: flex; flex-direction: column; gap: 1.5rem; }
+    .category-bar { gap: 0.75rem; }
+    .category-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      color: rgba(26, 26, 26, 0.75);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    }
+    .category-btn:hover { border-color: #44C8F5; color: #1A1A1A; box-shadow: 0 12px 28px -24px rgba(26, 26, 26, 0.4); }
+    .category-btn.active { border-color: transparent; }
+    #progress { color: rgba(26, 26, 26, 0.6); }
+    #a strong, #a em { color: inherit; }
+    #a { color: inherit; }
   </style>
-  <meta name="description" content="Interactive flashcards for Software Architecture Styles: layered, microservices, event-driven, SOA, microkernel, pipe-and-filter, space-based, serverless and more.">
-  <meta name="author" content="DDD Architectural Foundations">
 </head>
 <body class="min-h-screen bg-gradient">
   <div class="min-h-screen flex flex-col">
-    <!-- Header -->
     <header class="px-4 sm:px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div id="headerAccent" class="w-2 h-8 rounded" style="background: linear-gradient(180deg, #8b5cf6, #f472b6);"></div>
-        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-200">
-          <span class="accent-text">Flashcards : </span>Software Architecture Styles
-        </h1>
+        <div id="headerAccent" class="w-2 h-8 rounded" style="background: #44C8F5;"></div>
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight"><span class="accent-text">Flashcards :</span> Software Architecture Styles</h1>
       </div>
-      <div id="catBadge" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-slate-700 bg-slate-800/60 text-slate-200"></div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-1 flex flex-col items-center px-4">
-      <!-- Card Stage centered -->
       <div class="stage w-full max-w-5xl grid place-items-center">
         <div class="w-full max-w-3xl">
-          <div id="card" class="card-3d glass rounded-2xl shadow-xl border border-slate-700">
+          <div id="card" class="card-3d glass rounded-2xl shadow-xl">
             <div class="accent-strip" id="accentStrip"></div>
             <div class="card-inner rounded-2xl">
-              <!-- Front -->
               <div class="card-face p-8 sm:p-12">
-                <div class="flex flex-col gap-6">
-                  <div id="qLabel" class="text-slate-300 text-sm">Question</div>
-                  <h2 id="q" class="text-2xl sm:text-4xl font-extrabold text-gray-100 leading-snug"></h2>
-                  <div id="qSub" class="text-slate-400 text-lg"></div>
+                <div class="card-content">
+                  <div id="qLabel" class="label text-sm">Question</div>
+                  <h2 id="q" class="text-2xl sm:text-4xl font-extrabold leading-snug"></h2>
+                  <div id="qSub" class="muted text-lg"></div>
                 </div>
               </div>
-              <!-- Back -->
-              <div class="card-face card-back p-8 sm:p-12 absolute inset-0 rounded-2xl bg-slate-900/60">
-                <div class="flex flex-col gap-6">
-                  <div id="aLabel" class="text-slate-300 text-sm">Answer</div>
-                  <div id="a" class="prose prose-invert max-w-none"></div>
+              <div class="card-face card-back p-8 sm:p-12 absolute inset-0 rounded-2xl">
+                <div class="card-content">
+                  <div id="aLabel" class="label text-sm">Answer</div>
+                  <div id="a" class="prose max-w-none"></div>
                 </div>
               </div>
             </div>
@@ -71,76 +106,117 @@
         </div>
       </div>
 
-      <!-- Controls (below, centered) -->
-      <div class="glass w-full max-w-5xl rounded-2xl p-4 sm:p-6 mt-4 mb-12">
-        <div class="mb-4 overflow-x-auto">
-          <div id="categoryBar" class="flex justify-center gap-2 whitespace-nowrap"></div>
+      <div class="glass w-full max-w-6xl rounded-2xl p-4 sm:p-6 mt-4 mb-12">
+        <div class="mb-4 px-2">
+          <div id="categoryBar" class="flex flex-wrap justify-center category-bar"></div>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
           <div class="flex items-center gap-3">
-            <button id="prevBtn" class="btn flex items-center gap-2">
+            <button id="prevBtn" class="btn nav-btn nav-btn--primary">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
               Prev
             </button>
-            <button id="nextBtn" class="btn flex items-center gap-2">
+            <button id="nextBtn" class="btn nav-btn nav-btn--primary">
               Next
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
             </button>
-            <button id="flipBtn" class="btn hidden sm:flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v3l4-4-4-4v3c-4.97 0-9 4.03-9 9 0 1.85.56 3.56 1.5 5l1.46-1.46A6.98 6.98 0 0 1 5 12c0-3.87 3.13-7 7-7zm7.5 1-1.46 1.46A6.98 6.98 0 0 1 19 12c0 3.87-3.13 7-7 7v-3l-4 4 4 4v-3c4.97 0 9-4.03 9-9 0-1.85-.56-3.56-1.5-5z"/></svg>
+            <button id="flipBtn" class="btn nav-btn nav-btn--accent hidden sm:inline-flex">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v3l4-4-4-4v3C7.03 4 3 8.03 3 13c0 1.85.56 3.56 1.5 5l1.46-1.46A6.98 6.98 0 0 1 5 13c0-3.87 3.13-7 7-7zm7.5 1-1.46 1.46A6.98 6.98 0 0 1 19 13c0 3.87-3.13 7-7 7v-3l-4 4 4 4v-3c4.97 0 9-4.03 9-9 0-1.85-.56-3.56-1.5-5z"/></svg>
               Flip (Space)
             </button>
           </div>
           <div class="flex items-center gap-3">
-            <button id="shuffleBtn" class="btn">Shuffle</button>
-            <label class="inline-flex items-center gap-2 text-slate-300">
-              <input id="randomToggle" type="checkbox" class="accent-indigo-500">
-              Random mode
-            </label>
-            <span id="progress" class="text-sm text-slate-400"></span>
+            <button id="shuffleBtn" class="btn nav-btn nav-btn--subtle">Shuffle</button>
+            <span id="progress" class="text-sm"></span>
           </div>
         </div>
       </div>
     </main>
-
-    
   </div>
 
   <script>
-    // Deck: from Software Architecture Styles Overview.pdf (overview bullets)
+    function normalizeHex(hex) {
+      if (!hex) {
+        return null;
+      }
+      let value = String(hex).trim();
+      if (value.startsWith('#')) {
+        value = value.slice(1);
+      }
+      if (value.length === 3) {
+        value = value
+          .split('')
+          .map((ch) => ch + ch)
+          .join('');
+      }
+      if (value.length !== 6 || !/^[0-9a-fA-F]{6}$/.test(value)) {
+        return null;
+      }
+      return value.toUpperCase();
+    }
+
+    function hexToRgb(hex) {
+      const normalized = normalizeHex(hex);
+      if (!normalized) {
+        return { r: 68, g: 200, b: 245 };
+      }
+      return {
+        r: parseInt(normalized.slice(0, 2), 16),
+        g: parseInt(normalized.slice(2, 4), 16),
+        b: parseInt(normalized.slice(4, 6), 16)
+      };
+    }
+
+    function withAlpha(hex, alpha = 0.3) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
     const deckOverview = [
-      { q: 'What is an architecture style?', a: 'A <strong>named set of constraints and interaction patterns</strong> that shape system structure (topology, module boundaries) and communication. It guides trade‑offs to achieve <em>specific quality attributes</em> (e.g., scalability, deployability). Examples: layered, microservices, event‑driven. Styles are broader than design patterns and influence organization, ops, and evolution.' },
-      { q: 'Monolith vs Distributed systems', a: '<strong>Monolith:</strong> one deployable with a single database; easier to develop/test/operate and offers strong consistency, but limits <em>independent scaling</em> and team autonomy. <br><strong>Distributed:</strong> multiple deployables with independent data; enables scaling and fault isolation, but adds <em>network latency, observability</em> needs, and <em>eventual consistency</em>. Choose by <strong>business drivers</strong> and team maturity.' },
-      { q: 'Layered (n-tier) style', a: 'Organize code into <strong>presentation</strong> → <strong>domain/service</strong> → <strong>data</strong> layers with inward dependencies and clear responsibilities. <br><strong>Pros:</strong> simple mental model, testability, well‑known. <strong>Cons:</strong> risk of anemic domain, <em>chatty</em> cross‑layer calls, hard to scale specific capabilities. Best for stable domains and moderate scale.' },
-      { q: 'Client–Server style', a: 'Separate <strong>clients</strong> (UIs/consumers) from <strong>servers</strong> (resource/service providers). <br><strong>Benefits:</strong> centralized data/control, many clients, horizontal server scaling and caching. <strong>Costs:</strong> server bottlenecks, network dependency; design for <em>statelessness</em> and <em>backpressure</em> where possible.' },
-      { q: 'Microservices style', a: '<strong>Small, autonomous services</strong> around business capabilities, each owning its data and deployed independently. Align boundaries to <strong>bounded contexts</strong>; prefer database‑per‑service and asynchronous integration. <br><strong>Pros:</strong> deployability, selective scaling, team autonomy. <strong>Cons:</strong> distributed data, complex ops/observability, <em>sagas</em> for consistency.' },
-      { q: 'Event-Driven (broker/mediator)', a: '<strong>Publish/subscribe events</strong> for loose coupling. <em>Broker/choreography:</em> producers emit events; subscribers react. <em>Mediator/orchestration:</em> a coordinator drives the flow. <br><strong>Pros:</strong> elasticity, temporal decoupling, resilience. <strong>Cons:</strong> tracing, ordering, idempotency; expect <em>eventual consistency</em> and design with retries.' },
-      { q: 'Microkernel (plugin) style', a: 'A stable <strong>core</strong> exposing extension points with <strong>plug‑ins</strong> providing features (IDEs, CMS, payment engines). <br><strong>Pros:</strong> high extensibility and customizability. <strong>Cons:</strong> versioning and compatibility management; requires clear plugin contracts and careful core evolution.' },
-      { q: 'Pipe-and-Filter style', a: 'Model processing as a sequence of <strong>filters</strong> (stages) connected by <strong>pipes</strong> (streams/queues). <br><strong>Pros:</strong> composability, reuse, parallelism, back‑pressure capability. <strong>Cons:</strong> stateful steps and end‑to‑end error handling are harder; watch out for <em>format drift</em> between stages.' },
-      { q: 'Space-Based (SBA) style', a: 'Scale by using a <strong>distributed in‑memory data grid</strong> (“space”) plus processing units and async replication to a system of record. <br><strong>Pros:</strong> extreme throughput, low latency, elastic scale. <strong>Cons:</strong> complex partitioning/consistency, cache coherency, and failover strategies.' },
-      { q: 'Serverless style', a: '<strong>FaaS/BaaS</strong> triggered by events; infrastructure is managed by the platform. <br><strong>Pros:</strong> scale‑to‑zero, fine‑grained cost, fast provisioning. <strong>Cons:</strong> cold starts, provider lock‑in, limits on <em>long‑running</em> or high‑throughput stateful workloads; design for <em>idempotency</em>.' },
-      { q: 'Service-based (coarse services)', a: 'A few <strong>coarse‑grained services</strong> (less granular than microservices), often behind an API gateway. <br><strong>Pros:</strong> simpler ops than microservices, fewer network hops. <strong>Cons:</strong> less autonomy per capability; can drift toward a mini‑monolith if boundaries are unclear.' },
-      { q: 'Shared-nothing vs shared database', a: '<strong>Shared‑nothing:</strong> each service owns its data (autonomy, scalability) and integrates via APIs/events (use <em>outbox</em> for reliability). <br><strong>Shared DB:</strong> couples schemas and releases; hampers independent change—generally avoid across service boundaries.' },
-      { q: 'Quality attributes first', a: 'Let <strong>quality scenarios</strong> (e.g., “handle 5x peak with < 1s p95”) drive style choice. No single style maximizes all attributes—make <em>explicit trade‑offs</em> and validate with <strong>fitness functions</strong> or tests.' },
-      { q: 'Cross-cutting operational concerns', a: 'Across styles, invest in <strong>observability</strong> (logs, metrics, traces), <strong>resilience</strong> (timeouts, retries, circuit breakers), <strong>security</strong> (authn/z, secrets), <strong>config</strong>, and <strong>backpressure</strong>. Bake these into platforms/gateways/sidecars where possible.' },
-      { q: 'Distributed monolith anti-pattern', a: 'Multiple services with <strong>tightly coupled deployments/data</strong> causing lock‑step releases. Smells: shared DB, chatty synchronous chains, cross‑service transactions. <br><strong>Fix:</strong> align to bounded contexts, decouple data, prefer async integration, and add <em>aggregators</em>/caches to reduce chatter.' },
+      { q: 'Architecture style vs pattern', a: '<strong>Style:</strong> high-level organization of components and relationships (e.g., microservices, pipes & filters). <strong>Pattern:</strong> reusable solution to a specific design problem (e.g., repository, circuit breaker).' },
+      { q: 'Why learn multiple styles?', a: 'Each style optimizes different quality attributes. Knowing trade-offs lets you pick the right style for business priorities (scalability, agility, resilience, cost).' },
+      { q: 'Selecting a style — key parameters', a: 'Consider <strong>team topology, deployment autonomy, coupling, data ownership, scalability needs, resilience requirements,</strong> and <strong>legacy constraints.</strong>' },
+      { q: 'Hybrid architecture', a: 'Modern systems combine styles: monolith + event-driven integration, microservices with serverless functions, or microkernel with plug-in services.' },
+      { q: 'Evolutionary architecture', a: 'Design for change: automate fitness functions (tests) that protect qualities, use incremental refactoring, and avoid hardwired assumptions.' }
     ];
 
-    // Deck: from Overview of Architecture Styles (Chapters 9–18).pdf (deeper dives)
     const deckChapters = [
-      { q: 'Style selection heuristic', a: 'Start from <strong>business drivers and quality attributes</strong>, then choose styles that naturally deliver them. Validate with architecture fitness functions or quality scenarios.' },
-      { q: 'When to prefer Layered', a: '<strong>Stable domain, modest scale</strong>, clear separation concerns, simpler ops, classic web apps. Team is comfortable with layers and centralized DB.' },
-      { q: 'When to prefer Microservices', a: 'Need <strong>independent deployability, scalability per capability</strong>, heterogeneous tech, fast team autonomy. Accept the cost of distributed data and robust DevOps.' },
-      { q: 'When to prefer Event-Driven', a: '<strong>High throughput, loose coupling, async workflows</strong>, domain events as first-class citizens, need for temporal decoupling and resilience to spikes.' },
-      { q: 'When to prefer Microkernel', a: 'Product platforms requiring <strong>customization via plugins</strong> (e.g., IDEs, CMS, payment engines). Core stability + rich extension points are key.' },
-      { q: 'When to prefer Pipe-and-Filter', a: 'Data transformation/ETL, media processing, analytics pipelines where <strong>stages compose</strong> and parallelize.' },
-      { q: 'When to prefer Space-Based', a: 'Extreme <strong>scalability/low latency</strong> with heavy read/write workloads, needing elastic compute and partitioned state.' },
-      { q: 'When to prefer Serverless', a: 'Spiky workloads, event-driven backends, <strong>cost-per-use</strong> goals, low ops investment. Avoid for long-running and low-latency persistent connections.' },
-      { q: 'CQRS + Event Sourcing', a: '<strong>CQRS:</strong> separate write (commands) and read (queries) models. <strong>Event Sourcing:</strong> persist state as events. Pros: auditability, temporal queries; Cons: complexity, migration challenges.' },
-      { q: 'Orchestration vs Choreography', a: '<strong>Orchestration:</strong> central controller coordinates (sagas/mediator). <strong>Choreography:</strong> services react to events (broker). Choose based on visibility, coupling, and complexity.' },
-      { q: 'Saga pattern', a: 'Manage <strong>distributed transactions</strong> across services using a series of local transactions with compensations. Works with eventual consistency; choose orchestration or choreography.' },
-      { q: 'CAP and style trade-offs', a: 'Network partitions happen. <strong>CP</strong> systems favor consistency (often synchronous/transactional). <strong>AP</strong> systems favor availability (often event-driven/cached). Pick per use case.' },
-      { q: 'Data ownership per service', a: '<strong>Database-per-service</strong> limits coupling; integrate via events or APIs. Use <em>outbox</em> pattern for reliable event publishing from transactional stores.' },
+      { q: 'Layered (N-tier) style — structure', a: 'UI → API/Application → Domain/Service → Data. Strict responsibilities per layer, often deployed as one unit.' },
+      { q: 'Layered style — strengths', a: '<strong>Simplicity, clear separation</strong>, easy onboarding, centralized governance, supports transactions easily.' },
+      { q: 'Layered style — limits', a: 'Risk of “big ball of mud”, tight coupling across layers, slow deployments, hard to scale team autonomy, scaling vertical slices can be coarse.' },
+      { q: 'Layered improvements', a: 'Introduce <strong>modular boundaries</strong> inside (DDD bounded contexts), use feature toggles, add API façade, or carve out services over time.' },
+      { q: 'Client-Server style', a: 'Clients (web/mobile) talk to servers. Modern version: <strong>BFF (Backend For Frontend)</strong> to tailor APIs, use GraphQL for aggregation.' },
+      { q: 'Microservices style — definition', a: '<strong>Independently deployable services</strong> aligned with business capabilities, communicating via lightweight protocols (REST, messaging).' },
+      { q: 'Microservices — strengths', a: 'Autonomous deployment, team ownership, technology polyglot, fault isolation, targeted scaling.' },
+      { q: 'Microservices — trade-offs', a: 'Higher operational complexity, distributed data consistency, requires mature DevOps, observability, and governance.' },
+      { q: 'Microservices — best practices', a: 'One team per service, <strong>bounded context alignment</strong>, API versioning, automated CI/CD, central observability, service mesh for cross-cutting concerns.' },
+      { q: 'SOA (Service-Oriented Architecture)', a: 'Shared enterprise service bus (ESB), coarse-grained services, strong governance. Modern microservices favor <strong>smart endpoints, dumb pipes</strong> instead of ESB logic.' },
+      { q: 'Event-Driven Architecture (EDA)', a: 'Producers emit events to brokers; consumers react asynchronously. Variants: <strong>event notification</strong>, <strong>event-carried state transfer</strong>, <strong>CQRS/event sourcing.</strong>' },
+      { q: 'EDA — strengths', a: 'Loose coupling, high scalability, temporal decoupling, enables audit/event sourcing.' },
+      { q: 'EDA — challenges', a: 'Complex debugging, eventual consistency, ordering/duplication handling, requires strong monitoring.' },
+      { q: 'EDA patterns', a: '<strong>Event sourcing</strong>, <strong>CQRS</strong>, <strong>Saga orchestration/choreography</strong>, <strong>Outbox</strong> for reliable event publishing.' },
+      { q: 'Microkernel (plug-in) style', a: 'Core system handles fundamental tasks; plug-in modules extend features (e.g., IDEs, payment engines).' },
+      { q: 'Microkernel — use cases', a: 'Products needing high extensibility and customization (rules engines, workflow systems).' },
+      { q: 'Pipe-and-filter style', a: 'Data flows through a sequence of filters (transformations). Suits batch/stream processing, ETL pipelines, compilers.' },
+      { q: 'Pipe-and-filter — strengths', a: 'High reusability of filters, easy to compose, parallelizable, good for streaming.' },
+      { q: 'Pipe-and-filter — cautions', a: 'Difficult when filter statefulness or global context needed; debugging across many stages can be complex.' },
+      { q: 'Space-Based (Grid) architecture', a: 'Distributed data grid with processing units for extreme scalability and low latency; eliminates bottlenecked databases by replicating state.' },
+      { q: 'Space-Based — when to use', a: 'High write throughput, low-latency apps (trading, gaming). Complexity and cost are high; not for general back-office systems.' },
+      { q: 'Serverless (FaaS) style', a: 'Functions executed on demand, billed per invocation, managed infrastructure. Works with managed services (queues, storage, auth).' },
+      { q: 'Serverless — strengths', a: 'Zero server management, inherent auto-scaling, pay-per-use, fast experimentation.' },
+      { q: 'Serverless — limits', a: 'Cold starts, execution time limits, vendor lock-in, complex local testing, state via external services.' },
+      { q: 'Blackboard architecture', a: 'Multiple specialized subsystems cooperate on a shared “blackboard” knowledge base (AI planning, speech recognition).' },
+      { q: 'Service mesh (in microservices)', a: 'Networking layer (e.g., Istio, Linkerd) offloads <strong>traffic management, resilience, observability, security</strong> from services.' },
+      { q: 'RESTful integration basics', a: 'Use <strong>resource-based URIs, HTTP verbs, HATEOAS</strong> when appropriate, consistent error handling, pagination, caching semantics.' },
+      { q: 'GraphQL integration basics', a: 'Clients query exactly needed data; requires schema, resolvers, batching, caching; watch for <strong>N+1 queries</strong> and authorization.' },
+      { q: 'API Gateway role', a: 'Single entry point for clients: <strong>authentication, routing, rate limiting, aggregation</strong>. Avoid heavy logic to prevent new monolith.' },
+      { q: 'Async messaging patterns', a: 'Use <strong>publish/subscribe</strong>, <strong>competing consumers</strong>, <strong>dead-letter queues</strong>, <strong>exactly-once via outbox + idempotency</strong>.' },
+      { q: 'Saga pattern', a: 'Distributed transaction pattern. <strong>Orchestration:</strong> central controller. <strong>Choreography:</strong> services react to events. Handle compensations for rollbacks.' },
+      { q: 'Command Query Responsibility Segregation (CQRS)', a: 'Separate write model (commands) from read model (queries). Often paired with event sourcing to rebuild projections.' },
+      { q: 'Scalability dimension', a: 'Scale <strong>up</strong> (resources) or <strong>out</strong> (instances). Microservices, EDA, space-based enable fine-grained scaling; monoliths scale coarse-grain.' },
+      { q: 'Resilience tactics', a: '<strong>Retry/backoff, circuit breaker, bulkhead isolation, timeouts, load shedding, chaos engineering</strong> to verify failure handling.' },
+      { q: 'Observability essentials', a: '<strong>Logs, metrics, traces</strong> with correlation IDs. Use distributed tracing for microservices/EDA; define service-level objectives (SLOs).' },
+      { q: 'Data ownership strategy', a: 'Favor <strong>database per service</strong>. Shared DB only for read replicas/reporting; integrate via events or APIs. Use <em>outbox</em> pattern for reliable event publishing from transactional stores.' },
       { q: 'Bounded contexts and services', a: 'In microservices, align <strong>service boundaries</strong> with <strong>bounded contexts</strong> to preserve domain integrity and reduce coupling.' },
       { q: 'Versioning and contracts', a: 'Treat APIs/events as <strong>published contracts</strong>: semantic versioning, backward compatibility, schema registry for events.' },
       { q: 'Security across styles', a: 'Centralize <strong>identity and access</strong>. Apply zero trust: mTLS, least privilege, token-based auth, secret management, and audit trails.' },
@@ -149,45 +225,44 @@
       { q: 'Cost model by style', a: 'Microservices/serverless: <strong>operational and platform costs</strong> increase; layered/monolith: lower ops but potential slower change at scale.' },
       { q: 'Team topology fit', a: 'Style should fit <strong>team structure</strong>. Stream-aligned teams map well to microservices; platform team supports serverless/mesh; complicated subsystems may need enabling teams.' },
       { q: 'Anti-pattern: shared library coupling', a: 'Excessive <strong>shared libraries</strong> across services couple deployments. Prefer shared contracts over shared code; keep kernels tiny if shared.' },
-      { q: 'Anti-pattern: chatty sync calls', a: 'A cascade of <strong>synchronous calls</strong> increases latency and fragility. Prefer aggregation, caching, or asynchronous events.' },
+      { q: 'Anti-pattern: chatty sync calls', a: 'A cascade of <strong>synchronous calls</strong> increases latency and fragility. Prefer aggregation, caching, or asynchronous events.' }
     ];
 
-    // Dynamic accents (same palette and behavior as the context mapping flashcards)
-    const accents = [
-      { from: '#8b5cf6', to: '#f472b6', border: '#8b5cf6', glow: 'rgba(167,139,250,0.35)' }, // violet -> pink
-      { from: '#06b6d4', to: '#67e8f9', border: '#06b6d4', glow: 'rgba(103,232,249,0.30)' }, // cyan
-      { from: '#10b981', to: '#34d399', border: '#10b981', glow: 'rgba(52,211,153,0.30)' }, // emerald
-      { from: '#f59e0b', to: '#fbbf24', border: '#f59e0b', glow: 'rgba(251,191,36,0.25)' }, // amber
-      { from: '#f43f5e', to: '#fb7185', border: '#f43f5e', glow: 'rgba(244,63,94,0.28)' }, // rose
-      { from: '#3b82f6', to: '#60a5fa', border: '#3b82f6', glow: 'rgba(59,130,246,0.28)' }, // blue
-      { from: '#14b8a6', to: '#2dd4bf', border: '#14b8a6', glow: 'rgba(45,212,191,0.28)' }  // teal
+    const cardPools = [
+      ...deckOverview,
+      ...deckChapters
     ];
 
-    // Build master list and categorize
-    function dedupe(cards) {
-      const seen = new Set();
-      const out = [];
-      for (const c of cards) {
-        const key = c.q.replace(/\s+/g, ' ').trim().toLowerCase();
-        if (!seen.has(key)) { seen.add(key); out.push(c); }
-      }
-      return out;
+    const isStyle = (q) => /\b(layered|n-?tier|client|server|monolith|microservice|soa|event|broker|mediator|microkernel|plugin|plug-in|pipe|filter|space-based|grid|serverless|blackboard|bff|service mesh|architecture style)\b/i.test(q);
+    const isIntegration = (q) => /\b(event|message|queue|api|gateway|graphql|rest|contract|version|saga|cqrs|outbox|choreography|orchestration|mesh)\b/i.test(q);
+    const isQuality = (q) => /\b(scalability|resilien|observab|latency|throughput|security|testing|cost|team topology|fitness|evolutionary)\b/i.test(q);
+
+    function categoryKeyFor(question) {
+      if (isStyle(question)) return 'styles';
+      if (isIntegration(question)) return 'integration';
+      if (isQuality(question)) return 'qualities';
+      return 'qualities';
     }
 
-    const allCards = dedupe([...deckOverview, ...deckChapters]);
+    const allCards = [];
+    const allCardOwners = [];
+    const seen = new Set();
 
-    // Keyword-based classification for this lesson
-    const isStyle = (q) => /\b(layered|n-?tier|client|server|monolith|microservice|soa|event|broker|mediator|microkernel|plugin|pipe|filter|space|serverless|blackboard|rest|graphql|saga|cqrs)\b/i.test(q);
-    const isIntegration = (q) => /\b(event|message|queue|orchestration|choreography|api|gateway|mesh|contract|version|outbox|rest|graphql)\b/i.test(q);
-    const isQuality = (q) => /\b(scalability|availability|consistency|deployab|observab|latency|resilien|cap|cost)\b/i.test(q);
+    for (const card of cardPools) {
+      const key = card.q.replace(/\s+/g, ' ').trim().toLowerCase();
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      const owner = categoryKeyFor(card.q);
+      allCards.push({ q: card.q, a: card.a });
+      allCardOwners.push(owner);
+    }
 
-    const styleCards = allCards.filter(c => isStyle(c.q));
-    const integrationCards = allCards.filter(c => !styleCards.includes(c) && isIntegration(c.q));
-    const qualityCards = allCards.filter(c => !styleCards.includes(c) && !integrationCards.includes(c) && isQuality(c.q));
-    const otherCards = allCards.filter(c => !styleCards.includes(c) && !integrationCards.includes(c) && !qualityCards.includes(c));
-    const qualitiesAll = dedupe([...qualityCards, ...otherCards]);
+    const styleCards = allCards.filter((_, idx) => allCardOwners[idx] === 'styles');
+    const integrationCards = allCards.filter((_, idx) => allCardOwners[idx] === 'integration');
+    const qualityCards = allCards.filter((_, idx) => allCardOwners[idx] === 'qualities');
 
-    // Icons per category (inline SVG)
     const icons = {
       all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l-5 3 1.9-5.9L4 10h6l2-6 2 6h6l-4.9 4.1L17 20z"/></svg>',
       styles: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/></svg>',
@@ -195,29 +270,23 @@
       qualities: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.5L19 21l-7-4.5L5 21l2.5-7.5L2 9h7z"/></svg>'
     };
 
-    // Final categories
     const categories = [
-      { key: 'all', label: 'All', color: ['#8b5cf6','#f472b6'], icon: icons.all, cards: allCards },
-      { key: 'styles', label: 'Styles', color: ['#06b6d4','#67e8f9'], icon: icons.styles, cards: styleCards },
-      { key: 'integration', label: 'Integration', color: ['#f59e0b','#fbbf24'], icon: icons.integration, cards: integrationCards },
-      { key: 'qualities', label: 'Qualities', color: ['#10b981','#34d399'], icon: icons.qualities, cards: qualitiesAll }
+      { key: 'all', label: 'All', color: '#44C8F5', text: '#000000', icon: icons.all, cards: allCards },
+      { key: 'styles', label: 'Architecture Styles', color: '#FFFF00', text: '#1A1A1A', icon: icons.styles, cards: styleCards },
+      { key: 'integration', label: 'Integration & Messaging', color: '#E6007E', text: '#FFFFFF', icon: icons.integration, cards: integrationCards },
+      { key: 'qualities', label: 'Qualities & Operations', color: '#1A1A1A', text: '#FFFFFF', icon: icons.qualities, cards: qualityCards }
     ];
 
-    // State
     let currentCategoryKey = 'all';
-    function currentDeck() { return categories.find(c => c.key === currentCategoryKey).cards; }
+    function currentDeck() { return categories.find((c) => c.key === currentCategoryKey).cards; }
     let order = currentDeck().map((_, i) => i);
     let idx = 0;
     let flipped = false;
-    let randomMode = false;
 
-    // DOM
     const cardEl = document.getElementById('card');
     const qEl = document.getElementById('q');
     const qSubEl = document.getElementById('qSub');
     const aEl = document.getElementById('a');
-    const frontFace = cardEl.querySelector('.card-face:not(.card-back)');
-    const backFace = cardEl.querySelector('.card-back');
     const qLabel = document.getElementById('qLabel');
     const aLabel = document.getElementById('aLabel');
     const accentStrip = document.getElementById('accentStrip');
@@ -226,10 +295,8 @@
     const nextBtn = document.getElementById('nextBtn');
     const flipBtn = document.getElementById('flipBtn');
     const shuffleBtn = document.getElementById('shuffleBtn');
-    const randomToggle = document.getElementById('randomToggle');
     const progress = document.getElementById('progress');
     const categoryBar = document.getElementById('categoryBar');
-    const catBadge = document.getElementById('catBadge');
 
     function render() {
       const deck = currentDeck();
@@ -250,49 +317,50 @@
       progress.textContent = `${idx + 1} / ${deck.length}`;
       setFlipped(false);
       applyAccent();
-      // Defer to next frame to ensure DOM paints before measuring
-      requestAnimationFrame(adjustHeight);
     }
 
     function setFlipped(v) {
       flipped = v;
       if (flipped) cardEl.classList.add('card-flipped');
       else cardEl.classList.remove('card-flipped');
-      requestAnimationFrame(adjustHeight);
-    }
-
-    function adjustHeight() {
-      // Measure visible face height and add accent strip to ensure background matches content
-      try {
-        const face = flipped ? backFace : frontFace;
-        if (!face) return;
-        const clone = face.cloneNode(true);
-        clone.style.position = 'absolute';
-        clone.style.visibility = 'hidden';
-        clone.style.pointerEvents = 'none';
-        clone.style.transform = 'none';
-        clone.style.inset = 'auto';
-        clone.classList.remove('absolute');
-        const w = cardEl.clientWidth || cardEl.getBoundingClientRect().width;
-        if (w) clone.style.width = w + 'px';
-        cardEl.appendChild(clone);
-        const faceHeight = clone.scrollHeight;
-        clone.remove();
-        const stripHeight = (typeof accentStrip !== 'undefined' && accentStrip) ? accentStrip.offsetHeight : 0;
-        const borderComp = 2; // account for 1px top/bottom border
-        const h = faceHeight + stripHeight + borderComp;
-        if (h) cardEl.style.height = h + 'px';
-      } catch (_) { /* no-op */ }
     }
 
     function applyAccent() {
-      const theme = accents[order[idx] % accents.length];
-      cardEl.style.borderColor = theme.border;
-      cardEl.style.boxShadow = `0 0 0 1px ${theme.border}33, 0 10px 30px ${theme.glow}`;
-      accentStrip.style.background = `linear-gradient(90deg, ${theme.from}, ${theme.to})`;
-      headerAccent.style.background = `linear-gradient(180deg, ${theme.from}, ${theme.to})`;
-      qLabel.style.color = theme.to;
-      aLabel.style.color = theme.to;
+      const effectiveCategory = (() => {
+        if (currentCategoryKey !== 'all') {
+          return categories.find((c) => c.key === currentCategoryKey);
+        }
+        const cardIndex = order[idx];
+        const ownerKey = allCardOwners[cardIndex];
+        if (ownerKey) {
+          const ownerCategory = categories.find((c) => c.key === ownerKey);
+          if (ownerCategory) {
+            return ownerCategory;
+          }
+        }
+        return categories.find((c) => c.key === 'all') || categories[0];
+      })();
+
+      const category = effectiveCategory || categories[0];
+      const baseColor = category.color || '#44C8F5';
+      const bodyText = '#1A1A1A';
+      const muted = 'rgba(26, 26, 26, 0.65)';
+
+      cardEl.style.borderColor = baseColor;
+      cardEl.style.backgroundColor = '#FFFFFF';
+      cardEl.style.boxShadow = `0 0 0 1px ${withAlpha(baseColor, 0.2)}, 0 14px 42px ${withAlpha(baseColor, 0.18)}`;
+      cardEl.style.setProperty('--card-bg', '#FFFFFF');
+      cardEl.style.setProperty('--card-fg', bodyText);
+      cardEl.style.setProperty('--card-back-bg', '#FFFFFF');
+      cardEl.style.setProperty('--card-muted', muted);
+      cardEl.style.color = bodyText;
+
+      accentStrip.style.backgroundColor = baseColor;
+      headerAccent.style.backgroundColor = baseColor;
+      qLabel.style.color = baseColor;
+      aLabel.style.color = baseColor;
+      qSubEl.style.color = muted;
+      aEl.style.color = bodyText;
     }
 
     function shuffle() {
@@ -306,13 +374,13 @@
 
     function next() {
       const deck = currentDeck();
-      idx = randomMode ? Math.floor(Math.random() * deck.length) : (idx + 1) % deck.length;
+      idx = (idx + 1) % deck.length;
       render();
     }
 
     function prev() {
       const deck = currentDeck();
-      idx = randomMode ? Math.floor(Math.random() * deck.length) : (idx - 1 + deck.length) % deck.length;
+      idx = (idx - 1 + deck.length) % deck.length;
       render();
     }
 
@@ -330,39 +398,39 @@
       for (const cat of categories) {
         const btn = document.createElement('button');
         const active = cat.key === currentCategoryKey;
-        btn.className = 'group relative px-3 py-1.5 rounded-full text-sm font-semibold border transition ' +
-          (active ? 'border-transparent text-slate-900' : 'border-slate-700 text-slate-200 hover:text-white');
-        btn.style.background = active
-          ? `linear-gradient(90deg, ${cat.color[0]}, ${cat.color[1]})`
-          : 'linear-gradient(90deg, rgba(148,163,184,0.15), rgba(148,163,184,0.10))';
+        btn.className = 'category-btn';
+        if (active) {
+          btn.classList.add('active');
+          btn.style.backgroundColor = cat.color;
+          btn.style.color = cat.text || '#1A1A1A';
+          btn.style.borderColor = cat.color;
+          btn.style.boxShadow = '0 16px 38px -24px rgba(26,26,26,0.45)';
+        } else {
+          btn.style.backgroundColor = '#FFFFFF';
+          btn.style.boxShadow = 'none';
+          btn.style.color = 'rgba(26,26,26,0.75)';
+          btn.style.borderColor = '#E5E7EB';
+        }
         const count = cat.cards.length;
+        const badgeBg = active ? '#FFFFFF' : '#F5F5F5';
+        const badgeColor = active ? '#1A1A1A' : 'rgba(26,26,26,0.7)';
+        const iconColor = active ? (cat.text || '#1A1A1A') : cat.color;
         btn.innerHTML = `
           <span class="flex items-center gap-2">
-            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full" style="color:${active ? '#0f172a' : cat.color[0]}">${cat.icon}</span>
+            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full" style="color:${iconColor};">${cat.icon}</span>
             <span>${cat.label}</span>
-            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${active ? '#0f172a' : '#1e293b'}; color: ${active ? cat.color[1] : '#cbd5e1'}; border: 1px solid rgba(148,163,184,0.25);">${count}</span>
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${badgeBg}; color: ${badgeColor}; border: 1px solid #E5E7EB;">${count}</span>
           </span>`;
         btn.addEventListener('click', () => setCategory(cat.key));
         categoryBar.appendChild(btn);
       }
-
-      // Update header badge
-      const current = categories.find(c => c.key === currentCategoryKey);
-      catBadge.classList.remove('hidden');
-      catBadge.style.background = 'linear-gradient(90deg, rgba(148,163,184,0.12), rgba(148,163,184,0.08))';
-      catBadge.innerHTML = `<span class="w-2 h-2 rounded-full" style="background: ${current.color[0]}; box-shadow: 0 0 8px ${current.color[0]}66;"></span>
-        <span>${current.label}</span>
-        <span class="px-1.5 py-0.5 rounded bg-slate-900/60 border border-slate-700 text-[10px]">${current.cards.length}</span>`;
     }
 
-    // Events
     cardEl.addEventListener('click', () => setFlipped(!flipped));
     prevBtn.addEventListener('click', prev);
     nextBtn.addEventListener('click', next);
     flipBtn.addEventListener('click', () => setFlipped(!flipped));
     shuffleBtn.addEventListener('click', shuffle);
-    randomToggle.addEventListener('change', (e) => { randomMode = e.target.checked; });
-    window.addEventListener('resize', () => requestAnimationFrame(adjustHeight));
 
     document.addEventListener('keydown', (e) => {
       if (e.code === 'Space') { e.preventDefault(); setFlipped(!flipped); return; }
@@ -370,7 +438,6 @@
       if (e.key === 'ArrowLeft') prev();
     });
 
-    // Init
     paintCategoryBar();
     render();
   </script>

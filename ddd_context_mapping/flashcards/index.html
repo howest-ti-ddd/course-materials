@@ -7,54 +7,98 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #0F172A; color: #D1D5DB; }
-    .bg-gradient {
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-    }
-    .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+    body { font-family: 'Inter', sans-serif; background: #F5F5F5; color: #1A1A1A; }
+    .bg-gradient { background: #F5F5F5; }
+    .glass { background: #FFFFFF; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid #E5E7EB; box-shadow: 0 24px 55px -35px rgba(26, 26, 26, 0.35); }
     .card-3d { perspective: 1200px; }
     .card-inner { transform-style: preserve-3d; transition: transform 0.5s ease; }
     .card-flipped .card-inner { transform: rotateY(180deg); }
-    .card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-    .card-back { transform: rotateY(180deg); }
-    .btn { @apply px-4 py-2 rounded-lg border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-200 transition; }
-    .accent-text { color: #A78BFA; }
+    .card-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      background: var(--card-bg, #FFFFFF);
+      color: var(--card-fg, #1A1A1A);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .card-back { transform: rotateY(180deg); background: var(--card-back-bg, #FFFFFF); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      cursor: pointer;
+      box-shadow: 0 12px 28px -24px rgba(26, 26, 26, 0.55);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .btn svg { width: 1.2rem; height: 1.2rem; }
+    .btn:hover { transform: translateY(-1px); border-color: #44C8F5; box-shadow: 0 16px 36px -26px rgba(26, 26, 26, 0.6); }
+    .nav-btn--primary { background: #44C8F5; border-color: #44C8F5; color: #000000; box-shadow: 0 18px 36px -24px rgba(68, 200, 245, 0.55); }
+    .nav-btn--primary:hover { background: #FFFF00; border-color: #FFFF00; color: #1A1A1A; box-shadow: 0 20px 38px -24px rgba(26, 26, 26, 0.5); }
+    .nav-btn--accent { background: #E6007E; border-color: #E6007E; color: #FFFFFF; box-shadow: 0 18px 36px -24px rgba(230, 0, 126, 0.55); }
+    .nav-btn--accent:hover { background: #1A1A1A; border-color: #1A1A1A; color: #FFFFFF; box-shadow: 0 20px 38px -22px rgba(26, 26, 26, 0.5); }
+    .nav-btn--subtle { background: #FFFFFF; border-color: #E5E7EB; box-shadow: 0 10px 24px -24px rgba(26, 26, 26, 0.5); }
+    .nav-btn--subtle:hover { background: #44C8F5; color: #000000; border-color: #44C8F5; box-shadow: 0 16px 32px -26px rgba(68, 200, 245, 0.5); }
+    .accent-text { color: #44C8F5; }
     .stage { min-height: 60vh; }
-    .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+    .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; background: #44C8F5; }
+    .label { color: rgba(26, 26, 26, 0.65); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .muted { color: var(--card-muted, rgba(26, 26, 26, 0.65)); }
+    .card-content { display: flex; flex-direction: column; gap: 1.5rem; }
+    .category-bar { gap: 0.75rem; }
+    .category-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #FFFFFF;
+      color: rgba(26, 26, 26, 0.75);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    }
+    .category-btn:hover { border-color: #44C8F5; color: #1A1A1A; box-shadow: 0 12px 28px -24px rgba(26, 26, 26, 0.4); }
+    .category-btn.active { border-color: transparent; }
+    #progress { color: rgba(26, 26, 26, 0.6); }
+    #a strong, #a em { color: inherit; }
+    #a { color: inherit; }
   </style>
 </head>
 <body class="min-h-screen bg-gradient">
   <div class="min-h-screen flex flex-col">
-    <!-- Header -->
     <header class="px-4 sm:px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div id="headerAccent" class="w-2 h-8 rounded" style="background: linear-gradient(180deg, #8b5cf6, #f472b6);"></div>
-        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-200"> <span class="accent-text">Flashcards : </span>Domains, Bounded Contexts & Context Mapping</h1>
+        <div id="headerAccent" class="w-2 h-8 rounded" style="background: #44C8F5;"></div>
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight"><span class="accent-text">Flashcards :</span> Domains, Bounded Contexts &amp; Context Mapping</h1>
       </div>
-      <div id="catBadge" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-slate-700 bg-slate-800/60 text-slate-200"></div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-1 flex flex-col items-center px-4">
-      <!-- Card Stage centered -->
       <div class="stage w-full max-w-5xl grid place-items-center">
         <div class="w-full max-w-3xl">
-          <div id="card" class="card-3d glass rounded-2xl shadow-xl border border-slate-700">
+          <div id="card" class="card-3d glass rounded-2xl shadow-xl">
             <div class="accent-strip" id="accentStrip"></div>
             <div class="card-inner rounded-2xl">
-              <!-- Front -->
               <div class="card-face p-8 sm:p-12">
-                <div class="flex flex-col gap-6">
-                  <div id="qLabel" class="text-slate-300 text-sm">Question</div>
-                  <h2 id="q" class="text-2xl sm:text-4xl font-extrabold text-gray-100 leading-snug"></h2>
-                  <div id="qSub" class="text-slate-400 text-lg"></div>
+                <div class="card-content">
+                  <div id="qLabel" class="label text-sm">Question</div>
+                  <h2 id="q" class="text-2xl sm:text-4xl font-extrabold leading-snug"></h2>
+                  <div id="qSub" class="muted text-lg"></div>
                 </div>
               </div>
-              <!-- Back -->
-              <div class="card-face card-back p-8 sm:p-12 absolute inset-0 rounded-2xl bg-slate-900/60">
-                <div class="flex flex-col gap-6">
-                  <div id="aLabel" class="text-slate-300 text-sm">Answer</div>
-                  <div id="a" class="prose prose-invert max-w-none"></div>
+              <div class="card-face card-back p-8 sm:p-12 absolute inset-0 rounded-2xl">
+                <div class="card-content">
+                  <div id="aLabel" class="label text-sm">Answer</div>
+                  <div id="a" class="prose max-w-none"></div>
                 </div>
               </div>
             </div>
@@ -62,127 +106,95 @@
         </div>
       </div>
 
-      <!-- Controls (below, centered) -->
-      <div class="glass w-full max-w-5xl rounded-2xl p-4 sm:p-6 mt-4 mb-12">
-        <div class="mb-4 overflow-x-auto">
-          <div id="categoryBar" class="flex justify-center gap-2 whitespace-nowrap"></div>
+      <div class="glass w-full max-w-6xl rounded-2xl p-4 sm:p-6 mt-4 mb-12">
+        <div class="mb-4 px-2">
+          <div id="categoryBar" class="flex flex-wrap justify-center category-bar"></div>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
           <div class="flex items-center gap-3">
-            <button id="prevBtn" class="btn flex items-center gap-2">
+            <button id="prevBtn" class="btn nav-btn nav-btn--primary">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
               Prev
             </button>
-            <button id="nextBtn" class="btn flex items-center gap-2">
+            <button id="nextBtn" class="btn nav-btn nav-btn--primary">
               Next
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
             </button>
-            <button id="flipBtn" class="btn hidden sm:flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v3l4-4-4-4v3c-4.97 0-9 4.03-9 9 0 1.85.56 3.56 1.5 5l1.46-1.46A6.98 6.98 0 0 1 5 12c0-3.87 3.13-7 7-7zm7.5 1-1.46 1.46A6.98 6.98 0 0 1 19 12c0 3.87-3.13 7-7 7v-3l-4 4 4 4v-3c4.97 0 9-4.03 9-9 0-1.85-.56-3.56-1.5-5z"/></svg>
+            <button id="flipBtn" class="btn nav-btn nav-btn--accent hidden sm:inline-flex">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v3l4-4-4-4v3C7.03 4 3 8.03 3 13c0 1.85.56 3.56 1.5 5l1.46-1.46A6.98 6.98 0 0 1 5 13c0-3.87 3.13-7 7-7zm7.5 1-1.46 1.46A6.98 6.98 0 0 1 19 13c0 3.87-3.13 7-7 7v-3l-4 4 4 4v-3c4.97 0 9-4.03 9-9 0-1.85-.56-3.56-1.5-5z"/></svg>
               Flip (Space)
             </button>
           </div>
           <div class="flex items-center gap-3">
-            <button id="shuffleBtn" class="btn">Shuffle</button>
-            <label class="inline-flex items-center gap-2 text-slate-300">
-              <input id="randomToggle" type="checkbox" class="accent-indigo-500">
-              Random mode
-            </label>
-            <span id="progress" class="text-sm text-slate-400"></span>
+            <button id="shuffleBtn" class="btn nav-btn nav-btn--subtle">Shuffle</button>
+            <span id="progress" class="text-sm"></span>
           </div>
         </div>
       </div>
     </main>
-
-    
   </div>
 
   <script>
-    // Deck: from slides (Context Mapping lesson)
-    const deckSlides = [
-      {
-        q: 'What is a Bounded Context?',
-        a: '<strong>Boundary around a model and language.</strong> It defines where a particular Ubiquitous Language and model apply consistently. Integration across contexts is explicit and managed.'
-      },
-      {
-        q: 'Domain vs. Subdomain vs. Bounded Context',
-        a: '<strong>Domain:</strong> overall problem space. <br><strong>Subdomain:</strong> coherent part of the business (problem space). <br><strong>Bounded Context:</strong> implementation boundary for a model (solution space).'
-      },
-      {
-        q: 'Subdomain types',
-        a: '<strong class="text-indigo-300">Core:</strong> differentiator; invest top talent. <br><strong class="text-sky-300">Supporting:</strong> necessary, not differentiating; keep simple. <br><strong class="text-slate-300">Generic:</strong> solved elsewhere; prefer buy/integrate.'
-      },
-      {
-        q: 'Upstream vs. Downstream',
-        a: '<strong>Upstream (U):</strong> influences or provides. <br><strong>Downstream (D):</strong> consumes and is influenced. Direction of model pressure usually flows U → D.'
-      },
-      {
-        q: 'Context Map: Partnership (P)',
-        a: '<strong>Joint planning and shared fate.</strong> Teams coordinate closely and succeed/fail together. Use when goals are tightly coupled and timelines must align.'
-      },
-      {
-        q: 'Context Map: Shared Kernel (SK)',
-        a: 'Teams share a <strong>small, stable subset</strong> of the model and code. <em>Risk:</em> tighter coupling and coordination overhead. Keep it minimal.'
-      },
-      {
-        q: 'Context Map: Customer–Supplier (C/S)',
-        a: 'Downstream is the <strong>customer</strong> whose needs are prioritized. Upstream is the <strong>supplier</strong> providing capabilities. Clear U → D relationship.'
-      },
-      {
-        q: 'Context Map: Conformist (CF)',
-        a: 'Downstream <strong>adopts upstream’s model</strong> as-is (little influence). Simplest integration but compromises downstream model.'
-      },
-      {
-        q: 'Context Map: Anticorruption Layer (ACL)',
-        a: '<strong>Translation shield</strong> that protects downstream from a problematic upstream model (legacy/opaque). Preserves downstream integrity at cost of a translation layer.'
-      },
-      {
-        q: 'Context Map: Open Host Service (OHS)',
-        a: 'Upstream exposes a <strong>well-defined service</strong> that multiple downstreams can consume consistently (often paired with a Published Language).'
-      },
-      {
-        q: 'Context Map: Published Language (PL)',
-        a: 'A <strong>shared, documented contract</strong> (schema, events) agreed by parties. Reduces translation ambiguity and improves interoperability.'
-      },
-      {
-        q: 'Context Map: Separate Ways (SW)',
-        a: 'Teams decide <strong>not to integrate</strong> because the cost > benefit. Avoids coupling; duplicate effort may be acceptable.'
-      },
-      {
-        q: 'Ubiquitous Language',
-        a: 'A <strong>shared language</strong> between devs and domain experts within a bounded context. Drives model, code, and communication.'
-      },
-      {
-        q: 'Generic Subdomain strategy',
-        a: '<strong>Prefer buy over build.</strong> Wrap external products/services in their own bounded context. Consider ACL if models clash.'
-      },
-      {
-        q: 'Supporting Subdomain strategy',
-        a: 'Build in-house but <strong>keep simple</strong>. CRUD often suffices. Don’t over-engineer; protect Core from coupling.'
-      },
-      {
-        q: 'Core Subdomain strategy',
-        a: 'Invest in a <strong>rich model</strong>, strong language, and autonomy. Aim for a dedicated bounded context and team alignment.'
-      },
-      {
-        q: 'Model Corruption',
-        a: 'Occurs when different contexts <strong>bleed into</strong> each other. Symptoms: overloaded terms, conflicting rules. Solution: enforce boundaries, explicit integration.'
-      },
-      {
-        q: 'Signs you need boundaries',
-        a: 'Conflicting definitions of key terms; feature changes ripple unpredictably; high integration friction; tight coupling to tech layers vs capabilities.'
-      },
-      {
-        q: 'Event-driven integration tip',
-        a: 'Prefer <strong>business events</strong> with a published language for looser coupling. Downstreams translate as needed (or use ACLs).' 
-      },
-      {
-        q: 'Team alignment (Conway’s Law)',
-        a: 'Structure teams around bounded contexts to <strong>align software communication paths</strong> with organizational communication.'
+    function normalizeHex(hex) {
+      if (!hex) {
+        return null;
       }
+      let value = String(hex).trim();
+      if (value.startsWith('#')) {
+        value = value.slice(1);
+      }
+      if (value.length === 3) {
+        value = value
+          .split('')
+          .map((ch) => ch + ch)
+          .join('');
+      }
+      if (value.length !== 6 || !/^[0-9a-fA-F]{6}$/.test(value)) {
+        return null;
+      }
+      return value.toUpperCase();
+    }
+
+    function hexToRgb(hex) {
+      const normalized = normalizeHex(hex);
+      if (!normalized) {
+        return { r: 68, g: 200, b: 245 };
+      }
+      return {
+        r: parseInt(normalized.slice(0, 2), 16),
+        g: parseInt(normalized.slice(2, 4), 16),
+        b: parseInt(normalized.slice(4, 6), 16)
+      };
+    }
+
+    function withAlpha(hex, alpha = 0.3) {
+      const { r, g, b } = hexToRgb(hex);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    const deckSlides = [
+      { q: 'What is a Bounded Context?', a: '<strong>Boundary around a model and language.</strong> It defines where a particular Ubiquitous Language and model apply consistently. Integration across contexts is explicit and managed.' },
+      { q: 'Domain vs. Subdomain vs. Bounded Context', a: '<strong>Domain:</strong> overall problem space. <br><strong>Subdomain:</strong> coherent part of the business (problem space). <br><strong>Bounded Context:</strong> implementation boundary for a model (solution space).' },
+      { q: 'Subdomain types', a: '<strong class="text-indigo-300">Core:</strong> differentiator; invest top talent. <br><strong class="text-sky-300">Supporting:</strong> necessary, not differentiating; keep simple. <br><strong class="text-slate-300">Generic:</strong> solved elsewhere; prefer buy/integrate.' },
+      { q: 'Upstream vs. Downstream', a: '<strong>Upstream (U):</strong> influences or provides. <strong>Downstream (D):</strong> consumes and is influenced. Direction of model pressure usually flows U → D.' },
+      { q: 'Context Map: Partnership (P)', a: '<strong>Joint planning and shared fate.</strong> Teams coordinate closely and succeed/fail together. Use when goals are tightly coupled and timelines must align.' },
+      { q: 'Context Map: Shared Kernel (SK)', a: 'Teams share a <strong>small, stable subset</strong> of the model and code. <em>Risk:</em> tighter coupling and coordination overhead. Keep it minimal.' },
+      { q: 'Context Map: Customer–Supplier (C/S)', a: 'Downstream is the <strong>customer</strong> whose needs are prioritized. Upstream is the <strong>supplier</strong> providing capabilities. Clear U → D relationship.' },
+      { q: 'Context Map: Conformist (CF)', a: 'Downstream <strong>adopts upstream’s model</strong> as-is (little influence). Simplest integration but compromises downstream model.' },
+      { q: 'Context Map: Anticorruption Layer (ACL)', a: '<strong>Translation shield</strong> that protects downstream from a problematic upstream model (legacy/opaque). Preserves downstream integrity at cost of a translation layer.' },
+      { q: 'Context Map: Open Host Service (OHS)', a: 'Upstream exposes a <strong>well-defined service</strong> that multiple downstreams can consume consistently (often paired with a Published Language).' },
+      { q: 'Context Map: Published Language (PL)', a: 'A <strong>shared, documented contract</strong> (schema, events) agreed by parties. Reduces translation ambiguity and improves interoperability.' },
+      { q: 'Context Map: Separate Ways (SW)', a: 'Teams decide <strong>not to integrate</strong> because the cost > benefit. Avoids coupling; duplicate effort may be acceptable.' },
+      { q: 'Ubiquitous Language', a: 'A <strong>shared language</strong> between devs and domain experts within a bounded context. Drives model, code, and communication.' },
+      { q: 'Generic Subdomain strategy', a: '<strong>Prefer buy over build.</strong> Wrap external products/services in their own bounded context. Consider ACL if models clash.' },
+      { q: 'Supporting Subdomain strategy', a: 'Build in-house but <strong>keep simple</strong>. CRUD often suffices. Don’t over-engineer; protect Core from coupling.' },
+      { q: 'Core Subdomain strategy', a: 'Invest in a <strong>rich model</strong>, strong language, and autonomy. Aim for a dedicated bounded context and team alignment.' },
+      { q: 'Model Corruption', a: 'Occurs when different contexts <strong>bleed into</strong> each other. Symptoms: overloaded terms, conflicting rules. Solution: enforce boundaries, explicit integration.' },
+      { q: 'Signs you need boundaries', a: 'Conflicting definitions of key terms; feature changes ripple unpredictably; high integration friction; tight coupling to tech layers vs capabilities.' },
+      { q: 'Event-driven integration tip', a: 'Prefer <strong>business events</strong> with a published language for looser coupling. Downstreams translate as needed (or use ACLs).' },
+      { q: 'Team alignment (Conway’s Law)', a: 'Structure teams around bounded contexts to <strong>align software communication paths</strong> with organizational communication.' }
     ];
 
-    // Deck: from ddd_context_mapping.pdf
     const deckPdfCM = [
       { q: 'What is a Context Map?', a: 'A <strong>diagram and shared artifact</strong> showing bounded contexts and the <em>relationships and flows</em> between them (upstream/downstream, patterns like P, SK, C/S, CF, ACL, OHS, PL, SW).' },
       { q: 'Upstream vs. Downstream', a: '<strong>Upstream (U):</strong> influences or supplies. <strong>Downstream (D):</strong> consumes and is influenced. Model pressure typically flows U → D.' },
@@ -208,13 +220,12 @@
       { q: 'Choosing SK vs. P', a: '<strong>SK</strong> shares code with coupling. <strong>P</strong> is process coordination without shared code. Use SK sparingly.' }
     ];
 
-    // Deck: from ddd_learning_bounded_contexts.pdf
     const deckPdfLBC = [
       { q: 'Bounded Context definition', a: 'A <strong>boundary where a model and Ubiquitous Language are consistent</strong>. Outside it, translation is expected.' },
       { q: 'Why boundaries?', a: 'To <strong>protect model integrity</strong>, reduce accidental coupling, and allow teams to evolve independently.' },
-      { q: 'Heuristic: overloaded terms', a: `If a term means <strong>different things to different groups</strong>, that's a boundary seam.` },
+      { q: 'Heuristic: overloaded terms', a: 'If a term means <strong>different things to different groups</strong>, that\'s a boundary seam.' },
       { q: 'Heuristic: invariants', a: 'Group concepts that share <strong>strong invariants</strong> and business rules; split when rules conflict.' },
-      { q: 'Heuristic: transactions', a: `A context often aligns to <strong>transactional consistency boundaries</strong> (don't stretch ACID across contexts).` },
+      { q: 'Heuristic: transactions', a: 'A context often aligns to <strong>transactional consistency boundaries</strong> (don\'t stretch ACID across contexts).' },
       { q: 'Heuristic: data ownership', a: 'Each context <strong>owns its data</strong>. Others consume via APIs/events, not DB sharing.' },
       { q: 'Heuristic: cohesion & coupling', a: 'Maximize <strong>internal cohesion</strong>; minimize <strong>external coupling</strong> with explicit interfaces.' },
       { q: 'Workshop: Event Storming', a: 'Use domain events to discover <strong>flows, hotspots</strong>, and natural seams for contexts.' },
@@ -233,56 +244,56 @@
       { q: 'When to merge contexts', a: 'If two contexts <strong>always change together</strong> with identical language and rules, consider merging.' }
     ];
 
-    // Deck: from ddd_blue_bounded_contexts.pdf (Blue Book themed)
     const deckPdfBlue = [
-      { q: 'Ubiquitous Language scope', a: `It is <strong>defined and valid only within a bounded context</strong>. Don't force a single language across the entire system.` },
-      { q: 'Who owns the model?', a: 'The <strong>team responsible for a bounded context</strong> owns and evolves its model aligned to its Ubiquitous Language.' },
-      { q: 'Continuous integration (within a context)', a: '<strong>Integrate and refactor frequently</strong> within the context to keep the model supple and consistent.' },
-      { q: 'Distillation (Blue Book)', a: '<strong>Focus on the Core Domain</strong> and reduce complexity elsewhere (supporting/generic). Allocate best effort to the core.' },
-      { q: 'Context boundaries and translation', a: '<strong>Boundaries are semantic</strong>; crossing them requires translation or shared contracts (PL, SK).' },
-      { q: 'Large-scale structure', a: 'Use <strong>bounded contexts + context map</strong> to achieve large-scale structure instead of technical layers alone.' },
-      { q: 'Strategic vs tactical DDD', a: '<strong>Strategic:</strong> contexts, subdomains, maps. <strong>Tactical:</strong> entities, value objects, aggregates. Keep concerns separated.' },
-      { q: 'Core Domain protection', a: 'Guard the core from corruption by <strong>clear boundaries</strong> and selective integration patterns (ACL if needed).' },
-      { q: 'Team coordination patterns', a: 'Choose <strong>P, SK, C/S, CF, ACL, OHS, PL, SW</strong> based on influence and constraints; avoid accidental conformism.' },
-      { q: 'Context integration anti-pattern', a: '<strong>Shared DB across contexts</strong> undermines model integrity; prefer contracts and events.' }
+      { q: 'Ubiquitous Language scope', a: 'It is <strong>defined and valid only within a bounded context</strong>. Don\'t force it across contexts without translation.' },
+      { q: 'Context-map purpose', a: '<strong>Visualizes relationships</strong> (influence, integration style, constraints) so teams know where translation or negotiation is needed.' },
+      { q: 'Distillation', a: 'Focus on the <strong>Core Domain</strong>, separate supporting/generic pieces, and align bounded contexts to protect strategic knowledge.' },
+      { q: 'Continuous integration inside contexts', a: 'Integrate changes frequently within a context to keep the model consistent and reveal conflicts early.' },
+      { q: 'Context integration anti-pattern', a: '<strong>Shared database</strong> across contexts erodes boundaries; use explicit APIs/events instead.' },
+      { q: 'Large-scale structure', a: 'Use bounded contexts plus a context map to create large-scale structure—more effective than technical layering alone.' },
+      { q: 'Strategic vs tactical DDD', a: '<strong>Strategic:</strong> contexts, subdomains, context map. <strong>Tactical:</strong> entities, value objects, aggregates. Keep concerns separated.' },
+      { q: 'Core Domain protection', a: 'Guard the core domain by <strong>clear boundaries</strong>, limited shared kernels, and translation layers where needed.' },
+      { q: 'Team coordination patterns', a: 'Pick P, SK, C/S, CF, ACL, OHS, PL, SW based on influence and constraints; <strong>avoid accidental conformism</strong>.' },
+      { q: 'Context integration heuristic', a: 'Prefer <strong>events + published language</strong> for autonomy; add ACLs when upstream models are incompatible.' }
     ];
 
-    // Dynamic accents (rotate colors for variety in same style)
-    const accents = [
-      { from: '#8b5cf6', to: '#f472b6', border: '#8b5cf6', glow: 'rgba(167,139,250,0.35)' }, // violet -> pink
-      { from: '#06b6d4', to: '#67e8f9', border: '#06b6d4', glow: 'rgba(103,232,249,0.30)' }, // cyan
-      { from: '#10b981', to: '#34d399', border: '#10b981', glow: 'rgba(52,211,153,0.30)' }, // emerald
-      { from: '#f59e0b', to: '#fbbf24', border: '#f59e0b', glow: 'rgba(251,191,36,0.25)' }, // amber
-      { from: '#f43f5e', to: '#fb7185', border: '#f43f5e', glow: 'rgba(244,63,94,0.28)' }, // rose
-      { from: '#3b82f6', to: '#60a5fa', border: '#3b82f6', glow: 'rgba(59,130,246,0.28)' }, // blue
-      { from: '#14b8a6', to: '#2dd4bf', border: '#14b8a6', glow: 'rgba(45,212,191,0.28)' }  // teal
+    const cardPools = [
+      ...deckSlides,
+      ...deckPdfCM,
+      ...deckPdfLBC,
+      ...deckPdfBlue
     ];
 
-    // Build master list and categorize
-    function dedupe(cards) {
-      const seen = new Set();
-      const out = [];
-      for (const c of cards) {
-        const key = c.q.replace(/\s+/g, ' ').trim().toLowerCase();
-        if (!seen.has(key)) { seen.add(key); out.push(c); }
-      }
-      return out;
+    const isDomain = (q) => /\b(domain|subdomain|core|supporting|generic|distillation)\b/i.test(q);
+    const isMapping = (q) => /\b(context map|partnership|shared kernel|customer|supplier|conformist|anticorruption|anti[- ]?corruption|open host|published language|separate ways|upstream|downstream|mapping step|arrows|integration style)\b/i.test(q);
+    const isBounded = (q) => /\b(bound(ed)? context|ubiquitous language|heuristic|boundary|invariant|transaction|cohesion|ownership|corruption|integration choices?|event storming|capability mapping)\b/i.test(q);
+
+    function categoryKeyFor(question) {
+      if (isDomain(question)) return 'domains';
+      if (isMapping(question)) return 'mapping';
+      if (isBounded(question)) return 'bounded';
+      return 'bounded';
     }
 
-    const allCards = dedupe([...deckSlides, ...deckPdfCM, ...deckPdfLBC, ...deckPdfBlue]);
+    const allCards = [];
+    const allCardOwners = [];
+    const seen = new Set();
 
-    // Keyword-based classification
-    const isDomain = (q) => /\b(domain|subdomain|core|supporting|generic|distillation)\b/i.test(q);
-    const isBounded = (q) => /\b(bound(ed)? context|ubiquitous language|heuristic|anti-pattern|boundary|invariant|transaction|cohesion|ownership|corruption)\b/i.test(q);
-    const isMapping = (q) => /\b(context map|partnership|shared kernel|customer|supplier|conformist|anticorruption|open host|published language|separate ways|upstream|downstream|mapping step|arrows|integration style)\b/i.test(q);
+    for (const card of cardPools) {
+      const key = card.q.replace(/\s+/g, ' ').trim().toLowerCase();
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      const owner = categoryKeyFor(card.q);
+      allCards.push({ q: card.q, a: card.a });
+      allCardOwners.push(owner);
+    }
 
-    const domainsCards = allCards.filter(c => isDomain(c.q));
-    const mappingCards = allCards.filter(c => !isDomain(c.q) && isMapping(c.q));
-    const boundedCards = allCards.filter(c => !isDomain(c.q) && !isMapping(c.q) && isBounded(c.q));
-    const fallbackCards = allCards.filter(c => !domainsCards.includes(c) && !mappingCards.includes(c) && !boundedCards.includes(c));
-    const boundedAll = dedupe([...boundedCards, ...fallbackCards]);
+    const domainsCards = allCards.filter((_, idx) => allCardOwners[idx] === 'domains');
+    const boundedCards = allCards.filter((_, idx) => allCardOwners[idx] === 'bounded');
+    const mappingCards = allCards.filter((_, idx) => allCardOwners[idx] === 'mapping');
 
-    // Icons per category (inline SVG)
     const icons = {
       all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l-5 3 1.9-5.9L4 10h6l2-6 2 6h6l-4.9 4.1L17 20z"/></svg>',
       domains: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 7v-7h7v7h-7z"/></svg>',
@@ -290,23 +301,19 @@
       mapping: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h6v2H7v4h4v2H7v4H5V5h8V3l4 3-4 3V7zM19 13h-6v-2h6V7h-4V5h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v-2h4v-4z"/></svg>'
     };
 
-    // Final categories as requested
     const categories = [
-      { key: 'all', label: 'All', color: ['#8b5cf6','#f472b6'], icon: icons.all, cards: allCards },
-      { key: 'domains', label: 'Domains', color: ['#10b981','#34d399'], icon: icons.domains, cards: domainsCards },
-      { key: 'bounded', label: 'Bounded Contexts', color: ['#06b6d4','#67e8f9'], icon: icons.bounded, cards: boundedAll },
-      { key: 'mapping', label: 'Context Mapping', color: ['#f59e0b','#fbbf24'], icon: icons.mapping, cards: mappingCards }
+      { key: 'all', label: 'All', color: '#44C8F5', text: '#000000', icon: icons.all, cards: allCards },
+      { key: 'domains', label: 'Domains & Subdomains', color: '#FFFF00', text: '#1A1A1A', icon: icons.domains, cards: domainsCards },
+      { key: 'bounded', label: 'Bounded Contexts', color: '#E6007E', text: '#FFFFFF', icon: icons.bounded, cards: boundedCards },
+      { key: 'mapping', label: 'Context Mapping', color: '#1A1A1A', text: '#FFFFFF', icon: icons.mapping, cards: mappingCards }
     ];
 
-    // State
     let currentCategoryKey = 'all';
-    function currentDeck() { return categories.find(c => c.key === currentCategoryKey).cards; }
+    function currentDeck() { return categories.find((c) => c.key === currentCategoryKey).cards; }
     let order = currentDeck().map((_, i) => i);
     let idx = 0;
     let flipped = false;
-    let randomMode = false;
 
-    // DOM
     const cardEl = document.getElementById('card');
     const cardInner = cardEl.querySelector('.card-inner');
     const qEl = document.getElementById('q');
@@ -320,10 +327,8 @@
     const nextBtn = document.getElementById('nextBtn');
     const flipBtn = document.getElementById('flipBtn');
     const shuffleBtn = document.getElementById('shuffleBtn');
-    const randomToggle = document.getElementById('randomToggle');
     const progress = document.getElementById('progress');
     const categoryBar = document.getElementById('categoryBar');
-    const catBadge = document.getElementById('catBadge');
 
     function render() {
       const deck = currentDeck();
@@ -353,20 +358,44 @@
     }
 
     function applyAccent() {
-      const theme = accents[order[idx] % accents.length];
-      // Card border + glow
-      cardEl.style.borderColor = theme.border;
-      cardEl.style.boxShadow = `0 0 0 1px ${theme.border}33, 0 10px 30px ${theme.glow}`;
-      // Accent strip and header accent
-      accentStrip.style.background = `linear-gradient(90deg, ${theme.from}, ${theme.to})`;
-      headerAccent.style.background = `linear-gradient(180deg, ${theme.from}, ${theme.to})`;
-      // Labels tint
-      qLabel.style.color = theme.to;
-      aLabel.style.color = theme.to;
+      const effectiveCategory = (() => {
+        if (currentCategoryKey !== 'all') {
+          return categories.find((c) => c.key === currentCategoryKey);
+        }
+        const cardIndex = order[idx];
+        const ownerKey = allCardOwners[cardIndex];
+        if (ownerKey) {
+          const ownerCategory = categories.find((c) => c.key === ownerKey);
+          if (ownerCategory) {
+            return ownerCategory;
+          }
+        }
+        return categories.find((c) => c.key === 'all') || categories[0];
+      })();
+
+      const category = effectiveCategory || categories[0];
+      const baseColor = category.color || '#44C8F5';
+      const bodyText = '#1A1A1A';
+      const muted = 'rgba(26, 26, 26, 0.65)';
+
+      cardEl.style.borderColor = baseColor;
+      cardEl.style.backgroundColor = '#FFFFFF';
+      cardEl.style.boxShadow = `0 0 0 1px ${withAlpha(baseColor, 0.2)}, 0 14px 42px ${withAlpha(baseColor, 0.18)}`;
+      cardEl.style.setProperty('--card-bg', '#FFFFFF');
+      cardEl.style.setProperty('--card-fg', bodyText);
+      cardEl.style.setProperty('--card-back-bg', '#FFFFFF');
+      cardEl.style.setProperty('--card-muted', muted);
+      cardEl.style.color = bodyText;
+
+      accentStrip.style.backgroundColor = baseColor;
+      headerAccent.style.backgroundColor = baseColor;
+      qLabel.style.color = baseColor;
+      aLabel.style.color = baseColor;
+      qSubEl.style.color = muted;
+      aEl.style.color = bodyText;
     }
 
     function shuffle() {
-      // Fisher-Yates
       for (let i = order.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [order[i], order[j]] = [order[j], order[i]];
@@ -377,13 +406,13 @@
 
     function next() {
       const deck = currentDeck();
-      idx = randomMode ? Math.floor(Math.random() * deck.length) : (idx + 1) % deck.length;
+      idx = (idx + 1) % deck.length;
       render();
     }
 
     function prev() {
       const deck = currentDeck();
-      idx = randomMode ? Math.floor(Math.random() * deck.length) : (idx - 1 + deck.length) % deck.length;
+      idx = (idx - 1 + deck.length) % deck.length;
       render();
     }
 
@@ -401,38 +430,39 @@
       for (const cat of categories) {
         const btn = document.createElement('button');
         const active = cat.key === currentCategoryKey;
-        btn.className = 'group relative px-3 py-1.5 rounded-full text-sm font-semibold border transition ' +
-          (active ? 'border-transparent text-slate-900' : 'border-slate-700 text-slate-200 hover:text-white');
-        btn.style.background = active
-          ? `linear-gradient(90deg, ${cat.color[0]}, ${cat.color[1]})`
-          : 'linear-gradient(90deg, rgba(148,163,184,0.15), rgba(148,163,184,0.10))';
+        btn.className = 'category-btn';
+        if (active) {
+          btn.classList.add('active');
+          btn.style.backgroundColor = cat.color;
+          btn.style.color = cat.text || '#1A1A1A';
+          btn.style.borderColor = cat.color;
+          btn.style.boxShadow = '0 16px 38px -24px rgba(26,26,26,0.45)';
+        } else {
+          btn.style.backgroundColor = '#FFFFFF';
+          btn.style.boxShadow = 'none';
+          btn.style.color = 'rgba(26,26,26,0.75)';
+          btn.style.borderColor = '#E5E7EB';
+        }
         const count = cat.cards.length;
+        const badgeBg = active ? '#FFFFFF' : '#F5F5F5';
+        const badgeColor = active ? '#1A1A1A' : 'rgba(26,26,26,0.7)';
+        const iconColor = active ? (cat.text || '#1A1A1A') : cat.color;
         btn.innerHTML = `
           <span class="flex items-center gap-2">
-            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full" style="color:${active ? '#0f172a' : cat.color[0]}">${cat.icon}</span>
+            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full" style="color:${iconColor};">${cat.icon}</span>
             <span>${cat.label}</span>
-            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${active ? '#0f172a' : '#1e293b'}; color: ${active ? cat.color[1] : '#cbd5e1'}; border: 1px solid rgba(148,163,184,0.25);">${count}</span>
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${badgeBg}; color: ${badgeColor}; border: 1px solid #E5E7EB;">${count}</span>
           </span>`;
         btn.addEventListener('click', () => setCategory(cat.key));
         categoryBar.appendChild(btn);
       }
-
-      // Update header badge
-      const current = categories.find(c => c.key === currentCategoryKey);
-      catBadge.classList.remove('hidden');
-      catBadge.style.background = 'linear-gradient(90deg, rgba(148,163,184,0.12), rgba(148,163,184,0.08))';
-      catBadge.innerHTML = `<span class="w-2 h-2 rounded-full" style="background: ${current.color[0]}; box-shadow: 0 0 8px ${current.color[0]}66;"></span>
-        <span>${current.label}</span>
-        <span class="px-1.5 py-0.5 rounded bg-slate-900/60 border border-slate-700 text-[10px]">${current.cards.length}</span>`;
     }
 
-    // Events
     cardEl.addEventListener('click', () => setFlipped(!flipped));
     prevBtn.addEventListener('click', prev);
     nextBtn.addEventListener('click', next);
     flipBtn.addEventListener('click', () => setFlipped(!flipped));
     shuffleBtn.addEventListener('click', shuffle);
-    randomToggle.addEventListener('change', (e) => { randomMode = e.target.checked; });
 
     document.addEventListener('keydown', (e) => {
       if (e.code === 'Space') { e.preventDefault(); setFlipped(!flipped); return; }
@@ -440,7 +470,6 @@
       if (e.key === 'ArrowLeft') prev();
     });
 
-    // Init
     paintCategoryBar();
     render();
   </script>
