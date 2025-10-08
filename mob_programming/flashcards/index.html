@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mob Programming Essentials — Flashcards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #061322; color: #dce9f7; }
+    .bg-gradient {
+      background: radial-gradient(circle at top left, #10243a, #061322);
+    }
+    .glass { background: rgba(12, 25, 41, 0.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(68, 200, 245, 0.16); }
+    .card-3d { perspective: 1200px; }
+    .card-inner { transform-style: preserve-3d; transition: transform 0.5s ease; }
+    .card-flipped .card-inner { transform: rotateY(180deg); }
+    .card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .card-back { transform: rotateY(180deg); }
+    .btn { @apply px-4 py-2 rounded-lg border border-slate-700/60 bg-slate-900/50 hover:bg-slate-800/70 text-slate-200 transition; }
+    .accent-text { color: #44c8f5; }
+    .stage { min-height: 60vh; }
+    .accent-strip { height: 6px; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div id="headerAccent" class="w-2 h-8 rounded" style="background: linear-gradient(180deg, #44c8f5, #e6007e);"></div>
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-cyan-100"><span class="accent-text">Flashcards :</span> Mob Programming Essentials</h1>
+      </div>
+      <div id="catBadge" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-slate-700/60 bg-slate-900/60 text-slate-200"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center px-4">
+      <!-- Card Stage centered -->
+      <div class="stage w-full max-w-5xl grid place-items-center">
+        <div class="w-full max-w-3xl">
+          <div id="card" class="card-3d glass rounded-2xl shadow-xl border border-slate-700/50">
+            <div class="accent-strip" id="accentStrip"></div>
+            <div class="card-inner rounded-2xl">
+              <!-- Front -->
+              <div class="card-face p-8 sm:p-12">
+                <div class="flex flex-col gap-6">
+                  <div id="qLabel" class="text-slate-300 text-sm">Question</div>
+                  <h2 id="q" class="text-2xl sm:text-4xl font-extrabold text-cyan-50 leading-snug"></h2>
+                  <div id="qSub" class="text-slate-400 text-lg"></div>
+                </div>
+              </div>
+              <!-- Back -->
+              <div class="card-face card-back p-8 sm:p-12 absolute inset-0 rounded-2xl bg-slate-900/60">
+                <div class="flex flex-col gap-6">
+                  <div id="aLabel" class="text-slate-300 text-sm">Answer</div>
+                  <div id="a" class="prose prose-invert max-w-none"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="glass w-full max-w-6xl rounded-2xl p-4 sm:p-6 mt-4 mb-12 border border-slate-700/40">
+        <div class="mb-4 px-2">
+          <div id="categoryBar" class="flex flex-wrap justify-center gap-2"></div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button id="prevBtn" class="btn flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+              Prev
+            </button>
+            <button id="nextBtn" class="btn flex items-center gap-2">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </button>
+            <button id="flipBtn" class="btn hidden sm:flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6v3l4-4-4-4v3C7.03 4 3 8.03 3 13c0 1.85.56 3.56 1.5 5l1.46-1.46A6.98 6.98 0 0 1 5 13c0-3.87 3.13-7 7-7zm7.5 1-1.46 1.46A6.98 6.98 0 0 1 19 13c0 3.87-3.13 7-7 7v-3l-4 4 4 4v-3c4.97 0 9-4.03 9-9 0-1.85-.56-3.56-1.5-5z"/></svg>
+              Flip (Space)
+            </button>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="shuffleBtn" class="btn">Shuffle</button>
+            <label class="inline-flex items-center gap-2 text-slate-300">
+              <input id="randomToggle" type="checkbox" class="accent-cyan-400">
+              Random mode
+            </label>
+            <span id="progress" class="text-sm text-slate-400"></span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const deckEssentials = [
+      {
+        q: 'What is Mob Programming?',
+        a: '<strong>Whole team, one problem.</strong> Everyone collaborates on the same task, at the same time, in the same space, on a single computer, echoing Woody Zuill&#39;s “all the brilliant people” mantra.'
+      },
+      {
+        q: 'Why practice it in the lab?',
+        a: '<strong>Boost communication, feedback, and cohesion.</strong> High-bandwidth collaboration melts away waiting, surfaces misunderstandings early, and lets the team learn together while enjoying the work.'
+      },
+      {
+        q: 'How does mobbing change feedback loops?',
+        a: '<strong>Feedback becomes immediate.</strong> Someone in the mob spots mistakes, asks clarifying questions, or proposes an experiment right away, so tiny issues never grow into bugs.'
+      },
+      {
+        q: 'What mindset should you bring?',
+        a: '<strong>Treat the lab like a team sport.</strong> Focus on practicing collaborative habits, supporting peers, and growing together instead of racing ahead solo.'
+      },
+      {
+        q: 'Why stay on one problem together?',
+        a: '<strong>Shared focus keeps everyone aligned.</strong> Working as one group avoids siloed decisions, maintains a common language, and gives the code shared ownership.'
+      }
+    ];
+
+    const deckRoles = [
+      {
+        q: 'What is the driver responsible for?',
+        a: '<strong>The driver is the mob&#39;s hands.</strong> They listen intently and type what the team agrees, avoiding solo design decisions—“no thinking at the keyboard.”'
+      },
+      {
+        q: 'How does the navigator guide the work?',
+        a: '<strong>The navigator speaks the next steps aloud.</strong> They think a level above keystrokes, integrate team ideas, and describe direction that the driver translates into code.'
+      },
+      {
+        q: 'What should the rest of the mob do?',
+        a: '<strong>Be active copilots.</strong> Everyone watches closely, spots issues, offers ideas at the right moment, and stays ready to rotate into speaking roles.'
+      },
+      {
+        q: 'How does a facilitator help?',
+        a: '<strong>They guard the collaboration.</strong> Facilitators observe dynamics, keep time, reinforce agreements like short turns, and gently step in to unblock or remind the group.'
+      },
+      {
+        q: 'What rotation cadence suits beginners?',
+        a: '<strong>Every 4–5 minutes.</strong> Short turns prevent keyboard monopolies, refresh perspectives, and keep energy high.'
+      },
+      {
+        q: 'What rotation order keeps flow?',
+        a: '<strong>Navigator → Driver → Mob.</strong> The navigator takes the keyboard, the driver rejoins the mob, and someone from the mob becomes the next navigator while everyone shifts seats.'
+      },
+      {
+        q: 'How do you hand off without losing momentum?',
+        a: '<strong>Narrate the handover.</strong> Summarize progress and the next move—“We finished the function; next we run the test”—so the incoming pair can continue smoothly.'
+      },
+      {
+        q: 'What happens when the timer rings?',
+        a: '<strong>The facilitator calls the rotation.</strong> They allow a sentence or two to wrap up, then ensure roles switch so no task belongs to one person for long.'
+      }
+    ];
+
+    const deckSetup = [
+      {
+        q: 'How should you arrange the screen and seating?',
+        a: '<strong>Use the largest display you have.</strong> Seat the mob in a semicircle with the driver centered so everyone can see the detailed code clearly.'
+      },
+      {
+        q: 'Why provide an external keyboard and mouse?',
+        a: '<strong>Shared peripherals focus the team.</strong> Closing the laptop keeps attention on the communal screen, avoids side work, and makes swaps effortless.'
+      },
+      {
+        q: 'Which editor settings help collaboration?',
+        a: '<strong>Increase visibility and clarity.</strong> Enable line numbers, bump the font size, and keep the layout simple so pointing to code is quick.'
+      },
+      {
+        q: 'Why is a mob timer essential?',
+        a: '<strong>A steady timer enforces rhythm.</strong> A clear 4–5 minute alarm prompts wrap-up, rotations, and consistent pace for the whole mob.'
+      }
+    ];
+
+    const deckHabits = [
+      {
+        q: 'How do you make sure every voice is heard?',
+        a: '<strong>Practice active listening.</strong> Invite quieter teammates in—“What do you think?”—and watch for signals that someone wants to contribute.'
+      },
+      {
+        q: 'Why adopt a “Yes, and...” posture?',
+        a: '<strong>Build on ideas instead of shutting them down.</strong> Acknowledge the current solution before extending it, and avoid deleting previous work outright.'
+      },
+      {
+        q: 'What does leading with kindness look like?',
+        a: '<strong>Critique ideas, not people.</strong> Assume good intent, frame corrections gently, and keep the mob a safe space for questions and uncertainty.'
+      },
+      {
+        q: 'How should the mob handle disagreements?',
+        a: '<strong>Experiment together.</strong> Let alternative ideas run, focus on learning, and let others shine rather than proving you are right.'
+      },
+      {
+        q: 'How do you maintain focus and inclusion?',
+        a: '<strong>Avoid side distractions.</strong> Skip parallel device work, support whoever is driving, and ask for a recap if you lose the thread—others likely need it too.'
+      },
+      {
+        q: 'How do timers and small tasks support flow?',
+        a: '<strong>Deliver a tiny win every turn.</strong> Run the code often, save and commit frequently, and keep feedback loops short.'
+      },
+      {
+        q: 'What does writing intentional code involve?',
+        a: '<strong>Align before typing.</strong> Discuss intent, jot a guiding comment, implement together, then tidy the comment so the code reflects clarified thinking.'
+      },
+      {
+        q: 'How do you keep a steady pace without rushing?',
+        a: '<strong>Use the group as a resource.</strong> Answer questions in the open, share syntax knowledge, and research together instead of sprinting ahead alone.'
+      },
+      {
+        q: 'Why take short breaks?',
+        a: '<strong>Brief pauses reset energy.</strong> Stretch or hydrate at natural stopping points to keep concentration sharp during intense sessions.'
+      }
+    ];
+
+    const deckChallenges = [
+      {
+        q: 'What should the mob do when nobody knows the next step?',
+        a: '<strong>Pause and find the next small move.</strong> Brainstorm or research together, and let facilitators ask guiding questions like “What must our code do first?”'
+      },
+      {
+        q: 'How do you turn knowledge gaps into collective learning?',
+        a: '<strong>Be candid and share reasoning.</strong> Say when you are lost, ask for explanations, and articulate the thinking so the mob spreads both knowledge and approach.'
+      },
+      {
+        q: 'How can teams balance strong voices and quieter ones?',
+        a: '<strong>Rotate airtime deliberately.</strong> Dominant contributors yield the floor, quieter members commit to speaking, and facilitators invite unheard perspectives.'
+      },
+      {
+        q: 'How do you stay on track without a formal retrospective?',
+        a: '<strong>Run micro course corrections.</strong> Call quick huddles when patterns emerge—interruptions, skipped tests—and focus on turning up what works.'
+      },
+      {
+        q: 'Why might you rename “mob programming” when inviting others?',
+        a: '<strong>Choose an inviting label.</strong> Terms like “ensemble” or “software teaming” feel welcoming and emphasize cooperation.'
+      },
+      {
+        q: 'Why start with small, safe problems?',
+        a: '<strong>Risk-free practice builds confidence.</strong> Use katas or non-production work so the mob learns the rhythm without endangering critical code.'
+      },
+      {
+        q: 'Why keep reinforcing the roles?',
+        a: '<strong>Clarity keeps collaboration crisp.</strong> Remind everyone that the typist follows instructions while the navigator speaks the next steps, especially during rotations.'
+      },
+      {
+        q: 'How do you calm worries about efficiency?',
+        a: '<strong>Time-box the experience.</strong> Short, regular sessions (like a two-hour lab) prove how shared learning and faster feedback offset initial speed concerns.'
+      },
+      {
+        q: 'Which resources help sustain momentum?',
+        a: '<strong>Keep inspiration handy.</strong> Share Woody Zuill and Kevin Meadows&#39; “Software Teaming” or the Mob Mentality podcast so the team can draw on proven guidance.'
+      }
+    ];
+
+    const allCards = [
+      ...deckEssentials,
+      ...deckRoles,
+      ...deckSetup,
+      ...deckHabits,
+      ...deckChallenges
+    ];
+
+    const accents = [
+      { from: '#44c8f5', to: '#e6007e', border: '#44c8f5', glow: 'rgba(68,200,245,0.35)' },
+      { from: '#e6007e', to: '#ffbf4d', border: '#e6007e', glow: 'rgba(230,0,126,0.30)' },
+      { from: '#5de7d0', to: '#44c8f5', border: '#44c8f5', glow: 'rgba(93,231,208,0.30)' },
+      { from: '#ffff66', to: '#44c8f5', border: '#ffff66', glow: 'rgba(255,255,102,0.25)' },
+      { from: '#8b5cf6', to: '#44c8f5', border: '#8b5cf6', glow: 'rgba(139,92,246,0.28)' }
+    ];
+
+    const icons = {
+      all: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l-5 3 1.9-5.9L4 10h6l2-6 2 6h6l-4.9 4.1L17 20z"/></svg>',
+      essentials: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 3a7 7 0 1 0 .001 14.001A7 7 0 0 0 12 5zm0 3v4l3 2-.9 1.45L11 12V8h1z"/></svg>',
+      roles: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm6 5H9a4 4 0 0 0-4 4v4h14v-4a4 4 0 0 0-4-4z"/></svg>',
+      setup: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 12h16v2H4v-2z"/></svg>',
+      habits: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4l-4 4v-4H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>',
+      challenges: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-2 5h4v6h-4v-6z"/></svg>'
+    };
+
+    const categories = [
+      { key: 'all', label: 'All', color: ['#44c8f5', '#e6007e'], icon: icons.all, cards: allCards },
+      { key: 'essentials', label: 'Essentials', color: ['#5de7d0', '#44c8f5'], icon: icons.essentials, cards: deckEssentials },
+      { key: 'roles', label: 'Roles & Rotations', color: ['#e6007e', '#ffbf4d'], icon: icons.roles, cards: deckRoles },
+      { key: 'setup', label: 'Space & Tools', color: ['#8b5cf6', '#44c8f5'], icon: icons.setup, cards: deckSetup },
+      { key: 'habits', label: 'Habits & Flow', color: ['#44c8f5', '#5de7d0'], icon: icons.habits, cards: deckHabits },
+      { key: 'challenges', label: 'Challenges & Advice', color: ['#ffff66', '#e6007e'], icon: icons.challenges, cards: deckChallenges }
+    ];
+
+    let currentCategoryKey = 'all';
+    function currentDeck() { return categories.find(c => c.key === currentCategoryKey).cards; }
+    let order = currentDeck().map((_, i) => i);
+    let idx = 0;
+    let flipped = false;
+    let randomMode = false;
+
+    const cardEl = document.getElementById('card');
+    const cardInner = cardEl.querySelector('.card-inner');
+    const qEl = document.getElementById('q');
+    const qSubEl = document.getElementById('qSub');
+    const aEl = document.getElementById('a');
+    const qLabel = document.getElementById('qLabel');
+    const aLabel = document.getElementById('aLabel');
+    const accentStrip = document.getElementById('accentStrip');
+    const headerAccent = document.getElementById('headerAccent');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const flipBtn = document.getElementById('flipBtn');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const randomToggle = document.getElementById('randomToggle');
+    const progress = document.getElementById('progress');
+    const categoryBar = document.getElementById('categoryBar');
+    const catBadge = document.getElementById('catBadge');
+
+    function render() {
+      const deck = currentDeck();
+      if (!deck || deck.length === 0) {
+        qEl.textContent = 'No cards in this category';
+        qSubEl.textContent = '';
+        aEl.innerHTML = '';
+        progress.textContent = '0 / 0';
+        return;
+      }
+      if (idx >= deck.length) idx = 0;
+      if (idx < 0) idx = 0;
+      if (order.length !== deck.length) order = deck.map((_, i) => i);
+      const card = deck[order[idx]];
+      qEl.textContent = card.q;
+      qSubEl.textContent = '';
+      aEl.innerHTML = card.a;
+      progress.textContent = `${idx + 1} / ${deck.length}`;
+      setFlipped(false);
+      applyAccent();
+    }
+
+    function setFlipped(v) {
+      flipped = v;
+      if (flipped) cardEl.classList.add('card-flipped');
+      else cardEl.classList.remove('card-flipped');
+    }
+
+    function applyAccent() {
+      const theme = accents[order[idx] % accents.length];
+      cardEl.style.borderColor = theme.border;
+      cardEl.style.boxShadow = `0 0 0 1px ${theme.border}33, 0 12px 36px ${theme.glow}`;
+      accentStrip.style.background = `linear-gradient(90deg, ${theme.from}, ${theme.to})`;
+      headerAccent.style.background = `linear-gradient(180deg, ${theme.from}, ${theme.to})`;
+      qLabel.style.color = theme.to;
+      aLabel.style.color = theme.to;
+    }
+
+    function shuffle() {
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      idx = 0;
+      render();
+    }
+
+    function next() {
+      const deck = currentDeck();
+      idx = randomMode ? Math.floor(Math.random() * deck.length) : (idx + 1) % deck.length;
+      render();
+    }
+
+    function prev() {
+      const deck = currentDeck();
+      idx = randomMode ? Math.floor(Math.random() * deck.length) : (idx - 1 + deck.length) % deck.length;
+      render();
+    }
+
+    function setCategory(key) {
+      currentCategoryKey = key;
+      const deck = currentDeck();
+      order = deck.map((_, i) => i);
+      idx = 0;
+      render();
+      paintCategoryBar();
+    }
+
+    function paintCategoryBar() {
+      categoryBar.innerHTML = '';
+      for (const cat of categories) {
+        const btn = document.createElement('button');
+        const active = cat.key === currentCategoryKey;
+        btn.className = 'group relative px-3 py-1.5 rounded-full text-sm font-semibold border transition ' +
+          (active ? 'border-transparent text-slate-900' : 'border-slate-700/60 text-slate-200 hover:text-white');
+        btn.style.background = active
+          ? `linear-gradient(90deg, ${cat.color[0]}, ${cat.color[1]})`
+          : 'linear-gradient(90deg, rgba(148,163,184,0.12), rgba(148,163,184,0.08))';
+        const count = cat.cards.length;
+        btn.innerHTML = `
+          <span class="flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full" style="color:${active ? '#0f172a' : cat.color[0]}">${cat.icon}</span>
+            <span>${cat.label}</span>
+            <span class="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${active ? '#0f172a' : '#0b1627'}; color: ${active ? cat.color[1] : '#cbd5e1'}; border: 1px solid rgba(148,163,184,0.25);">${count}</span>
+          </span>`;
+        btn.addEventListener('click', () => setCategory(cat.key));
+        categoryBar.appendChild(btn);
+      }
+
+      const current = categories.find(c => c.key === currentCategoryKey);
+      catBadge.classList.remove('hidden');
+      catBadge.style.background = 'linear-gradient(90deg, rgba(68,200,245,0.14), rgba(230,0,126,0.10))';
+      catBadge.innerHTML = `<span class="w-2 h-2 rounded-full" style="background: ${current.color[0]}; box-shadow: 0 0 8px ${current.color[0]}66;"></span>
+        <span>${current.label}</span>
+        <span class="px-1.5 py-0.5 rounded bg-slate-900/60 border border-slate-700/60 text-[10px]">${current.cards.length}</span>`;
+    }
+
+    cardEl.addEventListener('click', () => setFlipped(!flipped));
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    flipBtn.addEventListener('click', () => setFlipped(!flipped));
+    shuffleBtn.addEventListener('click', shuffle);
+    randomToggle.addEventListener('change', (e) => { randomMode = e.target.checked; });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') { e.preventDefault(); setFlipped(!flipped); return; }
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+
+    paintCategoryBar();
+    render();
+  </script>
+</body>
+</html>
